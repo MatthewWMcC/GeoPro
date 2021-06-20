@@ -1,10 +1,17 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
+require("dotenv").config({
+    path: ".env",
+})
 
 module.exports = {
     entry: {
         main: "./src/app.ts"
     },
+    devtool: "inline-source-map",
     module: {
         rules: [
             {
@@ -38,6 +45,13 @@ module.exports = {
                 ]
             },
             {
+                test: /\.css$/,
+                use: [
+                  MiniCssExtractPlugin.loader,
+                  'css-loader'
+                ]
+              },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: [
@@ -62,13 +76,20 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html"
         }),
+        new webpack.DefinePlugin({
+            "process.env.PUBLIC_MAPBOX_ACCESS_TOKEN": JSON.stringify(process.env.PUBLIC_MAPBOX_ACCESS_TOKEN),
+        }),
+        new MiniCssExtractPlugin({
+            filename: "style.css",
+        })
     ],
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
             'base': path.resolve(__dirname, "src/base"),
             'components': path.resolve(__dirname, "src/components"),
-            'pages': path.resolve(__dirname, "src/pages")
+            'pages': path.resolve(__dirname, "src/pages"),
+            'utils': path.resolve(__dirname, "src/utils"),
         }
       },
 }
