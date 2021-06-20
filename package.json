@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack",
-    "server": "npm run build && nodemon server.js"
+    "devServer": "cross-env NODE_ENV='development' nodemon server.js",
+    "devBuild": "cross-env NODE_ENV='development' webpack --config webpack.config.js --watch",
+    "dev": "concurrently -n build,server \"npm run devBuild\" \"npm run devServer\""
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +22,8 @@
     "@types/express": "^4.17.12",
     "@types/mithril": "^2.0.7",
     "babel-loader": "^8.2.2",
+    "concurrently": "^6.2.0",
+    "cross-env": "^7.0.3",
     "eslint-loader": "^4.0.2",
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.1",

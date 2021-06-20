@@ -9,7 +9,7 @@ export const enterInfo: m.Component<EnterInfoAttrs, EnterInfoState> = {
                 onclick: () => {
                     m.route.set("game-page")
                 }
-            }, "Switch to game page")
+            }, "Switch to game page pleasee")
         ])
     }     
 }
