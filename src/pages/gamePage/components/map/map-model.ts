@@ -12,7 +12,7 @@ export const model: MapModel = {
         const map = new mapboxgl.Map({
             accessToken: getMapboxAPIToken(),
             container: document.querySelector(".map-container") as HTMLElement,
-            style: 'mapbox://styles/mapbox/dark-v10',
+            style: 'mapbox://styles/matthewmccracken/ckq8q35kr1f5x17o9f6wom6b7',
             center: [0, 0],
             zoom: 0,
             interactive: true,
