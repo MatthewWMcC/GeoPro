@@ -1,9 +1,10 @@
 import m from "mithril";
+import "./styles.css"
 import { header } from "components/header/header";
 import { gamePage } from "pages/gamePage/game-page";
 import { enterInfo } from "pages/enterInfo/enter-info";
 
-const bodyContentContainer = document.getElementById("body-content-container")
+const bodyContentContainer = document.getElementById("body-content-container");
 const headerContentContainer = document.getElementById("header-content-container");
 
 if(headerContentContainer === null){

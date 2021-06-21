@@ -21,6 +21,7 @@
             "components/*": ["src/components/*"],
             "base/*": ["src/base/*"],
             "pages/*": ["src/pages/*"],
+            "utils/*": ["src/utils/*"],
         }
     }
 }
