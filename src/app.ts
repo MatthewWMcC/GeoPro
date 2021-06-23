@@ -3,6 +3,9 @@ import "./styles.css"
 import { header } from "components/header/header";
 import { gamePage } from "pages/gamePage/game-page";
 import { enterInfo } from "pages/enterInfo/enter-info";
+import { store, storeType } from "state/store";
+import { rootState } from "state/types";
+import { Observable } from "rxjs";
 
 const bodyContentContainer = document.getElementById("body-content-container");
 const headerContentContainer = document.getElementById("header-content-container");
@@ -15,10 +18,20 @@ if(bodyContentContainer === null){
     throw new Error("The content-container was not found")
 }
 
+const getState = (store: storeType): Observable<rootState>  => {
+    return new Observable((observer) => {
+        const unsubscribe = store.subscribe(() => {
+            observer.next(store.getState());
+        })
+    })
+}
+
+const store$ = getState(store);
+
 m.mount(headerContentContainer, {
     view: () => m(header, 
         {
-
+            store$
         }) 
 
 });
