@@ -2,20 +2,46 @@ import { MapAttrs, MapState } from "./types";
 import m from "mithril";
 import mapboxgl from 'mapbox-gl';
 import { getMapboxAPIToken } from 'utils/environment-vars-helper';
+import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
+
 
 interface MapModel {
+    handleComponentInit: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
     handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
 } 
 
 export const model: MapModel = {
+    handleComponentInit: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
+        const {store$} = vnode.attrs;
+        vnode.state.subscriptions = [];
+
+        const changedMapStyle$ = store$.pipe(
+            pluck("UserData", "preferedMapStyle"),
+            distinctUntilChanged((prev, curr) => {
+                console.log(curr)
+                return JSON.stringify(prev) === JSON.stringify(curr);
+            })
+        )
+
+        vnode.state.subscriptions.push(
+            changedMapStyle$.pipe(
+                tap(mapStyle => {
+                    console.log(mapStyle)
+                    vnode.state.mapStyle = mapStyle;
+                    vnode.state.map && vnode.state.map.setStyle(mapStyle.withBorders);
+                })
+            ).subscribe()
+        )
+
+    },
     handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
-        const map = new mapboxgl.Map({
+        vnode.state.map = new mapboxgl.Map({
             accessToken: getMapboxAPIToken(),
             container: document.querySelector(".map-container") as HTMLElement,
-            style: 'mapbox://styles/matthewmccracken/ckq8q35kr1f5x17o9f6wom6b7',
+            style: vnode.state.mapStyle.withBorders,
             center: [0, 0],
             zoom: 0,
             interactive: true,
-        })
+        })  
     }
 }
