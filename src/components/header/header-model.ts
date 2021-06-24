@@ -27,7 +27,6 @@ export const model: HeaderModel = {
                     vnode.state.username = username;
                 })
             ).subscribe()
-        )
-        
+        )        
     }
 }
