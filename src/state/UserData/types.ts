@@ -53,12 +53,12 @@ export interface MapStyleOptions {
     
     export const MapStyles: MapStyleOptions = {
         DARK: {
-            withBorders: 'mapbox://styles/matthewmccracken/ckq8q35kr1f5x17o9f6wom6b7',
+            withBorders: 'mapbox://styles/matthewmccracken/ckq8q35kr1f5x17o9f6wom6b7?optimize=true',
             withoutBorders: 'mapbox://styles/matthewmccracken/ckq8r6yy05fm617nssmdvo9ul',
         },
         LIGHT: {
-            withBorders: 'mapbox://styles/matthewmccracken/ckq8r6yy05fm617nssmdvo9ul',
-            withoutBorders: 'mapbox://styles/matthewmccracken/ckq8q35kr1f5x17o9f6wom6b7',
+            withBorders: 'mapbox://styles/matthewmccracken/ckqe6wn960vt717qa57ns25os?optimize=true',
+            withoutBorders: 'mapbox://styles/matthewmccracken/ckqe6xvh36q2u17n2t6789h8y',
         }
     }
     

@@ -3,14 +3,14 @@ import "./styles.css"
 import { header } from "components/header/header";
 import { gamePage } from "pages/gamePage/game-page";
 import { enterInfo } from "pages/enterInfo/enter-info";
-import { store, storeType } from "state/store";
+import { store } from "state/store";
 import { rootState } from "state/types";
 import { Observable } from "rxjs";
-import { InitUserData, UpdateUsername } from "state/UserData/actions";
+import { InitUserData } from "state/UserData/actions";
+import { navigation } from "components/navigation/navigation";
 
 const initApp = async() => {
     await initDispatch();
-    console.log(store.getState())
     createApp();
 }
 
@@ -21,9 +21,15 @@ const initDispatch = async() => {
 
 const createApp = () => {
     const bodyContentContainer = document.getElementById("body-content-container");
+    const navigationContentContainer = document.getElementById("navigation-content-container");
     const headerContentContainer = document.getElementById("header-content-container");
+
     if(headerContentContainer === null){
         throw new Error("The header-content-container was not found")
+    }
+
+    if(navigationContentContainer === null){
+        throw new Error("The navigation-content-container was not found")
     }
     
     if(bodyContentContainer === null){
@@ -44,6 +50,14 @@ const createApp = () => {
     
     m.mount(headerContentContainer, {
         view: () => m(header, 
+            {
+                store$
+            }) 
+    
+    });
+
+    m.mount(navigationContentContainer, {
+        view: () => m(navigation, 
             {
                 store$
             }) 

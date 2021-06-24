@@ -1,0 +1,30 @@
+.navigation-head-container{
+    position: absolute;
+    top: 5%;
+    bottom: 5%;
+    display: flex;
+    align-items: center;
+    transition: 0.5s;
+}
+
+.nav-main-container {
+    width: var(--navigation-width);
+    height: 100%;
+    background-color: var(--grey-overlay-color);
+    border-radius: 0 40px 40px 0;
+}
+
+.nav-show-hide-button-container {}
+
+.nav-show-hide-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 10px 5px;
+}
+
+.nav-show-hide-button {
+    height: 60px;
+    background-color: var(--grey-overlay-color);
+    border-radius: 0 10px 10px 0;
+
+}
