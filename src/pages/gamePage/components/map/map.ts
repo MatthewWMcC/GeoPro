@@ -11,7 +11,7 @@ export const map: m.Component<MapAttrs, MapState> = {
     view: (vnode: m.VnodeDOM<MapAttrs, MapState>): m.Children => {
         return  m(".map-and-surrounding-elems-container", [
             m(".map-container", 
-            { style: 'height: 75%' }
+            { style: 'height: calc(100vh - 200px)' }
             ),
         ])
     }     
