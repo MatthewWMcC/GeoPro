@@ -4,6 +4,8 @@ import { model } from './game-page-model';
 import {map} from "./components/map/map"
 
 export const gamePage: m.Component<GamePageAttrs, GamePageState> = {
+    oninit: model.handleComponentInit,
+    onremove: model.handleComponentRemove,
     oncreate: model.handleComponentCreate,
     view: (vnode: m.VnodeDOM<GamePageAttrs, GamePageState>): m.Children => {
         const {store$} = vnode.attrs;

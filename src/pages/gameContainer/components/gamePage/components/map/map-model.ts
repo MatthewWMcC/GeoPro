@@ -3,32 +3,32 @@ import m from "mithril";
 import mapboxgl from 'mapbox-gl';
 import { getMapboxAPIToken } from 'utils/environment-vars-helper';
 import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
+import { extendBaseModel } from "base/baseModel";
 
 
 interface MapModel {
     handleComponentInit: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
+    handleComponentRemove: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
     handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
 } 
 
-export const model: MapModel = {
+export const model: MapModel = extendBaseModel({
     handleComponentInit: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
         const {store$} = vnode.attrs;
         vnode.state.subscriptions = [];
 
-        const changedMapStyle$ = store$.pipe(
-            pluck("UserData", "preferedMapStyle"),
-            distinctUntilChanged((prev, curr) => {
-                console.log(curr)
-                return JSON.stringify(prev) === JSON.stringify(curr);
-            })
-        )
-
         vnode.state.subscriptions.push(
-            changedMapStyle$.pipe(
-                tap(mapStyle => {
-                    vnode.state.mapStyle = mapStyle;
-                    vnode.state.map && vnode.state.map.setStyle(mapStyle.withBorders);
-                })
+            store$.pipe(
+                pluck("UserData", "preferedMapStyle"),
+                // take(1),
+                distinctUntilChanged((prev, curr) => {
+                    return JSON.stringify(prev) === JSON.stringify(curr);
+                }),
+                    tap(mapStyle => {
+                        console.log("applied")
+                        vnode.state.mapStyle = mapStyle;
+                        vnode.state.map && vnode.state.map.setStyle(mapStyle.withBorders);
+                    })
             ).subscribe()
         )
 
@@ -42,6 +42,6 @@ export const model: MapModel = {
             zoom: 1,
             interactive: true,
         })  
-        vnode.state.map.scrollZoom.setWheelZoomRate(1/300);
+        vnode.state.map.scrollZoom.setWheelZoomRate(1/250);
     }
-}
+})

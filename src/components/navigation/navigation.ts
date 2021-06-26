@@ -6,6 +6,7 @@ import { model } from './navigation-model';
 import { MapStylesEnum } from 'state/UserData/types';
 
 export const navigation: m.Component<NavigationAttrs, NavigationState> = {
+    onremove: model.handleComponentRemove,
     view: (vnode: m.VnodeDOM<NavigationAttrs, NavigationState>): m.Children => {
         const {navShown} = vnode.state;
         
