@@ -22,7 +22,8 @@
             "base/*": ["src/base/*"],
             "pages/*": ["src/pages/*"],
             "utils/*": ["src/utils/*"],
-            "state/*": ["src/state/*"]
+            "state/*": ["src/state/*"],
+            "global/*": ["src/global/*"]
         }
     }
 }

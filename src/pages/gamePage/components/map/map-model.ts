@@ -26,7 +26,6 @@ export const model: MapModel = {
         vnode.state.subscriptions.push(
             changedMapStyle$.pipe(
                 tap(mapStyle => {
-                    console.log(mapStyle)
                     vnode.state.mapStyle = mapStyle;
                     vnode.state.map && vnode.state.map.setStyle(mapStyle.withBorders);
                 })
@@ -39,9 +38,10 @@ export const model: MapModel = {
             accessToken: getMapboxAPIToken(),
             container: document.querySelector(".map-container") as HTMLElement,
             style: vnode.state.mapStyle.withBorders,
-            center: [0, 0],
-            zoom: 0,
+            center: [-30, 45],
+            zoom: 1,
             interactive: true,
         })  
+        vnode.state.map.scrollZoom.setWheelZoomRate(1/300);
     }
 }

@@ -91,6 +91,7 @@ module.exports = {
             'pages': path.resolve(__dirname, "src/pages"),
             'utils': path.resolve(__dirname, "src/utils"),
             'state': path.resolve(__dirname, "src/state"),
+            'global': path.resolve(__dirname, "src/global")
         }
       },
 }

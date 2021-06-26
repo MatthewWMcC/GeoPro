@@ -7,7 +7,7 @@ export const header: m.Component<HeaderAttrs, HeaderState> = {
     view: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>): m.Children => {
         const {username} = vnode.state;
         return m("div.header", [
-            m("h1.header", "This is the header"),
+            m("label.header", "This is the header"),
             m("h2", username),
         ])
     }
