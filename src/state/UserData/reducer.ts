@@ -7,9 +7,12 @@ import { UserDataState,
     InitUserDataAction,
 } from "./types"
 
+import uniqid from "uniqid";
+
 const initUserData: UserDataState = {
-    username: "",
+    username: "JOE",
     preferedMapStyle: MapStyles.DARK,
+    userId: uniqid(),
 }
 
 export const UserDataReducer = (state:UserDataState = initUserData, action: UserDataActions): UserDataState => {

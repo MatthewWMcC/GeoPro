@@ -3,9 +3,9 @@ const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
-require("dotenv").config({
-    path: ".env",
-})
+const dotenv = require('dotenv').config( {
+    path: path.join(__dirname, '.env')
+  } );
 
 module.exports = {
     entry: {
@@ -76,9 +76,9 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html"
         }),
-        new webpack.DefinePlugin({
-            "process.env.PUBLIC_MAPBOX_ACCESS_TOKEN": JSON.stringify(process.env.PUBLIC_MAPBOX_ACCESS_TOKEN),
-        }),
+        new webpack.DefinePlugin( {
+            "process.env": dotenv.parsed
+          } ),
         new MiniCssExtractPlugin({
             filename: "style.css",
         })
@@ -91,7 +91,8 @@ module.exports = {
             'pages': path.resolve(__dirname, "src/pages"),
             'utils': path.resolve(__dirname, "src/utils"),
             'state': path.resolve(__dirname, "src/state"),
-            'global': path.resolve(__dirname, "src/global")
+            'global': path.resolve(__dirname, "src/global"),
+            'socket': path.resolve(__dirname, "src/socket")
         }
       },
 }

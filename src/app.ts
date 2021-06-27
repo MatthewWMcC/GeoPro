@@ -10,6 +10,7 @@ import { navigation } from "components/navigation/navigation";
 import { mainPage } from "pages/mainPage/main-page";
 import { gameContainer } from "pages/gameContainer/game-container";
 
+
 const initApp = async() => {
     await initDispatch();
     createApp();
@@ -74,10 +75,10 @@ const createApp = () => {
                 store$
             })
         },
-        "/game-container/:gameId": {
+        "/game-container/:key": {
             view: () => m(gameContainer, {
                 store$,
-                gameId: m.route.param("gameId")
+                roomId: m.route.param("key"),
             })
         },
     })

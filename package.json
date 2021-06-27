@@ -13,12 +13,18 @@
   "license": "ISC",
   "dependencies": {
     "@types/mapbox-gl": "^2.3.0",
+    "@types/socket.io": "^3.0.2",
+    "@types/uniqid": "^5.3.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mapbox-gl": "^2.3.0",
     "mithril": "^2.0.4",
     "path": "^0.12.7",
-    "rxjs": "^6.6.7"
+    "rxjs": "^6.6.7",
+    "socket.io": "^4.1.2",
+    "socket.io-client": "^4.1.2",
+    "uniqid": "^5.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
