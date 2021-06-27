@@ -2,19 +2,14 @@ import m from 'mithril';
 import { HeaderAttrs, HeaderState } from "./types";
 import { pipe } from "rxjs";
 import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
+import { extendBaseModel } from 'base/baseModel';
 
 interface HeaderModel {
     handleComponentRemove: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
     handleComponentInit: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
 }
 
-export const model: HeaderModel = {
-    handleComponentRemove: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
-        vnode.state.subscriptions.forEach(subscription => {
-            subscription.unsubscribe();
-        })
-        vnode.state.subscriptions = [];
-    },
+export const model: HeaderModel = extendBaseModel({
     handleComponentInit: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
         const {store$} = vnode.attrs;
         vnode.state.subscriptions = [];
@@ -29,4 +24,4 @@ export const model: HeaderModel = {
             ).subscribe()
         )        
     }
-}
+})

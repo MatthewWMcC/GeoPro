@@ -7,6 +7,7 @@ import { MapStylesEnum } from 'state/UserData/types';
 
 export const map: m.Component<MapAttrs, MapState> = {
     oninit: model.handleComponentInit,
+    onremove: model.handleComponentRemove,
     oncreate: model.handleComponentCreate,
     view: (vnode: m.VnodeDOM<MapAttrs, MapState>): m.Children => {
         return  m(".map-and-surrounding-elems-container", [

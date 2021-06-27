@@ -51,8 +51,6 @@ const MapStyleReducer = (
     state: UserDataState,
     action: UpdateMapStyleAction
 ): UserDataState => {
-    console.log(action.payload.mapStyle)
-    console.log(MapStyles[action.payload.mapStyle])
     return {
         ...state,
         preferedMapStyle: MapStyles[action.payload.mapStyle],

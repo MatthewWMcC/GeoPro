@@ -1,13 +1,14 @@
 import m from "mithril";
 import "./styles.css"
 import { header } from "components/header/header";
-import { gamePage } from "pages/gamePage/game-page";
 import { enterInfo } from "pages/enterInfo/enter-info";
 import { store } from "state/store";
 import { rootState } from "state/types";
 import { Observable } from "rxjs";
 import { InitUserData } from "state/UserData/actions";
 import { navigation } from "components/navigation/navigation";
+import { mainPage } from "pages/mainPage/main-page";
+import { gameContainer } from "pages/gameContainer/game-container";
 
 const initApp = async() => {
     await initDispatch();
@@ -68,9 +69,15 @@ const createApp = () => {
     
     m.route(bodyContentContainer, "/", {
         "/": enterInfo,
-        "/game-page": {
-            view: () => m(gamePage, {
+        "/main-page": {
+            view: () => m(mainPage, {
                 store$
+            })
+        },
+        "/game-container/:gameId": {
+            view: () => m(gameContainer, {
+                store$,
+                gameId: m.route.param("gameId")
             })
         },
     })
