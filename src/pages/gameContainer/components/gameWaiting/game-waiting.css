@@ -1,0 +1,65 @@
+.waiting-label-container {
+    
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.waiting-label {
+    font-weight: 400;
+    font-size: 30px;
+    color: aliceblue;
+}
+.game-waiting-outer-panel-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.game-waiting-outer-panel {
+    width: 100%;
+    max-width: 1200px;
+    min-width: 400px;
+    background-color: var(--waiting-menu-color);
+    height: 55vh;
+    border-radius: 60px;
+    display: flex;
+    padding: 30px;
+}
+
+.game-waiting-settings {
+    border-right: 2px white solid;
+    padding-right: 30px;  
+    flex: 1;
+}
+
+.game-waiting-players {
+    padding-left: 30px;
+    flex: 1;
+}
+
+.sub-heading-label {
+    margin-left: 50px;
+    margin-bottom: 30px;
+    color: aliceblue;
+    font-size: 30px;
+}
+
+.player-holder {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: rgb(9, 13, 36);
+    color: antiquewhite;
+    margin-top: 10px;
+}
+
+.start-game-container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+

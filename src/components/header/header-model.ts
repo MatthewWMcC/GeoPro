@@ -1,6 +1,5 @@
 import m from 'mithril';
 import { HeaderAttrs, HeaderState } from "./types";
-import { pipe } from "rxjs";
 import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
 import { extendBaseModel } from 'base/baseModel';
 
