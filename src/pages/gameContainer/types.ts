@@ -1,9 +1,9 @@
 import { BaseAttrs, BaseState } from "base/types";
 
 export interface GameContainerState extends BaseState{
-    gamePlaying: boolean;
+    inGame: boolean;
 };
 
 export interface GameContainerAttrs extends BaseAttrs{
-    gameId: string;
+    roomId: string;
 };

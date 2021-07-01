@@ -8,8 +8,8 @@ export const mainPage: m.Component<MainPageAttrs, MainPageState> = {
         return m(".main-page-container", [
             m("h3.main-page-label", "Main page label."),
             m("button.temp-button", {   
-                onclick: () => m.route.set("/game-container/1")
-            }, "go to game")
+                onclick: model.handleMakeNewGamePress
+            }, "make new game")
         ])
     }
 }

@@ -8,12 +8,12 @@ export const gameContainer: m.Component<GameContainerAttrs, GameContainerState> 
     oninit: model.handleComponentInit,
     onremove: model.handleComponentRemove,
     view: (vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>) => {
-        const { gamePlaying } = vnode.state;
-        const { store$, gameId} = vnode.attrs;
+        const { inGame } = vnode.state;
+        const { store$, roomId} = vnode.attrs;
 
         return m(".game-container-container", [
-            !gamePlaying && m(gameWaiting, {store$}),
-            gamePlaying && m(gamePage, {store$})
+            !inGame && m(gameWaiting, {store$}),
+            inGame && m(gamePage, {store$})
         ])
     }
 }

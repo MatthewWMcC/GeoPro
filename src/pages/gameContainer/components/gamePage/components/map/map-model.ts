@@ -20,12 +20,10 @@ export const model: MapModel = extendBaseModel({
         vnode.state.subscriptions.push(
             store$.pipe(
                 pluck("UserData", "preferedMapStyle"),
-                // take(1),
                 distinctUntilChanged((prev, curr) => {
                     return JSON.stringify(prev) === JSON.stringify(curr);
                 }),
                     tap(mapStyle => {
-                        console.log("applied")
                         vnode.state.mapStyle = mapStyle;
                         vnode.state.map && vnode.state.map.setStyle(mapStyle.withBorders);
                     })

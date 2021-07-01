@@ -23,7 +23,9 @@
             "pages/*": ["src/pages/*"],
             "utils/*": ["src/utils/*"],
             "state/*": ["src/state/*"],
-            "global/*": ["src/global/*"]
+            "global/*": ["src/global/*"],
+            "socket/*": ["src/socket/*"],
+
         }
     }
 }

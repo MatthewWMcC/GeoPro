@@ -1,7 +1,8 @@
 
 export interface UserDataState {
     username: string,
-    preferedMapStyle: MapStyle
+    preferedMapStyle: MapStyle,
+    userId: string,
 }
 
 export interface InitUserDataAction {

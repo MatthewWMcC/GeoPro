@@ -1,5 +1,6 @@
 import { extendBaseModel } from 'base/baseModel';
 import m from 'mithril';
+import { socket } from 'socket/socket-main';
 import { store } from 'state/store';
 import { UpdateMapStyle } from 'state/UserData/actions';
 import { MapStylesKey } from 'state/UserData/types';
@@ -18,5 +19,6 @@ export const model: NavigationModel = extendBaseModel({
     },
     handleMapStyleChange: (mapStyleChange: MapStylesKey) => {
         store.dispatch(UpdateMapStyle(mapStyleChange));
+        socket.emit("message", "nav event")
     }
 })
