@@ -1,10 +1,13 @@
-import { Store, compose, createStore } from "redux";
+import { Store, createStore, applyMiddleware } from "redux";
+import logger from 'redux-logger';
 import { rootReducer } from "./root";
-import { rootState } from "./types";
 export type storeType = typeof store;
 
-export const configureStore = (): Store<rootState> => {
-    return createStore(rootReducer);
+
+export const configureStore = () => {
+    return createStore(rootReducer,
+        applyMiddleware(logger)
+    );
 }
 
-export const store: Store<rootState> = configureStore();
+export const store = configureStore();

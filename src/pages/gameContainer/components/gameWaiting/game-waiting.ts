@@ -7,7 +7,6 @@ export const gameWaiting: m.Component<GameWaitingAttrs, GameWaitingState> = {
     onremove: model.handleComponentRemove,
     view: (vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>) => {
         const { playerList, roomId} = vnode.state;
-        console.log(playerList, roomId)
         return m(".game-waiting-container", [
             m(".waiting-label", "waiting page"),
             m("button.start-game", {
