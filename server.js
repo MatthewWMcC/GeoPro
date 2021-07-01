@@ -48,6 +48,7 @@ io.sockets.on("connection", (socket) => {
         
         io.sockets.adapter.rooms.get(roomId).playerList = playerList;
 
+        socket.roomId = roomId;
         socket.emit("joined-new-game-data", io.sockets.adapter.rooms.get(roomId))
         socket.to(roomId).emit("new-player", compactedPlayerData);
     })
@@ -60,5 +61,14 @@ io.sockets.on("connection", (socket) => {
         io.sockets.adapter.rooms.get(roomId).playerList = [...newPlayerList]
         io.in(roomId).emit("player-left", socket.id)
         socket.leave(roomId)
+    })
+    socket.on("disconnect", () => {
+        if(socket.roomId){
+            const newPlayerList = io.sockets.adapter.rooms.get(socket.roomId).playerList.filter(player => player.socketId !== socket.id)
+        io.sockets.adapter.rooms.get(socket.roomId).playerList = [...newPlayerList]
+        io.in(socket.roomId).emit("player-left", socket.id)
+        socket.leave(socket.roomId)
+        }
+        
     })
 })
