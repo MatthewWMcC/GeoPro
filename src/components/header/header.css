@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.header-label-container{
+    margin-left: 100px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.header-label {
+    font-size: 35px;
+    color: rgb(38, 148, 111);
+  -webkit-text-fill-color: aquamarine;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: red;
+}
+
+.header-username-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-right: 100px;
+}
+
+.username {
+    font-weight: 500;
+    color: aliceblue;
+    font-size: 25px;
+}

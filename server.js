@@ -63,12 +63,11 @@ io.sockets.on("connection", (socket) => {
         socket.leave(roomId)
     })
     socket.on("disconnect", () => {
-        if(socket.roomId){
+        if(io.sockets.adapter.rooms.get(socket.roomId)){
             const newPlayerList = io.sockets.adapter.rooms.get(socket.roomId).playerList.filter(player => player.socketId !== socket.id)
-        io.sockets.adapter.rooms.get(socket.roomId).playerList = [...newPlayerList]
-        io.in(socket.roomId).emit("player-left", socket.id)
-        socket.leave(socket.roomId)
+            io.sockets.adapter.rooms.get(socket.roomId).playerList = [...newPlayerList]
+            io.in(socket.roomId).emit("player-left", socket.id)
+            socket.leave(socket.roomId)
         }
-        
     })
 })
