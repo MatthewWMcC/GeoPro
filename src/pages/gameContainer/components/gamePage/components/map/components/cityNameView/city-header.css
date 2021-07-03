@@ -1,0 +1,30 @@
+.city-header-container {
+    background-color: black;
+    min-width: 200px;
+    height: 6%;
+    z-index: 1;
+    display: inline-flex;
+    border-radius: 10px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-data-holder {
+    padding: 0 25px;
+    border-right: white 4px solid;
+}
+
+.location-data-label {
+    color: aliceblue;
+    font-size: 25px;
+}
+
+.countdown-holder {
+    margin: 0 25px;
+}
+
+.countdown-label {
+    color: aliceblue;
+    font-size: 25px;
+}

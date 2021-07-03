@@ -1,10 +1,12 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction } from "./types";
+import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction } from "./types";
 
 const initGameData: GameDataState = {
     admin: "",
     inGame: false,
     roomId: "",
-    playerList: []
+    playerList: [],
+    locationHeaderData: {},
+    countdown: 0
 }
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
@@ -17,6 +19,8 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return AddPlayerReducer(state, action)
         case(GameDataActionTypes.DELETE_PLAYER):
             return DeletePlayerReducer(state, action)
+        case(GameDataActionTypes.SET_LOCATION_HEADER_DATA):
+            return SetLocationHeaderDataReducer(state, action)
         default:
             return state
     }
@@ -47,5 +51,12 @@ const DeletePlayerReducer = (state: GameDataState, action: DeletePlayerAction): 
     return({
         ...state,
         playerList: state.playerList.filter(player => player.socketId !== action.payload.socketId)
+    })
+}
+
+const SetLocationHeaderDataReducer = (state: GameDataState, action: SetLocationHeaderDataAction): GameDataState => {
+    return({
+        ...state,
+        locationHeaderData: action.payload.locationHeaderData,
     })
 }

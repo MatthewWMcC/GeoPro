@@ -19,7 +19,10 @@ export const navigation: m.Component<NavigationAttrs, NavigationState> = {
                         },"Dark"),
                         m('button.light-map-button',{
                             onclick: () => model.handleMapStyleChange(MapStylesEnum.LIGHT)
-                        },"Light")
+                        },"Light"),
+                        m('button.light-map-button',{
+                            onclick: () => model.handleMapStyleChange(MapStylesEnum.STREET)
+                        },"Street")
                     ])
                 ]),
                 m(".nav-show-hide-button-container", [

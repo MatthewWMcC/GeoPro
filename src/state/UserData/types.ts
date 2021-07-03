@@ -41,10 +41,12 @@ export type UserDataActions =
 export interface MapStyleOptions {
         DARK: MapStyle,
         LIGHT: MapStyle,
+        STREET: MapStyle,
     }
     export enum MapStylesEnum {
         DARK = "DARK",
         LIGHT = "LIGHT",
+        STREET = "STREET"
     }
     
     export interface MapStyle {
@@ -60,6 +62,10 @@ export interface MapStyleOptions {
         LIGHT: {
             withBorders: 'mapbox://styles/matthewmccracken/ckqe6wn960vt717qa57ns25os?optimize=true',
             withoutBorders: 'mapbox://styles/matthewmccracken/ckqe6xvh36q2u17n2t6789h8y',
+        },
+        STREET: {
+            withBorders: 'mapbox://styles/matthewmccracken/ckqo7kkoj1oad18mf8pu411yd',
+            withoutBorders: 'mapbox://styles/matthewmccracken/ckqo8aw8x3lz218pab65f7ipb',     
         }
     }
     

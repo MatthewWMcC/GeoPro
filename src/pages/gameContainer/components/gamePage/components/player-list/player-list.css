@@ -1,0 +1,28 @@
+.player-list-outer-container {
+    background-color: var(--grey-overlay-color);
+    flex: 1;
+    height: calc(100vh - 200px);
+    margin-right: -50px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.player-container {
+    width: 100%;
+    height: 5vh;
+    background-color: var(--player-card-color);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* padding: 0 20px; */
+}
+
+.player-username {
+    margin-left: 20px;
+}
+
+.player-score {
+    margin-right: 20px;
+}
