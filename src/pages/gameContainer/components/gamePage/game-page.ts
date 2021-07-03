@@ -2,6 +2,8 @@ import m from 'mithril';
 import { GamePageAttrs, GamePageState } from './types';
 import { model } from './game-page-model'; 
 import {map} from "./components/map/map"
+import "./game-page.css"
+import { playerList } from './components/player-list/player-list';
 
 export const gamePage: m.Component<GamePageAttrs, GamePageState> = {
     oninit: model.handleComponentInit,
@@ -10,10 +12,14 @@ export const gamePage: m.Component<GamePageAttrs, GamePageState> = {
     view: (vnode: m.VnodeDOM<GamePageAttrs, GamePageState>): m.Children => {
         const {store$} = vnode.attrs;
         return  m(".game-page-container",[
-            m("h2", "game page"),
-            m(map, {
-                store$
-            })
+            m(".map-and-players-list-container", [
+                m(map, {
+                    store$
+                }),
+                m(playerList, {
+                    store$
+                })
+            ])
         ])
     }     
 }

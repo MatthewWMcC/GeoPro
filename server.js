@@ -27,16 +27,16 @@ io.sockets.on("connection", (socket) => {
     socket.on("join-room", async(roomId) => {
 
         await socket.join(roomId)
-        let room = io.sockets.adapter.rooms.get(roomId)
+        let room = getRoom(roomId)
         if (room.size === 1) {
-            io.sockets.adapter.rooms.get(roomId).inGame = false;
-            io.sockets.adapter.rooms.get(roomId).admin = socket.id;
-            io.sockets.adapter.rooms.get(roomId).roomId = roomId;
-            io.sockets.adapter.rooms.get(roomId).playerList = [];
+            getRoom(roomId).inGame = false;
+            getRoom(roomId).admin = socket.id;
+            getRoom(roomId).roomId = roomId;
+            getRoom(roomId).playerList = [];
         }
         
         const playerData = io.sockets.sockets.get(socket.id);
-        const playerList = [...io.sockets.adapter.rooms.get(roomId).playerList];
+        const playerList = [...getRoom(roomId).playerList];
 
         const compactedPlayerData = {
             socketId: playerData.id,
@@ -46,28 +46,48 @@ io.sockets.on("connection", (socket) => {
 
         playerList.push(compactedPlayerData)
         
-        io.sockets.adapter.rooms.get(roomId).playerList = playerList;
+        getRoom(roomId).playerList = playerList;
 
         socket.roomId = roomId;
-        socket.emit("joined-new-game-data", io.sockets.adapter.rooms.get(roomId))
+        socket.emit("joined-new-game-data", getRoom(roomId))
+
         socket.to(roomId).emit("new-player", compactedPlayerData);
     })
     socket.on("start-game", (roomId) => {
-        io.sockets.adapter.rooms.get(roomId).inGame = true;
+        getRoom(roomId).inGame = true;
         io.in(roomId).emit("change-in-game-state", true);
+        socket.emit('update-location-header-data', getRandomLocation())
     })
-    socket.on("leave-game", (roomId) => {
-        const newPlayerList = io.sockets.adapter.rooms.get(roomId).playerList.filter(player => player.socketId !== socket.id)
-        io.sockets.adapter.rooms.get(roomId).playerList = [...newPlayerList]
-        io.in(roomId).emit("player-left", socket.id)
-        socket.leave(roomId)
+    socket.on("leave-game ", (roomId) => {
+        if(getRoom(socket.roomId)){
+            const newPlayerList = getRoom(roomId).playerList.filter(player => player.socketId !== socket.id)
+            getRoom(roomId).playerList = [...newPlayerList]
+            io.in(roomId).emit("player-left", socket.id)
+            socket.leave(roomId)
+        }
+        
     })
     socket.on("disconnect", () => {
-        if(io.sockets.adapter.rooms.get(socket.roomId)){
-            const newPlayerList = io.sockets.adapter.rooms.get(socket.roomId).playerList.filter(player => player.socketId !== socket.id)
-            io.sockets.adapter.rooms.get(socket.roomId).playerList = [...newPlayerList]
+        if(getRoom(socket.roomId)){
+            const newPlayerList = getRoom(socket.roomId).playerList.filter(player => player.socketId !== socket.id)
+            getRoom(socket.roomId).playerList = [...newPlayerList]
             io.in(socket.roomId).emit("player-left", socket.id)
             socket.leave(socket.roomId)
         }
     })
 })
+
+const getRoom = (roomId) => {
+    return io.sockets.adapter.rooms.get(roomId)
+}
+
+const getRandomLocation = () => {
+    const locationList = [
+        {
+            city: "Tehran",
+            country: "Iran"
+        }
+    ]
+
+    return locationList[0]
+}

@@ -3,6 +3,8 @@ export interface GameDataState {
     inGame: boolean,
     roomId: string,
     playerList: player[];
+    locationHeaderData: locationHeaderData;
+    countdown: number;
 }
 
 export interface player {
@@ -10,6 +12,14 @@ export interface player {
     socketId: string,
     userId: string,
 }
+
+export interface locationHeaderData {
+    city?: string;
+    province?: string;
+    country?: string;
+    [key: string]: string | undefined;
+}
+export type locationHeaderDataKey = keyof locationHeaderData;
 
 export interface InitGameDataAction {
     type: GameDataActionTypes.INIT_GAME_DATA,
@@ -39,11 +49,19 @@ export interface DeletePlayerAction {
     }
 }
 
+export interface SetLocationHeaderDataAction {
+    type: GameDataActionTypes.SET_LOCATION_HEADER_DATA,
+    payload: {
+        locationHeaderData: locationHeaderData
+    }
+}
+
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
     IN_GAME_CHANGE = "gameDataActions/IN_GAME_CHANGE",
     ADD_PLAYER = "gameDataActions/ADD_PLAYER",
     DELETE_PLAYER = "gameDataActions/DELETE_PLAYER",
+    SET_LOCATION_HEADER_DATA = "gameDataActions/SET_LOCATION_HEADER_DATA",
 }
 
-export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction;
+export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction;

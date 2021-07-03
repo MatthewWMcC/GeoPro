@@ -35,10 +35,11 @@ body {
     --header-height: 60px;
     --navigation-width: 18vw;
     --header-color: rgb(5, 5, 179);
-    --grey-overlay-color: rgb(221, 219, 219);
+    --grey-overlay-color: rgb(236, 234, 236);
     --grey-background-color: rgba(38, 38, 66, 0.658); 
     --waiting-menu-color: rgb(48, 47, 63);
     --button-color: rgb(9, 13, 36);
+    --player-card-color: #a278c4;
 }
 
 .styled-button {

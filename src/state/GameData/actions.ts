@@ -1,4 +1,4 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, player } from "./types"
+import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, player, SetLocationHeaderDataAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
     return {
@@ -32,6 +32,15 @@ export const DeletePlayer = (socketId: string): DeletePlayerAction => {
         type: GameDataActionTypes.DELETE_PLAYER,
         payload: {
             socketId
+        }
+    }
+}
+
+export const setLocationHeaderData = (locationHeaderData: locationHeaderData): SetLocationHeaderDataAction => {
+    return {
+        type: GameDataActionTypes.SET_LOCATION_HEADER_DATA,
+        payload: {
+            locationHeaderData
         }
     }
 }
