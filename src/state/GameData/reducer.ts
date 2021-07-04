@@ -1,4 +1,4 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction } from "./types";
+import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateRoundNumberAction } from "./types";
 
 const initGameData: GameDataState = {
     admin: "",
@@ -6,7 +6,9 @@ const initGameData: GameDataState = {
     roomId: "",
     playerList: [],
     locationHeaderData: {},
-    countdown: 0
+    countdown: 0,
+    roundNumber: 0,
+    maxRound: 10
 }
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
@@ -21,6 +23,10 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return DeletePlayerReducer(state, action)
         case(GameDataActionTypes.SET_LOCATION_HEADER_DATA):
             return SetLocationHeaderDataReducer(state, action)
+        case(GameDataActionTypes.UPDATE_ROUND_NUMBER):
+            return UpdateRoundNumberReducer(state, action)
+        case(GameDataActionTypes.UPDATE_COUNTDOWN):
+            return UpdateCountdownReducer(state, action)
         default:
             return state
     }
@@ -58,5 +64,19 @@ const SetLocationHeaderDataReducer = (state: GameDataState, action: SetLocationH
     return({
         ...state,
         locationHeaderData: action.payload.locationHeaderData,
+    })
+}
+
+const UpdateRoundNumberReducer = (state: GameDataState, action: UpdateRoundNumberAction) => {
+    return({
+        ...state,
+        roundNumber: action.payload.roundNumber
+    })
+}
+
+const UpdateCountdownReducer = (state: GameDataState, action: UpdateCountdownAction) => {
+    return({
+        ...state,
+        countdown: action.payload.countdown
     })
 }

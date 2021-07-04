@@ -1,4 +1,4 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, player, SetLocationHeaderDataAction } from "./types"
+import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, player, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateRoundNumberAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
     return {
@@ -36,11 +36,29 @@ export const DeletePlayer = (socketId: string): DeletePlayerAction => {
     }
 }
 
-export const setLocationHeaderData = (locationHeaderData: locationHeaderData): SetLocationHeaderDataAction => {
+export const SetLocationHeaderData = (locationHeaderData: locationHeaderData): SetLocationHeaderDataAction => {
     return {
         type: GameDataActionTypes.SET_LOCATION_HEADER_DATA,
         payload: {
             locationHeaderData
+        }
+    }
+}
+
+export const UpdateRoundNumber = (roundNumber: number): UpdateRoundNumberAction => {
+    return {
+        type: GameDataActionTypes.UPDATE_ROUND_NUMBER,
+        payload: {
+            roundNumber
+        }
+    }
+}
+
+export const UpdateCountdown = (countdown: number): UpdateCountdownAction => {
+    return {
+        type: GameDataActionTypes.UPDATE_COUNTDOWN,
+        payload: {
+            countdown
         }
     }
 }

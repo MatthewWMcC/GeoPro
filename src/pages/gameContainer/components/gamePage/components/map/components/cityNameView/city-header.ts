@@ -2,14 +2,13 @@ import m from 'mithril';
 import "./city-header.css"
 import { CityHeaderAttrs, CityHeaderState } from './types';
 import { model } from './city-header-model';
-import { locationHeaderDataKey } from 'state/GameData/types';
 
 export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
     oninit: model.handleComponentInit,
     onremove: model.handleComponentRemove,
     oncreate: model.handleComponentCreate,
     view: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>): m.Children => {
-        const { locationHeaderData, countdown } = vnode.state;
+        const { locationHeaderData, countdown, roundNumber } = vnode.state;
         const locationList = Object.keys(locationHeaderData).map((key: string) => {
             return locationHeaderData[key]
         })
@@ -20,6 +19,9 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
                     m("label.location-data-label", location)
                 ])
             }),
+            m(".round-holder", [
+                m("label.round-label", roundNumber)
+            ]),
             m(".countdown-holder", [
                 m("label.countdown-label", countdown)
             ])

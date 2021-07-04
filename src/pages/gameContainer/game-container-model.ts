@@ -14,7 +14,8 @@ export const model: GameContainerModel = {
         const {roomId} = vnode.attrs; 
         vnode.state.subscriptions.forEach(subscription => subscription.unsubscribe());
         vnode.state.subscriptions = [];
-        socket.emit("leave-game", roomId)
+        console.log("leaving container")
+        socket.emit("leave-game")
     },
     handleComponentInit: (vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>) => {
         vnode.state.inGame = true;
