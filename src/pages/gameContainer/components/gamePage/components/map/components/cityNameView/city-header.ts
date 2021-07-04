@@ -14,17 +14,19 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
         })
 
         return  m(".city-header-container", [
-            locationList && locationList.map(location => {
-                return m(".location-data-holder", [
-                    m("label.location-data-label", location)
+            // m(".location-holder", [
+                locationList && locationList.map(location => {
+                    return m(".location-data-holder", [
+                        m("label.location-data-label", location)
+                    ])
+                }),
+                m(".round-holder", [
+                    m("label.round-label", roundNumber)
+                ]),
+                m(".countdown-holder", [
+                    m("label.countdown-label", countdown)
                 ])
-            }),
-            m(".round-holder", [
-                m("label.round-label", roundNumber)
-            ]),
-            m(".countdown-holder", [
-                m("label.countdown-label", countdown)
-            ])
+            // ])
         ])
     }     
 }

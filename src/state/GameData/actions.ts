@@ -1,4 +1,5 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, player, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateRoundNumberAction } from "./types"
+import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
+    player, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateLoadingHeaderAction, UpdateRoundNumberAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
     return {
@@ -59,6 +60,15 @@ export const UpdateCountdown = (countdown: number): UpdateCountdownAction => {
         type: GameDataActionTypes.UPDATE_COUNTDOWN,
         payload: {
             countdown
+        }
+    }
+}
+
+export const UpdateLoadingHeader = (loading: boolean): UpdateLoadingHeaderAction => {
+    return {
+        type: GameDataActionTypes.LOADING_HEADER,
+        payload: {
+            loading
         }
     }
 }

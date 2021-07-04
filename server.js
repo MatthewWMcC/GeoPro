@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 
+const getNumberOfLocationResults = require('./serverHelpers/location-data-api-handler').getNumberOfLocationResults;
+const getRandomLocationData = require('./serverHelpers/location-data-api-handler').getRandomLocationData;
+
+
 const port = process.env.PORT || 3000;
 
 app.use(express.static('dist'));
@@ -29,17 +33,20 @@ io.sockets.on("connection", (socket) => {
         await socket.join(roomId)
         let room = getRoom(roomId)
         if (room.size === 1) {
-            getRoom(roomId).clientData = {}
+            room.clientData = {}
+            room.serverData = {}
 
-            getRoom(roomId).clientData.inGame = false;
-            getRoom(roomId).clientData.admin = socket.id;
-            getRoom(roomId).clientData.roomId = roomId;
-            getRoom(roomId).clientData.playerList = [];
-            getRoom(roomId).clientData.roundNumber = 0;
-            getRoom(roomId).clientData.maxRound = 10;
-            getRoom(roomId).clientData.locationHeaderData = {};
-            getRoom(roomId).clientData.countdown = 0;
-            getRoom(roomId).clientData.maxCountdown = 30;
+            room.clientData.inGame = false;
+            room.clientData.admin = socket.id;
+            room.clientData.roomId = roomId;
+            room.clientData.playerList = [];
+            room.clientData.roundNumber = 0;
+            room.clientData.maxRound = 10;
+            room.clientData.locationHeaderData = {};
+            room.clientData.countdown = 0;
+            room.clientData.maxCountdown = 10;
+
+            room.serverData.numberOfLocationResults = await getNumberOfLocationResults();
         }
         
         const playerData = io.sockets.sockets.get(socket.id);
@@ -77,22 +84,23 @@ io.sockets.on("connection", (socket) => {
 
     const startGame = async(roomId) => {
         const room = getRoom(roomId);
+
         room.clientData.roundNumber = 0;
     
         for(let i = 1; i <= room.clientData.maxRound; i++){
+            room.clientData.locationHeaderData = await getRandomLocationData(room.serverData.numberOfLocationResults, room);
+            io.in(roomId).emit('update-location-header-data', room.clientData.locationHeaderData)
+
             room.clientData.countdown = room.clientData.maxCountdown;
             io.in(roomId).emit('update-countdown', room.clientData.countdown)
-    
-            room.clientData.locationHeaderData = getRandomLocation();
-            io.in(roomId).emit('update-location-header-data', room.clientData.locationHeaderData)
-    
+
             room.clientData.roundNumber = i;
             io.in(roomId).emit('update-round-number', room.clientData.roundNumber)
     
-
             while(room.clientData.countdown > 0){
                 await delay(1000);
-                if(getRoom(roomId) && !getRoom(roomId).clientData.inGame) return
+                if(getRoom(roomId) && !getRoom(roomId).clientData.inGame) return;
+                if(!getRoom(roomId)) return;
                 
                 room.clientData.countdown--;
                 io.in(roomId).emit('update-countdown', room.clientData.countdown)
@@ -102,6 +110,7 @@ io.sockets.on("connection", (socket) => {
 
     const handleLeave = () => {
         socket.leave(socket.roomId)
+        // console.log(getRoom(socket.roomId))
         if(getRoom(socket.roomId)){
             console.log("a player has left")
             const newPlayerList = getRoom(socket.roomId).clientData.playerList.filter(player => player.socketId !== socket.id)
@@ -117,34 +126,6 @@ async function delay(ms) {
 
 const getRoom = (roomId) => {
     return io.sockets.adapter.rooms.get(roomId)
-}
-
-const getRandomLocation = () => {
-    const locationList = [
-        {
-            city: "Tehran",
-            country: "Iran"
-        },
-        {
-            city: "Paris",
-        },
-        {
-            city: "Minsk",
-            country: "Belarus",            
-        },
-        {
-            city: "Puscaloosa",
-            province: "Alabama",
-            country: "USA",
-        },
-        {
-            city: "Waterdown",
-            province: "Ontario",
-        }
-    ]
-    const randInt = getRandomInt(locationList.length);
-
-    return locationList[randInt]
 }
 
 function getRandomInt(max) {

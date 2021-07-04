@@ -38,5 +38,12 @@ export const model: CityHeaderModel = extendBaseModel({
             bindTo("roundNumber", vnode)
             ).subscribe()
         )
+
+        vnode.state.subscriptions.push(
+            store$.pipe(pluck("GameData", "loadingHeader"),
+            distinctUntilChanged(),
+            bindTo("loadingHeader", vnode)
+            ).subscribe()
+        )
     }
 })

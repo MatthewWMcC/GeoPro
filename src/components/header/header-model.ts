@@ -6,6 +6,7 @@ import { extendBaseModel } from 'base/baseModel';
 interface HeaderModel {
     handleComponentRemove: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
     handleComponentInit: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
+    handleLogoClick: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
 }
 
 export const model: HeaderModel = extendBaseModel({
@@ -22,5 +23,8 @@ export const model: HeaderModel = extendBaseModel({
                 })
             ).subscribe()
         )        
+    },
+    handleLogoClick: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
+        m.route.set("/");
     }
 })
