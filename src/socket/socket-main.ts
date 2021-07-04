@@ -1,5 +1,5 @@
 import socketIOClient from "socket.io-client";
-import { AddPlayer, DeletePlayer, InGameChange, InitGameData, setLocationHeaderData } from "state/GameData/actions";
+import { AddPlayer, DeletePlayer, InGameChange, InitGameData, SetLocationHeaderData, UpdateCountdown, UpdateRoundNumber } from "state/GameData/actions";
 import { store } from "state/store";
 const serverEndpoint = process.env.SERVER as string; 
 export const socket = socketIOClient(serverEndpoint);
@@ -25,5 +25,14 @@ socket.on("player-left", socketId => {
 })
 
 socket.on('update-location-header-data', data => {
-    store.dispatch(setLocationHeaderData(data))
+    store.dispatch(SetLocationHeaderData(data))
+})
+
+socket.on('update-round-number', roundNumber => {
+    store.dispatch(UpdateRoundNumber(roundNumber));
+})
+
+socket.on("update-countdown", countdown => {
+    store.dispatch(UpdateCountdown(countdown));
+
 })

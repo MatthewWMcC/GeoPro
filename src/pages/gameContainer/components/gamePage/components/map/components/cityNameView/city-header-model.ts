@@ -31,5 +31,12 @@ export const model: CityHeaderModel = extendBaseModel({
             bindTo("countdown", vnode)
             ).subscribe()
         )
+
+        vnode.state.subscriptions.push(
+            store$.pipe(pluck("GameData", "roundNumber"),
+            distinctUntilChanged(),
+            bindTo("roundNumber", vnode)
+            ).subscribe()
+        )
     }
 })

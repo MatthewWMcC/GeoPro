@@ -29,14 +29,21 @@ io.sockets.on("connection", (socket) => {
         await socket.join(roomId)
         let room = getRoom(roomId)
         if (room.size === 1) {
-            getRoom(roomId).inGame = false;
-            getRoom(roomId).admin = socket.id;
-            getRoom(roomId).roomId = roomId;
-            getRoom(roomId).playerList = [];
+            getRoom(roomId).clientData = {}
+
+            getRoom(roomId).clientData.inGame = false;
+            getRoom(roomId).clientData.admin = socket.id;
+            getRoom(roomId).clientData.roomId = roomId;
+            getRoom(roomId).clientData.playerList = [];
+            getRoom(roomId).clientData.roundNumber = 0;
+            getRoom(roomId).clientData.maxRound = 10;
+            getRoom(roomId).clientData.locationHeaderData = {};
+            getRoom(roomId).clientData.countdown = 0;
+            getRoom(roomId).clientData.maxCountdown = 30;
         }
         
         const playerData = io.sockets.sockets.get(socket.id);
-        const playerList = [...getRoom(roomId).playerList];
+        const playerList = [...getRoom(roomId).clientData.playerList];
 
         const compactedPlayerData = {
             socketId: playerData.id,
@@ -46,36 +53,67 @@ io.sockets.on("connection", (socket) => {
 
         playerList.push(compactedPlayerData)
         
-        getRoom(roomId).playerList = playerList;
+        getRoom(roomId).clientData.playerList = playerList;
 
         socket.roomId = roomId;
-        socket.emit("joined-new-game-data", getRoom(roomId))
+        socket.emit("joined-new-game-data", getRoom(roomId).clientData)
 
         socket.to(roomId).emit("new-player", compactedPlayerData);
     })
     socket.on("start-game", (roomId) => {
-        getRoom(roomId).inGame = true;
+        getRoom(roomId).clientData.inGame = true;
         io.in(roomId).emit("change-in-game-state", true);
-        socket.emit('update-location-header-data', getRandomLocation())
+        startGame(roomId);
     })
-    socket.on("leave-game ", (roomId) => {
-        if(getRoom(socket.roomId)){
-            const newPlayerList = getRoom(roomId).playerList.filter(player => player.socketId !== socket.id)
-            getRoom(roomId).playerList = [...newPlayerList]
-            io.in(roomId).emit("player-left", socket.id)
-            socket.leave(roomId)
-        }
+    socket.on("leave-game", () => {
+        console.log("leave")
+        handleLeave()
         
     })
     socket.on("disconnect", () => {
-        if(getRoom(socket.roomId)){
-            const newPlayerList = getRoom(socket.roomId).playerList.filter(player => player.socketId !== socket.id)
-            getRoom(socket.roomId).playerList = [...newPlayerList]
-            io.in(socket.roomId).emit("player-left", socket.id)
-            socket.leave(socket.roomId)
-        }
+        console.log("dis")
+        handleLeave()
     })
+
+    const startGame = async(roomId) => {
+        const room = getRoom(roomId);
+        room.clientData.roundNumber = 0;
+    
+        for(let i = 1; i <= room.clientData.maxRound; i++){
+            room.clientData.countdown = room.clientData.maxCountdown;
+            io.in(roomId).emit('update-countdown', room.clientData.countdown)
+    
+            room.clientData.locationHeaderData = getRandomLocation();
+            io.in(roomId).emit('update-location-header-data', room.clientData.locationHeaderData)
+    
+            room.clientData.roundNumber = i;
+            io.in(roomId).emit('update-round-number', room.clientData.roundNumber)
+    
+
+            while(room.clientData.countdown > 0){
+                await delay(1000);
+                if(getRoom(roomId) && !getRoom(roomId).clientData.inGame) return
+                
+                room.clientData.countdown--;
+                io.in(roomId).emit('update-countdown', room.clientData.countdown)
+            }
+        }
+    }
+
+    const handleLeave = () => {
+        socket.leave(socket.roomId)
+        if(getRoom(socket.roomId)){
+            console.log("a player has left")
+            const newPlayerList = getRoom(socket.roomId).clientData.playerList.filter(player => player.socketId !== socket.id)
+            getRoom(socket.roomId).clientData.playerList = [...newPlayerList]
+            io.in(socket.roomId).emit("player-left", socket.id)
+        }
+    }
 })
+
+async function delay(ms) {
+    return await new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const getRoom = (roomId) => {
     return io.sockets.adapter.rooms.get(roomId)
@@ -86,8 +124,29 @@ const getRandomLocation = () => {
         {
             city: "Tehran",
             country: "Iran"
+        },
+        {
+            city: "Paris",
+        },
+        {
+            city: "Minsk",
+            country: "Belarus",            
+        },
+        {
+            city: "Puscaloosa",
+            province: "Alabama",
+            country: "USA",
+        },
+        {
+            city: "Waterdown",
+            province: "Ontario",
         }
     ]
+    const randInt = getRandomInt(locationList.length);
 
-    return locationList[0]
+    return locationList[randInt]
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }

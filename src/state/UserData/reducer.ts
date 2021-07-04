@@ -11,7 +11,7 @@ import uniqid from "uniqid";
 
 const initUserData: UserDataState = {
     username: "JOE",
-    preferedMapStyle: MapStyles.DARK,
+    preferedMapStyle: MapStyles.STREET,
     userId: uniqid(),
 }
 
