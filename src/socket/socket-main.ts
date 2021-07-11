@@ -5,7 +5,7 @@ const serverEndpoint = process.env.SERVER as string;
 export const socket = socketIOClient(serverEndpoint);
 
 socket.on("connection-event", data => {
-    console.log(data)
+    console.log(data);
 })
 
 socket.on("joined-new-game-data", data => {
@@ -17,16 +17,17 @@ socket.on("change-in-game-state", inGame => {
 })
 
 socket.on("new-player", newPlayer => {
-    store.dispatch(AddPlayer(newPlayer))
+    store.dispatch(AddPlayer(newPlayer));
 })
 
 socket.on("player-left", socketId => {
-    store.dispatch(DeletePlayer(socketId))
+    store.dispatch(DeletePlayer(socketId));
 })
 
 socket.on('update-location-header-data', data => {
+    console.log("false")
     store.dispatch(UpdateLoadingHeader(false));
-    store.dispatch(SetLocationHeaderData(data))
+    store.dispatch(SetLocationHeaderData(data));
 })
 
 socket.on('update-round-number', roundNumber => {
@@ -37,6 +38,7 @@ socket.on("update-countdown", countdown => {
     store.dispatch(UpdateCountdown(countdown));
 })
 
-socket.on("loading-header", loading =>{
-    store.dispatch(UpdateLoadingHeader(loading));
+socket.on("loading-header", loadingHeader =>{
+    console.log("true")
+    store.dispatch(UpdateLoadingHeader(loadingHeader));
 })

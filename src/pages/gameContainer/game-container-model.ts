@@ -2,6 +2,8 @@ import m from 'mithril';
 import { distinctUntilChanged, pluck, tap } from 'rxjs/operators';
 import { initSocketDataSetup } from 'socket/socket-helpers';
 import { socket } from 'socket/socket-main';
+import { ClearGameData } from 'state/GameData/actions';
+import { store } from 'state/store';
 import { GameContainerAttrs, GameContainerState } from "./types";
 
 interface GameContainerModel {
@@ -16,6 +18,7 @@ export const model: GameContainerModel = {
         vnode.state.subscriptions = [];
         console.log("leaving container")
         socket.emit("leave-game")
+        store.dispatch(ClearGameData())
     },
     handleComponentInit: (vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>) => {
         vnode.state.inGame = true;
