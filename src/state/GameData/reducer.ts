@@ -1,4 +1,5 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateRoundNumberAction } from "./types";
+import { UpdateLoadingHeader } from "./actions";
+import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateLoadingHeaderAction, UpdateRoundNumberAction } from "./types";
 
 const initGameData: GameDataState = {
     admin: "",
@@ -8,7 +9,8 @@ const initGameData: GameDataState = {
     locationHeaderData: {},
     countdown: 0,
     roundNumber: 0,
-    maxRound: 10
+    maxRound: 10,
+    loadingHeader: true
 }
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
@@ -27,6 +29,8 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return UpdateRoundNumberReducer(state, action)
         case(GameDataActionTypes.UPDATE_COUNTDOWN):
             return UpdateCountdownReducer(state, action)
+        case(GameDataActionTypes.LOADING_HEADER):
+            return UpdateLoadingHeaderReducer(state, action)
         default:
             return state
     }
@@ -78,5 +82,12 @@ const UpdateCountdownReducer = (state: GameDataState, action: UpdateCountdownAct
     return({
         ...state,
         countdown: action.payload.countdown
+    })
+}
+
+const UpdateLoadingHeaderReducer = (state: GameDataState, action: UpdateLoadingHeaderAction) => {
+    return({
+        ...state,
+        loading: action.payload.loading
     })
 }

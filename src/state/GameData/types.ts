@@ -7,6 +7,7 @@ export interface GameDataState {
     countdown: number;
     roundNumber: number;
     maxRound: number;
+    loadingHeader: boolean;
 }
 
 export interface player {
@@ -17,7 +18,7 @@ export interface player {
 
 export interface locationHeaderData {
     city?: string;
-    province?: string;
+    region?: string;
     country?: string;
     [key: string]: string | undefined;
 }
@@ -72,6 +73,13 @@ export interface UpdateCountdownAction {
     }
 }
 
+export interface UpdateLoadingHeaderAction {
+    type: GameDataActionTypes.LOADING_HEADER,
+    payload: {
+        loading: boolean
+    }
+}
+
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
     IN_GAME_CHANGE = "gameDataActions/IN_GAME_CHANGE",
@@ -79,8 +87,9 @@ export enum GameDataActionTypes {
     DELETE_PLAYER = "gameDataActions/DELETE_PLAYER",
     SET_LOCATION_HEADER_DATA = "gameDataActions/SET_LOCATION_HEADER_DATA",
     UPDATE_ROUND_NUMBER = "gameDataActions/UPDATE_ROUND_NUMBER",
-    UPDATE_COUNTDOWN = "gameDataActions/UPDATE_COUNTDOWN"
+    UPDATE_COUNTDOWN = "gameDataActions/UPDATE_COUNTDOWN",
+    LOADING_HEADER = "gameDataActions/LOADING_HEADER"
 }
 
 export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction
-| UpdateRoundNumberAction | UpdateCountdownAction;
+| UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction;

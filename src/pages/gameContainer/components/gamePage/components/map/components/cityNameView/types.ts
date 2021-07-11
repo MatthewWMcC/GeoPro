@@ -7,4 +7,5 @@ export interface CityHeaderState extends BaseState{
     locationHeaderData: locationHeaderData;
     countdown: number;
     roundNumber: number;
+    loadingHeader: boolean;
 }

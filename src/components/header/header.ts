@@ -9,7 +9,9 @@ export const header: m.Component<HeaderAttrs, HeaderState> = {
     view: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>): m.Children => {
         const {username} = vnode.state;
         return m("div.header", [
-            m(".header-label-container", [
+            m(".header-label-container", {
+                onclick: () => model.handleLogoClick(vnode)
+            },[
                 m("label.header-label", "Geo Pro"),
             ]),
             m(".header-username-container", [

@@ -17,6 +17,8 @@
   -webkit-text-fill-color: aquamarine;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: red;
+  cursor: pointer;
+
 }
 
 .header-username-container {
