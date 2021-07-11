@@ -29,7 +29,10 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
                 m(".countdown-holder", [
                     m("label.countdown-label.map-header-label", countdown)
                 ])
-            ])
+            ]),
+            m("button.submit-button", {
+                onclick: () => model.handleSubmitClick(vnode)
+            }, "Submit")
         ])
     }     
 }

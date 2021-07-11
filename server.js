@@ -1,5 +1,7 @@
 const express = require("express");
+const geolib = require('geolib');
 const app = express();
+const convertLocationDataForGeolib = require('./serverHelpers/helper-functions').convertLocationDataForGeolib
 
 const getNumberOfLocationResults = require('./serverHelpers/location-data-api-handler').getNumberOfLocationResults;
 const getRandomLocationData = require('./serverHelpers/location-data-api-handler').getRandomLocationData;
@@ -19,6 +21,7 @@ const io = require('socket.io')(server, {
     }
 });
 
+
 io.sockets.on("connection", (socket) => {
     console.log("new user");
     socket.emit("connection-event", "hello")
@@ -29,99 +32,148 @@ io.sockets.on("connection", (socket) => {
     })
     socket.on("set-user-id", userId => socket.userId = userId)
     socket.on("join-room", async(roomId) => {
+        const initServerClientData = {
+            inGame: false,
+            admin: "",
+            roomId: roomId,
+            playerList: [],
+            roundNumber: 0,
+            maxRound: 10,
+            locationData: {},
+            countdown: 0,
+            maxCountdown: 50,
+            loadingHeader: true,
+            guessLimit: 10,
+            numberOfLocationResults: await getNumberOfLocationResults(),
+        }
 
         await socket.join(roomId)
         let room = getRoom(roomId)
         if (room.size === 1) {
-            room.clientData = {}
-            room.serverData = {}
-
-            room.clientData.inGame = false;
-            room.clientData.admin = socket.id;
-            room.clientData.roomId = roomId;
-            room.clientData.playerList = [];
-            room.clientData.roundNumber = 0;
-            room.clientData.maxRound = 10;
-            room.clientData.locationHeaderData = {};
-            room.clientData.countdown = 0;
-            room.clientData.maxCountdown = 10;
-            room.clientData.loadingHeader = true;
-
-            room.serverData.numberOfLocationResults = await getNumberOfLocationResults();
+            room.data = initServerClientData;
+            room.data.admin = socket.id;
         }
         
         const playerData = io.sockets.sockets.get(socket.id);
-        const playerList = [...getRoom(roomId).clientData.playerList];
+        const playerList = [...room.data.playerList];
 
-        const compactedPlayerData = {
+        const newPlayerData = {
             socketId: playerData.id,
             username: playerData.username,
             userId: playerData.userId,
+            score: 0,
+            guessNum: room.data.guessLimit,
+            guess: null,
+            distance: null,
         }
 
-        playerList.push(compactedPlayerData)
-        
-        getRoom(roomId).clientData.playerList = playerList;
+        playerList.push(newPlayerData);
+    
+        room.data.playerList = playerList;
 
         socket.roomId = roomId;
-        socket.emit("joined-new-game-data", getRoom(roomId).clientData)
+        socket.emit("joined-new-game-data", getPublicData(roomId))
 
-        socket.to(roomId).emit("new-player", compactedPlayerData);
+        const {guess, distance, ...viewablePlayerData} = newPlayerData
+        socket.to(roomId).emit("new-player", {...viewablePlayerData});
+
     })
     socket.on("start-game", (roomId) => {
-        getRoom(roomId).clientData.inGame = true;
-        io.in(roomId).emit("change-in-game-state", true);
         startGame(roomId);
     })
     socket.on("leave-game", () => {
         console.log("leave")
-        handleLeave()
-        
+        handleLeave() 
     })
     socket.on("disconnect", () => {
         console.log("dis")
         handleLeave()
     })
+    socket.on("player-location-guess", (newGuessMade) => {
+        const room = getRoom(socket.roomId);
+        
+        const { playerData } = getPlayerDataFromRoom(socket.id, socket.roomId);
+        const { guess, distance, guessNum, ...restOfPlayerData } = playerData;
+
+        if(isGuessAllowed(newGuessMade, guessNum)){ 
+            console.log("guessAllowed")
+            const {lat, lng} = room.data.locationData;
+
+            const newDistance = getDistance({lat, lng}, convertLocationDataForGeolib(newGuessMade))
+            const isNewDistanceCloser = newDistance < distance || !distance
+
+        
+            const playerData = {
+                guessNum: guessNum - 1,
+                distance: isNewDistanceCloser ? newDistance : distance,
+                guess: isNewDistanceCloser ? newGuessMade: guess
+            }
+            setPlayerData(socket.id, socket.roomId, playerData);
+            io.in(socket.roomId).emit('updated-guessnum', socket.id, playerData.guessNum);
+            if(isNewDistanceCloser) {
+                socket.emit("updated-best-guess", playerData.guess);
+            }
+
+        } 
+    })
 
     const startGame = async(roomId) => {
         const room = getRoom(roomId);
 
-        room.clientData.roundNumber = 0;
-    
-        for(let i = 1; i <= room.clientData.maxRound; i++){
-            room.clientData.loadingHeader = true;
-            io.in(roomId).emit('loading-header', room.clientData.loadingHeader);
-            room.clientData.locationHeaderData = await getRandomLocationData(room.serverData.numberOfLocationResults, room);
-            room.clientData.loadingHeader = false;
-            io.in(roomId).emit('update-location-header-data', room.clientData.locationHeaderData);
+        room.data.inGame = true;
+        io.in(roomId).emit("change-in-game-state", true);
 
-            room.clientData.countdown = room.clientData.maxCountdown;
-            io.in(roomId).emit('update-countdown', room.clientData.countdown);
-
-            room.clientData.roundNumber = i;
-            io.in(roomId).emit('update-round-number', room.clientData.roundNumber)
+        room.data.roundNumber = 0;
+        io.in(roomId).emit('update-round-number', room.data.roundNumber)
     
-            while(room.clientData.countdown > 0){
+        for(let i = 1; i <= room.data.maxRound; i++){
+            room.data.playerList = clearPrivatePlayerData(roomId);
+
+            room.data.loadingHeader = true;
+
+            room.data.countdown = room.data.maxCountdown;
+
+            room.data.roundNumber = i;
+
+            io.in(roomId).emit('new-round', {
+                guessNum: room.data.guessLimit,
+                countdown: room.data.countdown,
+                roundNumber: room.data.roundNumber,
+            });
+
+            const locationData = await getRandomLocationData(room.data.numberOfLocationResults);
+            room.data.locationData = locationData;
+
+            room.data.loadingHeader = false;
+            io.in(roomId).emit('update-location-header-data', getClientLocationData(roomId));
+    
+            while(room.data.countdown > 0){
                 await delay(1000);
-                if(getRoom(roomId) && !getRoom(roomId).clientData.inGame) return;
-                if(!getRoom(roomId)) return;
+                if(!room) return;
+                if(!getValueFromRoom(roomId, "inGame")) return;
                 
-                room.clientData.countdown--;
-                io.in(roomId).emit('update-countdown', room.clientData.countdown)
+                room.data.countdown--;
+                io.in(roomId).emit('update-countdown', room.data.countdown)
             }
         }
     }
 
+    const isGuessAllowed = (newGuessMade, guessNum) => {
+        if (guessNum <= 0) return false;
+        if (!newGuessMade) return false;
+        return true;
+    }
+
     const handleLeave = () => {
         socket.leave(socket.roomId)
-        // console.log(getRoom(socket.roomId))
-        if(getRoom(socket.roomId)){
+        const room = getRoom(socket.roomId);
+        if(room){
             console.log("a player has left")
-            const newPlayerList = getRoom(socket.roomId).clientData.playerList.filter(player => player.socketId !== socket.id)
-            getRoom(socket.roomId).clientData.playerList = [...newPlayerList]
+            room.data.playerList = room.data.playerList.filter(player => player.socketId !== socket.id)
             io.in(socket.roomId).emit("player-left", socket.id)
         }
     }
+  
 })
 
 async function delay(ms) {
@@ -132,6 +184,77 @@ const getRoom = (roomId) => {
     return io.sockets.adapter.rooms.get(roomId)
 }
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+const getDistance = (actualPosition, newGuess) => {
+    return geolib.getDistance(
+        actualPosition,
+        newGuess
+    )
+}
+
+const getPublicData = (roomId) => {
+    const room = getRoom(roomId);
+    const { data } = room;
+    const { playerList, locationData, numberOfLocationResults, ...leftoverData} = data;
+    return {
+        ...leftoverData,
+        playerList: playerList.map(player => {
+            const { guess, distance, ...leftoverPlayer} = player
+            return {
+                ...leftoverPlayer
+            }
+        }),
+        locationHeaderData: {
+            city: locationData.city,
+            region: locationData.region,
+            country: locationData.country,
+        }
+    }
+}
+
+const getClientLocationData = (roomId) => {
+    const room = getRoom(roomId);
+    const { locationData } = room.data;
+    const { lng, lat, ...clientData} = locationData
+    return {
+        ...clientData
+    }
+}
+
+const getPlayerDataFromRoom = (socketId, roomId) => {
+    const room = getRoom(roomId);
+    const { playerList } = room.data;
+    const i = playerList.findIndex(dataObject => dataObject.socketId === socketId);
+
+    return { 
+        playerData: playerList[i],
+        index: i
+    }
+}
+
+const getValueFromRoom = (roomId, key) => {
+    const room = getRoom(roomId);
+    return room ? room.data[key] : false;
+}
+
+const setPlayerData = (socketId, roomId, data) => {
+    const room = getRoom(roomId);
+    const { playerData, index } =  getPlayerDataFromRoom(socketId, roomId);
+    room.data.playerList[index] = {
+        ...playerData,
+        ...data
+    }
+}
+
+const clearPrivatePlayerData = (roomId) => {
+    const room = getRoom(roomId);
+
+
+    return room.data.playerList.map(playerData => {
+        return({
+            ...playerData,
+            guess: null,
+            guessNum: room.data.guessLimit,
+            distance: null,
+        })
+    })
 }

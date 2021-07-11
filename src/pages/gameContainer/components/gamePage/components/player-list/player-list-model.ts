@@ -21,7 +21,7 @@ export const model: PlayerListModel = extendBaseModel({
             store$.pipe(
                 pluck("GameData", "playerList"),
                 distinctUntilChanged((prev, curr) => {
-                   return prev.length === curr.length
+                   return JSON.stringify(prev) === JSON.stringify(curr)
                 }),
                 bindTo("playerList", vnode)
             ).subscribe()

@@ -3,12 +3,15 @@ import m from "mithril";
 import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { bindTo } from "base/operators";
+import { socket } from "socket/socket-main";
+import { store } from "state/store";
 
 
 interface CityHeaderModel {
     handleComponentInit: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => void;
     handleComponentRemove: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => void;
     handleComponentCreate: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => void;
+    handleSubmitClick: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => void;
 } 
 
 export const model: CityHeaderModel = extendBaseModel({
@@ -45,5 +48,16 @@ export const model: CityHeaderModel = extendBaseModel({
             bindTo("loadingHeader", vnode)
             ).subscribe()
         )
+
+        vnode.state.subscriptions.push(
+            store$.pipe(pluck("GameData", "currentMapGuess"),
+            distinctUntilChanged(),
+            bindTo("currentMapGuess", vnode)
+            ).subscribe()
+        )
+    },
+    handleSubmitClick: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => {
+        const { currentMapGuess } = vnode.state;
+        socket.emit('player-location-guess', currentMapGuess);
     }
 })

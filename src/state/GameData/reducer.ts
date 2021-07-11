@@ -1,5 +1,6 @@
+import { UpdateBestMapGuess } from "./actions";
 import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, 
-    InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateLoadingHeaderAction, UpdateRoundNumberAction } from "./types";
+    InGameChangeAction, InitGameDataAction, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdatePlayerGuessNumAction, UpdateRoundNumberAction } from "./types";
 
 const initGameData: GameDataState = {
     admin: "",
@@ -10,7 +11,7 @@ const initGameData: GameDataState = {
     countdown: 0,
     roundNumber: 0,
     maxRound: 10,
-    loadingHeader: true
+    loadingHeader: true,
 }
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
@@ -33,6 +34,14 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return UpdateLoadingHeaderReducer(state, action)
         case(GameDataActionTypes.CLEAR_GAME_DATA):
             return ClearGameDataReducer(state, action)
+        case(GameDataActionTypes.CURRENT_MAP_GUESS):
+            return SetCurrentMapGuessReducer(state, action)
+        case(GameDataActionTypes.UPDATE_PLAYER_GUESSES):
+            return UpdatePlayerGuessNumReducer(state, action)
+        case(GameDataActionTypes.UPDATE_DATA_TO_ALL_PLAYERS):
+            return UpdateDataToAllPlayersReducer(state, action)
+        case(GameDataActionTypes.UPDATE_BEST_MAP_GUESS):
+            return UpdateBestMapGuessReducer(state, action)
         default:
             return state
     }
@@ -97,5 +106,41 @@ const UpdateLoadingHeaderReducer = (state: GameDataState, action: UpdateLoadingH
     return({
         ...state,
         loadingHeader: action.payload.loadingHeader
+    })
+}
+
+const SetCurrentMapGuessReducer = (state: GameDataState, action: SetCurrentMapGuessAction) => {
+    return({
+        ...state,
+        currentMapGuess: action.payload.currentMapGuess
+    })
+}
+
+const UpdatePlayerGuessNumReducer = (state: GameDataState, action: UpdatePlayerGuessNumAction) => {
+    return({
+        ...state,
+        playerList: [...state.playerList.map(player => {
+            return { ...player,
+                guessNum: player.socketId === action.payload.playerId ? action.payload.guessNum : player.guessNum
+            }
+        })]
+    })
+}
+
+const UpdateDataToAllPlayersReducer = (state: GameDataState, action: UpdateDataToAllPlayersAction) => {
+    return({
+        ...state,
+        playerList: state.playerList.map(player => {
+            return {...player,
+                ...action.payload.data
+            }
+        })
+    })
+}
+
+const UpdateBestMapGuessReducer = (state: GameDataState, action: UpdateBestMapGuessAction) => {
+    return({
+        ...state,
+        bestMapGuess: action.payload.bestMapGuess
     })
 }
