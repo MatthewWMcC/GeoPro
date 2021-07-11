@@ -45,6 +45,7 @@ io.sockets.on("connection", (socket) => {
             room.clientData.locationHeaderData = {};
             room.clientData.countdown = 0;
             room.clientData.maxCountdown = 10;
+            room.clientData.loadingHeader = true;
 
             room.serverData.numberOfLocationResults = await getNumberOfLocationResults();
         }
@@ -88,11 +89,14 @@ io.sockets.on("connection", (socket) => {
         room.clientData.roundNumber = 0;
     
         for(let i = 1; i <= room.clientData.maxRound; i++){
+            room.clientData.loadingHeader = true;
+            io.in(roomId).emit('loading-header', room.clientData.loadingHeader);
             room.clientData.locationHeaderData = await getRandomLocationData(room.serverData.numberOfLocationResults, room);
-            io.in(roomId).emit('update-location-header-data', room.clientData.locationHeaderData)
+            room.clientData.loadingHeader = false;
+            io.in(roomId).emit('update-location-header-data', room.clientData.locationHeaderData);
 
             room.clientData.countdown = room.clientData.maxCountdown;
-            io.in(roomId).emit('update-countdown', room.clientData.countdown)
+            io.in(roomId).emit('update-countdown', room.clientData.countdown);
 
             room.clientData.roundNumber = i;
             io.in(roomId).emit('update-round-number', room.clientData.roundNumber)

@@ -1,5 +1,5 @@
-import { UpdateLoadingHeader } from "./actions";
-import { AddPlayerAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateLoadingHeaderAction, UpdateRoundNumberAction } from "./types";
+import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, 
+    InGameChangeAction, InitGameDataAction, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateLoadingHeaderAction, UpdateRoundNumberAction } from "./types";
 
 const initGameData: GameDataState = {
     admin: "",
@@ -31,6 +31,8 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return UpdateCountdownReducer(state, action)
         case(GameDataActionTypes.LOADING_HEADER):
             return UpdateLoadingHeaderReducer(state, action)
+        case(GameDataActionTypes.CLEAR_GAME_DATA):
+            return ClearGameDataReducer(state, action)
         default:
             return state
     }
@@ -40,6 +42,12 @@ const InitGameDataReducer = (state: GameDataState, action: InitGameDataAction): 
     return({
         ...state,
         ...action.payload.state
+    })
+}
+
+const ClearGameDataReducer = (state: GameDataState, action: ClearGameDataAction): GameDataState => {
+    return({
+        ...initGameData
     })
 }
 
@@ -88,6 +96,6 @@ const UpdateCountdownReducer = (state: GameDataState, action: UpdateCountdownAct
 const UpdateLoadingHeaderReducer = (state: GameDataState, action: UpdateLoadingHeaderAction) => {
     return({
         ...state,
-        loading: action.payload.loading
+        loadingHeader: action.payload.loadingHeader
     })
 }

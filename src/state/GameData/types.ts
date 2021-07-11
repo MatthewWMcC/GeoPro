@@ -31,6 +31,11 @@ export interface InitGameDataAction {
     }
 }
 
+export interface ClearGameDataAction {
+    type: GameDataActionTypes.CLEAR_GAME_DATA,
+    payload: {}
+}
+
 export interface InGameChangeAction {
     type: GameDataActionTypes.IN_GAME_CHANGE,
     payload: {
@@ -76,12 +81,13 @@ export interface UpdateCountdownAction {
 export interface UpdateLoadingHeaderAction {
     type: GameDataActionTypes.LOADING_HEADER,
     payload: {
-        loading: boolean
+        loadingHeader: boolean
     }
 }
 
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
+    CLEAR_GAME_DATA = "gameDataActions/CLEAR_GAME_DATA",
     IN_GAME_CHANGE = "gameDataActions/IN_GAME_CHANGE",
     ADD_PLAYER = "gameDataActions/ADD_PLAYER",
     DELETE_PLAYER = "gameDataActions/DELETE_PLAYER",
@@ -92,4 +98,4 @@ export enum GameDataActionTypes {
 }
 
 export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction
-| UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction;
+| UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction | ClearGameDataAction;

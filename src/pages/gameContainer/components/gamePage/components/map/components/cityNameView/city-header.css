@@ -10,31 +10,53 @@
     justify-content: center;
 }
 
+.loading-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .loading-label {
+    font-size: 25px;
+    color: aliceblue;
+} */
+
+.not-loading-holder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .location-data-holder {
     padding: 0 25px;
     border-right: white 4px solid;
 }
 
-.location-data-label {
+/* .location-data-label {
     color: aliceblue;
     font-size: 25px;
-}
+} */
 
 .countdown-holder {
     padding: 0 25px;
 }
 
-.countdown-label {
+/* .countdown-label {
     color: aliceblue;
     font-size: 25px;
-}
+} */
 
 .round-holder {
     padding: 0 25px;
     border-right: white 4px solid;
 }
 
-.round-label {
+/* .round-label {
+    color: aliceblue;
+    font-size: 25px;
+} */
+
+.map-header-label {
     color: aliceblue;
     font-size: 25px;
 }

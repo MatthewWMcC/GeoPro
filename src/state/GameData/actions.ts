@@ -1,4 +1,4 @@
-import { AddPlayerAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
+import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
     player, SetLocationHeaderDataAction, UpdateCountdownAction, UpdateLoadingHeaderAction, UpdateRoundNumberAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
@@ -7,6 +7,13 @@ export const InitGameData = (state: GameDataState): InitGameDataAction => {
         payload: {
             state
         }
+    }
+}
+
+export const ClearGameData = (): ClearGameDataAction => {
+    return {
+        type: GameDataActionTypes.CLEAR_GAME_DATA,
+        payload: {}
     }
 }
 
@@ -64,11 +71,11 @@ export const UpdateCountdown = (countdown: number): UpdateCountdownAction => {
     }
 }
 
-export const UpdateLoadingHeader = (loading: boolean): UpdateLoadingHeaderAction => {
+export const UpdateLoadingHeader = (loadingHeader: boolean): UpdateLoadingHeaderAction => {
     return {
         type: GameDataActionTypes.LOADING_HEADER,
         payload: {
-            loading
+            loadingHeader
         }
     }
 }
