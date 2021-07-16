@@ -1,19 +1,27 @@
+import mapboxgl from "mapbox-gl";
+
 export interface GameDataState {
-    admin: string,
-    inGame: boolean,
-    roomId: string,
+    admin: string;
+    inGame: boolean;
+    roomId: string;
     playerList: player[];
     locationHeaderData: locationHeaderData;
     countdown: number;
     roundNumber: number;
     maxRound: number;
     loadingHeader: boolean;
+    currentMapGuess?: mapboxgl.LngLatLike;
+    bestMapGuess?: mapboxgl.LngLatLike;
 }
 
 export interface player {
-    username: string,
-    socketId: string,
-    userId: string,
+    username: string;
+    socketId: string;
+    userId: string;
+    score: number;
+    guessNum: number;
+    guess: mapboxgl.LngLatLike;
+    distance: number;
 }
 
 export interface locationHeaderData {
@@ -85,6 +93,51 @@ export interface UpdateLoadingHeaderAction {
     }
 }
 
+export interface SetCurrentMapGuessAction {
+    type: GameDataActionTypes.CURRENT_MAP_GUESS,
+    payload: {
+        currentMapGuess: mapboxgl.LngLatLike
+    }
+} 
+
+export interface UpdatePlayerListAction {
+    type: GameDataActionTypes.UPDATE_PLAYER_LIST,
+    payload: {
+        playerListOrder: string[]
+    }
+}
+
+export interface UpdatePlayerGuessNumAction {
+    type: GameDataActionTypes.UPDATE_PLAYER_GUESSES,
+    payload: {
+        playerId: string,
+        guessNum: number,
+    }
+}
+
+export interface UpdatePlayerDistanceAndGuessAction {
+    type: GameDataActionTypes.UPDATE_PLAYER_DISTANCE_AND_GUESS,
+    payload: {
+        playerId: string,
+        guess: mapboxgl.LngLatLike,
+        distance: number,
+    }
+}
+
+export interface UpdateDataToAllPlayersAction {
+    type: GameDataActionTypes.UPDATE_DATA_TO_ALL_PLAYERS,
+    payload: {
+        data: any
+    }
+}
+
+export interface UpdateBestMapGuessAction {
+    type: GameDataActionTypes.UPDATE_BEST_MAP_GUESS,
+    payload: {
+        bestMapGuess?: mapboxgl.LngLatLike,
+    }
+}
+
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
     CLEAR_GAME_DATA = "gameDataActions/CLEAR_GAME_DATA",
@@ -94,8 +147,15 @@ export enum GameDataActionTypes {
     SET_LOCATION_HEADER_DATA = "gameDataActions/SET_LOCATION_HEADER_DATA",
     UPDATE_ROUND_NUMBER = "gameDataActions/UPDATE_ROUND_NUMBER",
     UPDATE_COUNTDOWN = "gameDataActions/UPDATE_COUNTDOWN",
-    LOADING_HEADER = "gameDataActions/LOADING_HEADER"
+    LOADING_HEADER = "gameDataActions/LOADING_HEADER",
+    CURRENT_MAP_GUESS = "gameDataActions/CURRENT_MAP_GUESS",
+    UPDATE_PLAYER_LIST = "gameDataActions/UPDATE_PLAYER_LIST",
+    UPDATE_PLAYER_GUESSES = "gameDataActions/UPDATE_PLAYER_GUESSES",
+    UPDATE_PLAYER_DISTANCE_AND_GUESS = "gameDataActions/UPDATE_PLAYER_DISTANCE_AND_GUESS",
+    UPDATE_DATA_TO_ALL_PLAYERS = "gameDataActions/UPDATE_DATA_TO_ALL_PLAYERS",
+    UPDATE_BEST_MAP_GUESS = "gameDataActions/UPDATE_BEST_MAP_GUESS",
 }
 
 export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction
-| UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction | ClearGameDataAction;
+| UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction | ClearGameDataAction | SetCurrentMapGuessAction | UpdatePlayerListAction 
+| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateBestMapGuessAction;

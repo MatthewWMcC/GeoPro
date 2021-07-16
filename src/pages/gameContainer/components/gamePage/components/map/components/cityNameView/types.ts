@@ -8,4 +8,5 @@ export interface CityHeaderState extends BaseState{
     countdown: number;
     roundNumber: number;
     loadingHeader: boolean;
+    currentMapGuess?: mapboxgl.LngLatLike;
 }

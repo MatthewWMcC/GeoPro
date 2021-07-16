@@ -1,5 +1,6 @@
+import { dispatch } from "rxjs/internal/observable/pairs";
 import socketIOClient from "socket.io-client";
-import { AddPlayer, DeletePlayer, InGameChange, InitGameData, SetLocationHeaderData, UpdateCountdown, UpdateLoadingHeader, UpdateRoundNumber } from "state/GameData/actions";
+import { AddPlayer, DeletePlayer, InGameChange, InitGameData, SetLocationHeaderData, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, UpdateLoadingHeader, UpdatePlayerGuessNum, UpdateRoundNumber } from "state/GameData/actions";
 import { store } from "state/store";
 const serverEndpoint = process.env.SERVER as string; 
 export const socket = socketIOClient(serverEndpoint);
@@ -25,7 +26,6 @@ socket.on("player-left", socketId => {
 })
 
 socket.on('update-location-header-data', data => {
-    console.log("false")
     store.dispatch(UpdateLoadingHeader(false));
     store.dispatch(SetLocationHeaderData(data));
 })
@@ -39,6 +39,23 @@ socket.on("update-countdown", countdown => {
 })
 
 socket.on("loading-header", loadingHeader =>{
-    console.log("true")
     store.dispatch(UpdateLoadingHeader(loadingHeader));
+})
+
+socket.on("updated-guessnum", (socketId, guessNum) => {
+    store.dispatch(UpdatePlayerGuessNum(socketId, guessNum));
+})
+
+socket.on("updated-best-guess", (guess) => {
+    store.dispatch(UpdateBestMapGuess(guess))
+})
+
+socket.on('new-round', ({guessNum, countdown, roundNumber}) => {
+    store.dispatch(UpdateCountdown(countdown));
+    store.dispatch(UpdateRoundNumber(roundNumber));
+    store.dispatch(UpdateLoadingHeader(true));
+    store.dispatch(UpdateDataToAllPlayers({
+        guessNum
+    }))
+    store.dispatch(UpdateBestMapGuess(undefined));
 })

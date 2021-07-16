@@ -15,6 +15,7 @@ export const playerList: m.Component<PlayerListAttrs, PlayerListState> = {
                 return m(".player-container", [
                     m("label.player-username", player.username),
                     m("label.player-score", player.userId),
+                    m("label.guess-num", player.guessNum)
                 ])
             })
         ])
