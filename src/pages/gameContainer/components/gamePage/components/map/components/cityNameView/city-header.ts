@@ -8,10 +8,11 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
     onremove: model.handleComponentRemove,
     oncreate: model.handleComponentCreate,
     view: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>): m.Children => {
-        const { locationHeaderData, countdown, roundNumber, loadingHeader } = vnode.state;
+        const { locationHeaderData, countdown, roundNumber, loadingHeader, submitActive } = vnode.state;
         const locationList = Object.keys(locationHeaderData).map((key: string) => {
             return locationHeaderData[key]
         })
+        console.log(submitActive)
 
         return  m(".city-header-container", [
             loadingHeader && m(".loading-holder", [
@@ -28,11 +29,14 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
                 ]),
                 m(".countdown-holder", [
                     m("label.countdown-label.map-header-label", countdown)
-                ])
+                ]),
+                m(`button.submit-button.styled-button${submitActive ? "" : ".disabled"}`, {
+                    onclick: () => model.handleSubmitClick(vnode),
+                    disabled: !submitActive,
+                }, "Submit")
+                
             ]),
-            m("button.submit-button", {
-                onclick: () => model.handleSubmitClick(vnode)
-            }, "Submit")
+            
         ])
     }     
 }

@@ -79,7 +79,7 @@ export const model: MapModel = extendBaseModel({
                 map(bestMapGuess => {
                     if(!bestMapGuess) return;
                     const bestMarker = new mapboxgl.Marker({
-                        color: "#FFFFFF",
+                        color: "#000000",
                     })
                     .setLngLat(bestMapGuess)
                     .addTo(vnode.state.map);

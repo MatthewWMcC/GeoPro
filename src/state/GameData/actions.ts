@@ -1,5 +1,5 @@
 import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
-    player, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdatePlayerDistanceAndGuessAction, UpdatePlayerGuessNumAction, UpdatePlayerListAction, UpdateRoundNumberAction } from "./types"
+    player, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerDistanceAndGuessAction, UpdatePlayerGuessNumAction, UpdatePlayerListAction, UpdateResultsToChooseFromAction, UpdateRoundNumberAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
     return {
@@ -136,3 +136,31 @@ export const UpdateBestMapGuess = (bestMapGuess?: mapboxgl.LngLatLike): UpdateBe
         }
     }
 }
+
+export const UpdateResultsToChooseFrom = (resultsToChooseFrom: number): UpdateResultsToChooseFromAction => {
+    return {
+        type: GameDataActionTypes.UPDATE_RESULTS_TO_CHOOSE_FROM,
+        payload: {
+            resultsToChooseFrom
+        }
+    }
+}
+
+export const UpdateMaxCountdown = (maxCountdown: number): UpdateMaxCountdownAction => {
+    return {
+        type: GameDataActionTypes.UPDATE_MAX_COUNTDOWN,
+        payload: {
+            maxCountdown
+        }
+    }
+}
+
+export const UpdateBaseGameSetting = (data: any): UpdateBaseGameSettingAction => {
+    return {
+        type: GameDataActionTypes.UPDATE_BASE_SETTING,
+        payload: {
+            data
+        }
+    }
+}
+

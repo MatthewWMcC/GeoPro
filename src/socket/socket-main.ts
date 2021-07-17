@@ -1,6 +1,6 @@
 import { dispatch } from "rxjs/internal/observable/pairs";
 import socketIOClient from "socket.io-client";
-import { AddPlayer, DeletePlayer, InGameChange, InitGameData, SetLocationHeaderData, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, UpdateLoadingHeader, UpdatePlayerGuessNum, UpdateRoundNumber } from "state/GameData/actions";
+import { AddPlayer, DeletePlayer, InGameChange, InitGameData, SetLocationHeaderData, UpdateBaseGameSetting, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, UpdateLoadingHeader, UpdateMaxCountdown, UpdatePlayerGuessNum, UpdateResultsToChooseFrom, UpdateRoundNumber } from "state/GameData/actions";
 import { store } from "state/store";
 const serverEndpoint = process.env.SERVER as string; 
 export const socket = socketIOClient(serverEndpoint);
@@ -50,6 +50,22 @@ socket.on("updated-best-guess", (guess) => {
     store.dispatch(UpdateBestMapGuess(guess))
 })
 
+socket.on("updated-results-to-choose", val => {
+    store.dispatch(UpdateResultsToChooseFrom(val))
+})
+
+socket.on("updated-max-countdown", maxCountdown => {
+    store.dispatch(UpdateBaseGameSetting({
+        maxCountdown
+    }))
+})
+
+socket.on("updated-guess-limit", (guessLimit) => {
+    store.dispatch(UpdateBaseGameSetting({
+        guessLimit
+    }))
+})
+
 socket.on('new-round', ({guessNum, countdown, roundNumber}) => {
     store.dispatch(UpdateCountdown(countdown));
     store.dispatch(UpdateRoundNumber(roundNumber));
@@ -58,4 +74,5 @@ socket.on('new-round', ({guessNum, countdown, roundNumber}) => {
         guessNum
     }))
     store.dispatch(UpdateBestMapGuess(undefined));
+    
 })

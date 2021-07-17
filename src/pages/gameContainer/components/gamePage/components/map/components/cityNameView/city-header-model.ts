@@ -1,10 +1,11 @@
 import { CityHeaderAttrs, CityHeaderState } from "./types";
 import m from "mithril";
-import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
+import { tap, pluck, distinctUntilChanged, map } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
-import { bindTo } from "base/operators";
+import { bindTo, findObjectWithKeyValuePair } from "base/operators";
 import { socket } from "socket/socket-main";
 import { store } from "state/store";
+import { combineLatest } from "rxjs";
 
 
 interface CityHeaderModel {
@@ -49,15 +50,36 @@ export const model: CityHeaderModel = extendBaseModel({
             ).subscribe()
         )
 
-        vnode.state.subscriptions.push(
-            store$.pipe(pluck("GameData", "currentMapGuess"),
+        const currentMapGuess$ = store$.pipe(
+            pluck("GameData", "currentMapGuess"),
             distinctUntilChanged(),
-            bindTo("currentMapGuess", vnode)
+        )
+
+        const haveGuesses$ = store$.pipe(
+            pluck("GameData", "playerList"),
+            distinctUntilChanged(),
+            findObjectWithKeyValuePair("userId", store.getState().UserData.userId),
+            pluck("guessNum"),
+            map(guessNum => guessNum > 0)
+        )
+
+        vnode.state.subscriptions.push(
+            currentMapGuess$.pipe(
+                bindTo("currentMapGuess", vnode)
+            ).subscribe()
+        )
+
+        vnode.state.subscriptions.push(
+            combineLatest([currentMapGuess$, haveGuesses$]).pipe(
+                map(([val1, val2]) => !!val1 && val2),
+                bindTo("submitActive", vnode)
             ).subscribe()
         )
     },
     handleSubmitClick: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => {
         const { currentMapGuess } = vnode.state;
-        socket.emit('player-location-guess', currentMapGuess);
+        if(currentMapGuess) {
+            socket.emit('player-location-guess', currentMapGuess);
+        }
     }
 })

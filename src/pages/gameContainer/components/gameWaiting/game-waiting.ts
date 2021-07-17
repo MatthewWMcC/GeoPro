@@ -2,12 +2,14 @@ import { model } from "./game-waiting-model";
 import m from 'mithril';
 import { GameWaitingAttrs, GameWaitingState } from './types';
 import "./game-waiting.css"
+import { gameSettings } from "./gameSettings/game-settings";
 
 export const gameWaiting: m.Component<GameWaitingAttrs, GameWaitingState> = {
     oninit: model.handleComponentInit,
     onremove: model.handleComponentRemove,
     view: (vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>) => {
         const { playerList } = vnode.state;
+        const { store$ } = vnode.attrs;
         return m(".game-waiting-container", [
             m(".waiting-label-container", [
                 m("label.waiting-label", "Waiting for game to start..."),
@@ -15,16 +17,7 @@ export const gameWaiting: m.Component<GameWaitingAttrs, GameWaitingState> = {
             m(".game-waiting-outer-panel-container", [
                 m(".game-waiting-outer-panel", [
                     m(".game-waiting-settings", [
-                        m("label.settings-label.sub-heading-label", "Settings"),
-                        m(".number-of-guesses", [
-
-                        ]),
-                        m(".game-mode", [
-
-                        ]),
-                        m(".choose-map", [
-
-                        ])
+                        m(gameSettings, {store$}),
                     ]),
                     m(".game-waiting-players", [
                         m("label.players-label.sub-heading-label", "Players"),
