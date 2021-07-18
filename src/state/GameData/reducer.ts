@@ -1,6 +1,5 @@
-import { UpdateBestMapGuess } from "./actions";
 import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, 
-    InGameChangeAction, InitGameDataAction, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdatePlayerGuessNumAction, UpdateRoundNumberAction } from "./types";
+    InGameChangeAction, InitGameDataAction, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerGuessNumAction, UpdateResultsToChooseFromAction, UpdateRoundNumberAction } from "./types";
 
 const initGameData: GameDataState = {
     admin: "",
@@ -12,6 +11,9 @@ const initGameData: GameDataState = {
     roundNumber: 0,
     maxRound: 10,
     loadingHeader: true,
+    resultsToChooseFrom: 5,
+    maxCountdown: 20,
+    guessLimit: 3,
 }
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
@@ -42,6 +44,12 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return UpdateDataToAllPlayersReducer(state, action)
         case(GameDataActionTypes.UPDATE_BEST_MAP_GUESS):
             return UpdateBestMapGuessReducer(state, action)
+        case(GameDataActionTypes.UPDATE_RESULTS_TO_CHOOSE_FROM):
+            return UpdateResultsToChooseFromReducer(state, action)
+        case(GameDataActionTypes.UPDATE_MAX_COUNTDOWN):
+            return UpdateMaxCountdownReducer(state, action)
+        case(GameDataActionTypes.UPDATE_BASE_SETTING):
+            return UpdateBaseGameSettingReducer(state, action)
         default:
             return state
     }
@@ -121,7 +129,7 @@ const UpdatePlayerGuessNumReducer = (state: GameDataState, action: UpdatePlayerG
         ...state,
         playerList: [...state.playerList.map(player => {
             return { ...player,
-                guessNum: player.socketId === action.payload.playerId ? action.payload.guessNum : player.guessNum
+                guessNum: player.userId === action.payload.playerId ? action.payload.guessNum : player.guessNum
             }
         })]
     })
@@ -141,6 +149,30 @@ const UpdateDataToAllPlayersReducer = (state: GameDataState, action: UpdateDataT
 const UpdateBestMapGuessReducer = (state: GameDataState, action: UpdateBestMapGuessAction) => {
     return({
         ...state,
-        bestMapGuess: action.payload.bestMapGuess
+        bestMapGuess: action.payload.bestMapGuess,
+        currentMapGuess: undefined,
+
+    })
+}
+
+const UpdateResultsToChooseFromReducer = (state: GameDataState, action: UpdateResultsToChooseFromAction) => {
+    return({
+        ...state,
+        resultsToChooseFrom: action.payload.resultsToChooseFrom
+    })
+}
+
+const UpdateMaxCountdownReducer = (state: GameDataState, action: UpdateMaxCountdownAction) => {
+    return({
+        ...state,
+        maxCountdown: action.payload.maxCountdown
+        
+    })
+}
+
+const UpdateBaseGameSettingReducer = (state: GameDataState, action: UpdateBaseGameSettingAction) => {
+    return({
+        ...state,
+        ...action.payload.data
     })
 }

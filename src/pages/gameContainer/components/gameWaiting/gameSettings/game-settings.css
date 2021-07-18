@@ -1,0 +1,54 @@
+.sub-heading-label {
+    margin-left: 50px;
+    margin-bottom: 10px;
+    color: aliceblue;
+    font-size: 30px;
+}
+
+.option-container {
+    border-top: 1px dashed grey;
+    padding-top: 8px;
+    flex: 1;
+}
+
+.option-row {
+    display: flex;
+}
+
+.game-settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.slider-setting {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.settings-option-label {
+    color:  aliceblue;
+    font-size: 20px;
+    margin: 5px 15px;
+}
+
+.label-container {
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    width: 100%;
+}
+
+.display-box {
+    padding: 2px 15px;
+    border-radius: 2px;
+    background-color: var(--grey-overlay-color);
+    height: fit-content;
+}
+
+.num-of-cities-number-label {
+    font-size: 20px;
+}

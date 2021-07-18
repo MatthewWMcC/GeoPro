@@ -9,4 +9,5 @@ export interface CityHeaderState extends BaseState{
     roundNumber: number;
     loadingHeader: boolean;
     currentMapGuess?: mapboxgl.LngLatLike;
+    submitActive: boolean;
 }

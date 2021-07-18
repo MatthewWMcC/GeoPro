@@ -10,6 +10,9 @@ export interface GameDataState {
     roundNumber: number;
     maxRound: number;
     loadingHeader: boolean;
+    resultsToChooseFrom: number;
+    maxCountdown: number;
+    guessLimit: number;
     currentMapGuess?: mapboxgl.LngLatLike;
     bestMapGuess?: mapboxgl.LngLatLike;
 }
@@ -138,6 +141,27 @@ export interface UpdateBestMapGuessAction {
     }
 }
 
+export interface UpdateResultsToChooseFromAction {
+    type: GameDataActionTypes.UPDATE_RESULTS_TO_CHOOSE_FROM,
+    payload: {
+        resultsToChooseFrom: number;
+    }
+}
+
+export interface UpdateMaxCountdownAction {
+    type: GameDataActionTypes.UPDATE_MAX_COUNTDOWN,
+    payload: {
+        maxCountdown: number;
+    }
+}
+
+export interface UpdateBaseGameSettingAction {
+    type: GameDataActionTypes.UPDATE_BASE_SETTING,
+    payload: {
+        data: any
+    }
+}
+
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
     CLEAR_GAME_DATA = "gameDataActions/CLEAR_GAME_DATA",
@@ -154,8 +178,11 @@ export enum GameDataActionTypes {
     UPDATE_PLAYER_DISTANCE_AND_GUESS = "gameDataActions/UPDATE_PLAYER_DISTANCE_AND_GUESS",
     UPDATE_DATA_TO_ALL_PLAYERS = "gameDataActions/UPDATE_DATA_TO_ALL_PLAYERS",
     UPDATE_BEST_MAP_GUESS = "gameDataActions/UPDATE_BEST_MAP_GUESS",
+    UPDATE_RESULTS_TO_CHOOSE_FROM = "gameDataActions/UPDATE_RESULTS_TO_CHOOSE_FROM",
+    UPDATE_MAX_COUNTDOWN = "gameDataActions/UPDATE_MAX_COUNTDOWN",
+    UPDATE_BASE_SETTING = "gameDataActions/UPDATE_BASE_SETTING"
 }
 
 export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction
 | UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction | ClearGameDataAction | SetCurrentMapGuessAction | UpdatePlayerListAction 
-| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateBestMapGuessAction;
+| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateBestMapGuessAction | UpdateResultsToChooseFromAction | UpdateMaxCountdownAction | UpdateBaseGameSettingAction;

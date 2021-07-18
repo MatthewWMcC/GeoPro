@@ -41,17 +41,18 @@ io.sockets.on("connection", (socket) => {
             maxRound: 10,
             locationData: {},
             countdown: 0,
-            maxCountdown: 50,
+            maxCountdown: 20,
             loadingHeader: true,
-            guessLimit: 10,
+            guessLimit: 3,
             numberOfLocationResults: await getNumberOfLocationResults(),
+            resultsToChooseFrom: 5,
         }
 
         await socket.join(roomId)
         let room = getRoom(roomId)
         if (room.size === 1) {
             room.data = initServerClientData;
-            room.data.admin = socket.id;
+            room.data.admin = socket.userId;
         }
         
         const playerData = io.sockets.sockets.get(socket.id);
@@ -78,8 +79,32 @@ io.sockets.on("connection", (socket) => {
         socket.to(roomId).emit("new-player", {...viewablePlayerData});
 
     })
+    socket.on("update-num-of-top-results", (roomId, num) => {
+        const room = getRoom(roomId)
+        if(room && socket.userId === room.data.admin){
+            room.data.resultsToChooseFrom = num;
+            io.in(roomId).emit("updated-results-to-choose", num);
+        }
+    })
+    socket.on("update-max-countdown", (roomId, maxCountdown) => {
+        const room = getRoom(roomId)
+        if(room && socket.userId === room.data.admin){
+            room.data.maxCountdown = maxCountdown;
+            io.in(roomId).emit("updated-max-countdown", maxCountdown);
+        }
+    })
+    socket.on("update-guess-limit", (roomId, guessLimit) => {
+        const room = getRoom(roomId)
+        if(room && socket.userId === room.data.admin){
+            room.data.guessLimit = guessLimit;
+            io.in(roomId).emit("updated-guess-limit", guessLimit);
+        }
+    })
     socket.on("start-game", (roomId) => {
-        startGame(roomId);
+        const room = getRoom(roomId)
+        if(room && socket.userId === room.data.admin){
+            startGame(roomId);
+        }
     })
     socket.on("leave-game", () => {
         console.log("leave")
@@ -91,6 +116,7 @@ io.sockets.on("connection", (socket) => {
     })
     socket.on("player-location-guess", (newGuessMade) => {
         const room = getRoom(socket.roomId);
+        console.log(newGuessMade)
         
         const { playerData } = getPlayerDataFromRoom(socket.id, socket.roomId);
         const { guess, distance, guessNum, ...restOfPlayerData } = playerData;
@@ -109,7 +135,7 @@ io.sockets.on("connection", (socket) => {
                 guess: isNewDistanceCloser ? newGuessMade: guess
             }
             setPlayerData(socket.id, socket.roomId, playerData);
-            io.in(socket.roomId).emit('updated-guessnum', socket.id, playerData.guessNum);
+            io.in(socket.roomId).emit('updated-guessnum', socket.userId, playerData.guessNum);
             if(isNewDistanceCloser) {
                 socket.emit("updated-best-guess", playerData.guess);
             }
@@ -141,7 +167,7 @@ io.sockets.on("connection", (socket) => {
                 roundNumber: room.data.roundNumber,
             });
 
-            const locationData = await getRandomLocationData(room.data.numberOfLocationResults);
+            const locationData = await getRandomLocationData(room.data.numberOfLocationResults, room.data.resultsToChooseFrom);
             room.data.locationData = locationData;
 
             room.data.loadingHeader = false;
@@ -151,7 +177,7 @@ io.sockets.on("connection", (socket) => {
                 await delay(1000);
                 if(!room) return;
                 if(!getValueFromRoom(roomId, "inGame")) return;
-                
+
                 room.data.countdown--;
                 io.in(roomId).emit('update-countdown', room.data.countdown)
             }
@@ -171,6 +197,10 @@ io.sockets.on("connection", (socket) => {
             console.log("a player has left")
             room.data.playerList = room.data.playerList.filter(player => player.socketId !== socket.id)
             io.in(socket.roomId).emit("player-left", socket.id)
+
+            if(socket.userId === room.data.admin && room?.data?.playerList[0]) {
+                room.data.admin = room.data.playerList[0].userId;
+            }
         }
     }
   

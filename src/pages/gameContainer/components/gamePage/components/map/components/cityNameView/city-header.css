@@ -25,6 +25,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    /* padding-top: 30px; */
 }
 
 .location-data-holder {
@@ -51,12 +53,18 @@
     border-right: white 4px solid;
 }
 
-/* .round-label {
-    color: aliceblue;
-    font-size: 25px;
-} */
-
 .map-header-label {
     color: aliceblue;
     font-size: 25px;
+}
+
+.submit-button {
+    background-color: green;
+    height: calc(100%);
+    margin: 0px -10px 0 0;
+    border-radius: 0 0 10px 0;
+}
+.disabled {
+    background-color: grey;
+    cursor:default;
 }
