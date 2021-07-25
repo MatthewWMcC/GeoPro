@@ -1,6 +1,9 @@
-import { dispatch } from "rxjs/internal/observable/pairs";
 import socketIOClient from "socket.io-client";
-import { AddPlayer, DeletePlayer, InGameChange, InitGameData, SetLocationHeaderData, UpdateBaseGameSetting, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, UpdateLoadingHeader, UpdateMaxCountdown, UpdatePlayerGuessNum, UpdateResultsToChooseFrom, UpdateRoundNumber } from "state/GameData/actions";
+import { changeShowRoundEndModal } from "state/currentPageData/actions";
+import { AddPlayer, AddRoundEndLocationData, ClearLocationData, DeletePlayer, InGameChange, InitGameData, 
+    SetLocationHeaderData, UpdateBaseGameSetting, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, 
+    UpdateLoadingHeader, UpdatePlayerGuessNum, UpdateResultsToChooseFrom, UpdateRoundEndCountdown, UpdateRoundEndPlayerData, 
+    UpdateRoundNumber } from "state/GameData/actions";
 import { store } from "state/store";
 const serverEndpoint = process.env.SERVER as string; 
 export const socket = socketIOClient(serverEndpoint);
@@ -10,7 +13,9 @@ socket.on("connection-event", data => {
 })
 
 socket.on("joined-new-game-data", data => {
-    store.dispatch(InitGameData(data));
+    const {showRoundEndModal, ...restOfData} = data;
+    store.dispatch(InitGameData(restOfData));
+    store.dispatch(changeShowRoundEndModal(showRoundEndModal));
 })
 
 socket.on("change-in-game-state", inGame => {
@@ -74,5 +79,22 @@ socket.on('new-round', ({guessNum, countdown, roundNumber}) => {
         guessNum
     }))
     store.dispatch(UpdateBestMapGuess(undefined));
+    store.dispatch(ClearLocationData());
     
+})
+
+socket.on('update-show-round-end-modal', (showRoundEndModal) => {
+    store.dispatch(changeShowRoundEndModal(showRoundEndModal));
+})
+
+socket.on("update-round-end-countdown", (roundEndCountdown) => {
+    store.dispatch(UpdateRoundEndCountdown(roundEndCountdown))
+})
+
+socket.on("emit-round-end-location-data", data => {
+    store.dispatch(AddRoundEndLocationData(data.lnglat, data.wikiId))
+})
+
+socket.on('emit-round-end-player-data', playerList => {
+    store.dispatch(UpdateRoundEndPlayerData(playerList))
 })

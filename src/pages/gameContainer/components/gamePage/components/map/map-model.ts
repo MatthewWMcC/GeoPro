@@ -2,7 +2,7 @@ import { MapAttrs, MapState } from "./types";
 import m from "mithril";
 import mapboxgl from 'mapbox-gl';
 import { getMapboxAPIToken } from 'utils/environment-vars-helper';
-import { tap, pluck, distinctUntilChanged, map } from "rxjs/operators";
+import { tap, pluck, distinctUntilChanged, map, filter, take } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { store } from "state/store";
 import { setCurrentMapGuess } from "state/GameData/actions";
@@ -38,21 +38,34 @@ export const model: MapModel = extendBaseModel({
     },
     handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
         const {store$} = vnode.attrs; 
-
-        vnode.state.map = new mapboxgl.Map({
-            accessToken: getMapboxAPIToken(),
-            container: document.querySelector(".map-container") as HTMLElement,
-            style: vnode.state.mapStyle.withBorders,
-            center: [-30, 45],
-            zoom: 1,
-            interactive: true,
-        })  
-        vnode.state.map.scrollZoom.setWheelZoomRate(1/250);
-        vnode.state.map.on('style.load', function() {
-            vnode.state.map.on("click", (e) => {
-                store.dispatch(setCurrentMapGuess(e.lngLat));
-            })
-        })
+        vnode.state.subscriptions.push(
+            store$.pipe(
+                pluck("CurrentPageData", "showRoundEndModal"),
+                distinctUntilChanged(),
+                filter(showRoundEndModal => !showRoundEndModal),
+                take(1),
+                map(() => {
+                    return new mapboxgl.Map({
+                        accessToken: getMapboxAPIToken(),
+                        container: document.getElementById("map-container") as HTMLElement,
+                        style: vnode.state.mapStyle.withBorders,
+                        center: [-30, 45],
+                        zoom: 1,
+                        interactive: true,
+                    })  
+                }),
+                tap(map => {
+                    map.scrollZoom.setWheelZoomRate(1/250);
+                    map.on('style.load', function() {
+                        map.on("click", (e) => {
+                            store.dispatch(setCurrentMapGuess(e.lngLat));
+                        })
+                    })
+                }),
+                bindTo("map", vnode)
+            ).subscribe()
+        )
+       
 
         vnode.state.subscriptions.push(
             store$.pipe(
@@ -90,6 +103,14 @@ export const model: MapModel = extendBaseModel({
                     vnode.state.marker && vnode.state.marker.remove();
                 }),
                 bindTo("bestMarker", vnode)
+            ).subscribe()
+        )
+
+        vnode.state.subscriptions.push(
+            store$.pipe(
+                pluck("CurrentPageData", "showRoundEndModal"),
+                distinctUntilChanged(),
+                bindTo("showRoundEndModal", vnode)
             ).subscribe()
         )
     }

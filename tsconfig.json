@@ -25,7 +25,9 @@
             "state/*": ["src/state/*"],
             "global/*": ["src/global/*"],
             "socket/*": ["src/socket/*"],
-
+            "stream": [
+                "node_modules/stream-browserify"
+              ],
         }
     }
 }

@@ -12,11 +12,12 @@ export const map: m.Component<MapAttrs, MapState> = {
         const { store$ } = vnode.attrs;
 
         return  m(".map-and-surrounding-elems-container", [
-            m(cityHeader, {
+             m(cityHeader, {
                 store$
             }),
-            m(".map-container", 
-            { style: 'height: calc(100vh - 200px)' }
+              
+            m("#map-container", 
+            { style: 'height: calc(100vh - 150px)' }
             ),
         ])
     }     

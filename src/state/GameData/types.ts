@@ -6,6 +6,7 @@ export interface GameDataState {
     roomId: string;
     playerList: player[];
     locationHeaderData: locationHeaderData;
+    locationData: locationData;
     countdown: number;
     roundNumber: number;
     maxRound: number;
@@ -15,6 +16,7 @@ export interface GameDataState {
     guessLimit: number;
     currentMapGuess?: mapboxgl.LngLatLike;
     bestMapGuess?: mapboxgl.LngLatLike;
+    roundEndCountdown: number;
 }
 
 export interface player {
@@ -22,17 +24,24 @@ export interface player {
     socketId: string;
     userId: string;
     score: number;
+    addedScore: number;
     guessNum: number;
     guess: mapboxgl.LngLatLike;
     distance: number;
 }
 
 export interface locationHeaderData {
-    city?: string;
-    region?: string;
-    country?: string;
+    city: string;
+    region: string;
+    country: string;
     [key: string]: string | undefined;
 }
+
+export interface locationData {
+    lnglat: mapboxgl.LngLat,
+    wikiId: string;
+}
+
 export type locationHeaderDataKey = keyof locationHeaderData;
 
 export interface InitGameDataAction {
@@ -86,6 +95,13 @@ export interface UpdateCountdownAction {
     type: GameDataActionTypes.UPDATE_COUNTDOWN,
     payload: {
         countdown: number
+    }
+}
+
+export interface UpdateRoundEndCountdownAction {
+    type: GameDataActionTypes.UPDATE_ROUND_END_COUNTDOWN,
+    payload: {
+        roundEndCountdown: number
     }
 }
 
@@ -162,6 +178,26 @@ export interface UpdateBaseGameSettingAction {
     }
 }
 
+export interface AddRoundEndLocationDataAction {
+    type: GameDataActionTypes.ADD_ROUND_END_LOCATION_DATA,
+    payload: {
+        lnglat: mapboxgl.LngLat,
+        wikiId: string,
+    }
+}
+
+export interface ClearLocationDataAction {
+    type: GameDataActionTypes.CLEAR_LOCATION_DATA,
+    payload: {}
+}
+
+export interface UpdateRoundEndPlayerDataAction {
+    type: GameDataActionTypes.UPDATE_ROUND_END_PLAYER_DATA,
+    payload: {
+        playerList: player[]
+    }
+}
+
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
     CLEAR_GAME_DATA = "gameDataActions/CLEAR_GAME_DATA",
@@ -171,6 +207,7 @@ export enum GameDataActionTypes {
     SET_LOCATION_HEADER_DATA = "gameDataActions/SET_LOCATION_HEADER_DATA",
     UPDATE_ROUND_NUMBER = "gameDataActions/UPDATE_ROUND_NUMBER",
     UPDATE_COUNTDOWN = "gameDataActions/UPDATE_COUNTDOWN",
+    UPDATE_ROUND_END_COUNTDOWN = "gameDataActions/UPDATE_ROUND_END_COUNTDOWN",
     LOADING_HEADER = "gameDataActions/LOADING_HEADER",
     CURRENT_MAP_GUESS = "gameDataActions/CURRENT_MAP_GUESS",
     UPDATE_PLAYER_LIST = "gameDataActions/UPDATE_PLAYER_LIST",
@@ -180,9 +217,12 @@ export enum GameDataActionTypes {
     UPDATE_BEST_MAP_GUESS = "gameDataActions/UPDATE_BEST_MAP_GUESS",
     UPDATE_RESULTS_TO_CHOOSE_FROM = "gameDataActions/UPDATE_RESULTS_TO_CHOOSE_FROM",
     UPDATE_MAX_COUNTDOWN = "gameDataActions/UPDATE_MAX_COUNTDOWN",
-    UPDATE_BASE_SETTING = "gameDataActions/UPDATE_BASE_SETTING"
+    UPDATE_BASE_SETTING = "gameDataActions/UPDATE_BASE_SETTING",
+    ADD_ROUND_END_LOCATION_DATA = "gameDataActions/ADD_ROUND_END_LOCATION_DATA",
+    CLEAR_LOCATION_DATA = 'gameDataActions/CLEAR_LOCATION_DATA',
+    UPDATE_ROUND_END_PLAYER_DATA = "gameDataActions/UPDATE_ROUND_END_PLAYER_DATA"
 }
 
 export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction
 | UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction | ClearGameDataAction | SetCurrentMapGuessAction | UpdatePlayerListAction 
-| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateBestMapGuessAction | UpdateResultsToChooseFromAction | UpdateMaxCountdownAction | UpdateBaseGameSettingAction;
+| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateRoundEndPlayerDataAction | AddRoundEndLocationDataAction| ClearLocationDataAction | UpdateBestMapGuessAction | UpdateResultsToChooseFromAction | UpdateMaxCountdownAction | UpdateRoundEndCountdownAction|UpdateBaseGameSettingAction;

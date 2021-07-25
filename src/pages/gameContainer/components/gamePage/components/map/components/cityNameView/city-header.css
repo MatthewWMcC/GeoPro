@@ -1,7 +1,7 @@
 .city-header-container {
     background-color: black;
     min-width: 200px;
-    height: 5%;
+    height: 4%;
     z-index: 1;
     display: inline-flex;
     border-radius: 10px;

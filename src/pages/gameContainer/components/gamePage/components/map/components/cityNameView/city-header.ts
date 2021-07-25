@@ -12,7 +12,6 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
         const locationList = Object.keys(locationHeaderData).map((key: string) => {
             return locationHeaderData[key]
         })
-        console.log(submitActive)
 
         return  m(".city-header-container", [
             loadingHeader && m(".loading-holder", [
