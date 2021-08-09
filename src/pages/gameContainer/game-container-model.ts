@@ -1,3 +1,4 @@
+import { bindTo } from 'base/operators';
 import m from 'mithril';
 import { distinctUntilChanged, pluck, tap } from 'rxjs/operators';
 import { initSocketDataSetup } from 'socket/socket-helpers';
@@ -13,7 +14,6 @@ interface GameContainerModel {
 
 export const model: GameContainerModel = {
     handleComponentRemove: (vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>) => {
-        const {roomId} = vnode.attrs; 
         vnode.state.subscriptions.forEach(subscription => subscription.unsubscribe());
         vnode.state.subscriptions = [];
         console.log("leaving container")
@@ -27,11 +27,16 @@ export const model: GameContainerModel = {
         const {store$, roomId} = vnode.attrs;
         console.log("re init")
         initSocketDataSetup(store$);
-        socket.emit("join-room", roomId);
+        setTimeout(() => {
+            socket.emit("join-room", roomId);
+        }, 1000)
+
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "playerList"),
+                pluck("GameData", "initDataStatus"),
+                distinctUntilChanged(),
+                bindTo("doneLoading", vnode)
             ).subscribe()
         )
 
@@ -39,10 +44,7 @@ export const model: GameContainerModel = {
             store$.pipe(
                 pluck("GameData", "inGame"),
                 distinctUntilChanged(),
-                tap(inGame => {
-                    vnode.state.inGame = inGame
-                    m.redraw()
-                })
+                bindTo("inGame", vnode)
             ).subscribe()
         )
     }

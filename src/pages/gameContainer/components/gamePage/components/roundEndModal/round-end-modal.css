@@ -5,8 +5,8 @@
     flex: 5;
 }
 .round-end-modal-container {
-    width: 75%;
-    height: calc(100vh - 150px);
+    width: calc(75% - 45px);
+    height: calc(100vh - 190px);
     border-radius: 30px;
     background-color: rgb(24, 18, 18);
     padding: 25px;

@@ -48,18 +48,23 @@ io.sockets.on("connection", (socket) => {
             resultsToChooseFrom: 1,
             showRoundEndModal: false,
             roundEndCountdown: 0,
-            maxRoundEndCountdown: 20,
+            maxRoundEndCountdown: 25,
         }
-
-        await socket.join(roomId)
+        
+        await socket.join(roomId);        
+        socket.roomId = roomId;
         let room = getRoom(roomId)
+
         if (room.size === 1) {
             room.data = initServerClientData;
             room.data.admin = socket.userId;
         }
+
         
         const playerData = io.sockets.sockets.get(socket.id);
         const playerList = [...room.data.playerList];
+
+        if(!playerData?.id)return;
 
         const newPlayerData = {
             socketId: playerData.id,
@@ -76,12 +81,12 @@ io.sockets.on("connection", (socket) => {
     
         room.data.playerList = playerList;
 
-        socket.roomId = roomId;
-        socket.emit("joined-new-game-data", getPublicData(roomId))
+        socket.emit("joined-new-game-data", getPublicData(roomId));
         if(room.data.showRoundEndModal) {
-            socket.emit('emit-round-end-location-data', getRoundEndLocationData(roomId))
-            socket.emit('emit-round-end-player-data', room.data.playerList)
+            socket.emit('emit-round-end-location-data', getRoundEndLocationData(roomId));
+            socket.emit('emit-round-end-player-data', room.data.playerList);
         }
+        socket.emit("init-game-data-status", true);
 
         const {guess, distance, ...viewablePlayerData} = newPlayerData
         socket.to(roomId).emit("new-player", {...viewablePlayerData});
@@ -151,7 +156,7 @@ io.sockets.on("connection", (socket) => {
 
     const startGame = async(roomId) => {
         const room = getRoom(roomId);
-
+        
         room.data.inGame = true;
         io.in(roomId).emit("change-in-game-state", true);
 
@@ -177,7 +182,6 @@ io.sockets.on("connection", (socket) => {
 
             const locationData = await getRandomLocationData(room.data.numberOfLocationResults, room.data.resultsToChooseFrom);
             room.data.locationData = locationData;
-
             room.data.loadingHeader = false;
             io.in(roomId).emit('update-location-header-data', getClientLocationData(roomId));
     
@@ -240,7 +244,7 @@ async function delay(ms) {
 }
 
 const getRoom = (roomId) => {
-    return io.sockets.adapter.rooms.get(roomId)
+    return io.sockets.adapter.rooms.get(roomId) || null;
 }
 
 const getDistance = (actualPosition, newGuess) => {
@@ -272,6 +276,7 @@ const getPublicData = (roomId) => {
 
 const getClientLocationData = (roomId) => {
     const room = getRoom(roomId);
+    if(!room?.data) return
     const { locationData } = room.data;
     const { lng, lat, wikiId, ...clientData} = locationData
     return {
@@ -300,7 +305,8 @@ const getPlayerDataFromRoom = (socketId, roomId) => {
 
 const getValueFromRoom = (roomId, key) => {
     const room = getRoom(roomId);
-    return room ? room.data[key] : false;
+    if(!room?.data) return
+    return room.data[key];
 }
 
 const setPlayerData = (socketId, roomId, data) => {
@@ -310,6 +316,12 @@ const setPlayerData = (socketId, roomId, data) => {
         ...playerData,
         ...data
     }
+}
+
+const setData = (key, val, roomId) => {
+    const room = getRoom(roomId);
+    if(!room?.data) return
+    room.data[key] = val;
 }
 
 const clearPrivatePlayerData = (roomId) => {

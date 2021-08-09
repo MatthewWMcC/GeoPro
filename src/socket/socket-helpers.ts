@@ -1,4 +1,4 @@
-import { Observable, Subscription } from "rxjs";
+import { Observable } from "rxjs";
 import { pluck, take, tap } from "rxjs/operators";
 import { rootState } from "state/types";
 import { socket } from "./socket-main";

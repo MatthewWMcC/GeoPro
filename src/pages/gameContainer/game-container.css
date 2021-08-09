@@ -1,0 +1,29 @@
+#loading-modal-background {
+    position: fixed;
+    left: 0px;
+    top: 0%;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--modal-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-container {
+    /* position: absolute; */
+}
+
+#loading-wheel {
+    border: 10px solid rgb(189, 189, 189);
+    border-top: 10px solid var(--button-color); /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
