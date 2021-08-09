@@ -12,6 +12,7 @@ module.exports = {
         main: "./src/app.ts"
     },
     devtool: "inline-source-map",
+   
     module: {
         rules: [
             {
@@ -93,6 +94,12 @@ module.exports = {
             'state': path.resolve(__dirname, "src/state"),
             'global': path.resolve(__dirname, "src/global"),
             'socket': path.resolve(__dirname, "src/socket")
+        },
+        fallback: {
+            "stream": require.resolve("stream-browserify")
         }
       },
+      externals: {
+        "isomorphic-fetch": "fetch"
+    },
 }

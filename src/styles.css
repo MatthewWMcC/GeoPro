@@ -6,12 +6,16 @@ body {
     margin: 0;
     background-color: var(--grey-background-color);
     font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #body-content-container {
     z-index: 0;
     position: relative;
     padding: 40px 50px;
+    height: 100%;
 }
 
 #navigation-content-container {
@@ -36,7 +40,7 @@ body {
     --navigation-width: 18vw;
     --header-color: rgb(5, 5, 179);
     --grey-overlay-color: rgb(236, 234, 236);
-    --grey-background-color: rgba(38, 38, 66, 0.658); 
+    --grey-background-color: rgba(0, 0, 255, 0.658); 
     --waiting-menu-color: rgb(48, 47, 63);
     --button-color: rgb(9, 13, 36);
     --player-card-color: #a278c4;

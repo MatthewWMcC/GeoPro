@@ -1,6 +1,5 @@
 import m from 'mithril';
 import { initSocketDataSetup } from 'socket/socket-helpers';
-import { socket } from 'socket/socket-main';
 import { MainPageAttrs, MainPageState } from "./types";
 import uniqid from 'uniqid';
 

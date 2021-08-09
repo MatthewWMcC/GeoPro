@@ -1,12 +1,23 @@
-import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, 
-    InGameChangeAction, InitGameDataAction, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerGuessNumAction, UpdateResultsToChooseFromAction, UpdateRoundNumberAction } from "./types";
+import { AddPlayerAction, AddRoundEndLocationDataAction, ClearGameDataAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, 
+    InGameChangeAction, InitGameDataAction, locationData, locationHeaderData, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerGuessNumAction, UpdateResultsToChooseFromAction, UpdateRoundEndCountdownAction, UpdateRoundEndPlayerDataAction, UpdateRoundNumberAction } from "./types";
 
+
+const freshLocationHeaderData: locationHeaderData = {
+        city: "",
+        region: "",
+        country: ""
+}
+const freshLocationData: locationData = {
+    wikiId: "",
+    lnglat: undefined
+}
 const initGameData: GameDataState = {
     admin: "",
     inGame: false,
     roomId: "",
     playerList: [],
-    locationHeaderData: {},
+    locationHeaderData: {...freshLocationHeaderData},
+    locationData: {...freshLocationData},
     countdown: 0,
     roundNumber: 0,
     maxRound: 10,
@@ -14,7 +25,10 @@ const initGameData: GameDataState = {
     resultsToChooseFrom: 5,
     maxCountdown: 20,
     guessLimit: 3,
+    roundEndCountdown: 0,
 }
+
+
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
     switch(action.type) {
@@ -50,6 +64,14 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return UpdateMaxCountdownReducer(state, action)
         case(GameDataActionTypes.UPDATE_BASE_SETTING):
             return UpdateBaseGameSettingReducer(state, action)
+        case(GameDataActionTypes.UPDATE_ROUND_END_COUNTDOWN):
+            return UpdateRoundEndCountdownReducer(state, action)
+        case(GameDataActionTypes.ADD_ROUND_END_LOCATION_DATA):
+            return AddRoundEndLocationDataReducer(state, action)
+        case(GameDataActionTypes.CLEAR_LOCATION_DATA):
+            return ClearLocationDataReducer(state)
+        case(GameDataActionTypes.UPDATE_ROUND_END_PLAYER_DATA):
+            return UpdateRoundEndPlayerListReducer(state, action)
         default:
             return state
     }
@@ -107,6 +129,13 @@ const UpdateCountdownReducer = (state: GameDataState, action: UpdateCountdownAct
     return({
         ...state,
         countdown: action.payload.countdown
+    })
+}
+
+const UpdateRoundEndCountdownReducer = (state: GameDataState, action: UpdateRoundEndCountdownAction) => {
+    return({
+        ...state,
+        roundEndCountdown: action.payload.roundEndCountdown
     })
 }
 
@@ -174,5 +203,30 @@ const UpdateBaseGameSettingReducer = (state: GameDataState, action: UpdateBaseGa
     return({
         ...state,
         ...action.payload.data
+    })
+}
+
+const AddRoundEndLocationDataReducer = (state: GameDataState, action: AddRoundEndLocationDataAction) => {
+    return({
+        ...state,
+        locationData: {
+            lnglat: action.payload.lnglat,
+            wikiId: action.payload.wikiId
+        }
+    })
+}
+
+const ClearLocationDataReducer = (state: GameDataState) => {
+    return ({
+        ...state,
+        locationHeaderData: {...freshLocationHeaderData},
+        locationData: {...freshLocationData}
+    })
+}
+
+const UpdateRoundEndPlayerListReducer = (state: GameDataState, action: UpdateRoundEndPlayerDataAction) => {
+    return ({
+        ...state,
+        playerList: action.payload.playerList
     })
 }

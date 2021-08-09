@@ -1,7 +1,7 @@
 .player-list-outer-container {
     background-color: var(--grey-overlay-color);
     flex: 1;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 150px);
     margin-right: -50px;
     border-radius: 5px;
     padding: 10px;
@@ -16,7 +16,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* padding: 0 20px; */
 }
 
 .player-username {

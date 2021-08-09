@@ -7,6 +7,7 @@ export interface MapState extends BaseState {
     map: mapboxgl.Map;
     marker: mapboxgl.Marker;
     bestMarker: mapboxgl.Marker;
+    showRoundEndModal: boolean;
 }
 
 export interface MapAttrs extends BaseAttrs {

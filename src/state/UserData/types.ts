@@ -52,20 +52,24 @@ export interface MapStyleOptions {
     export interface MapStyle {
         withBorders: string,
         withoutBorders: string,
+        labels: string
     }
     
     export const MapStyles: MapStyleOptions = {
         DARK: {
             withBorders: 'mapbox://styles/matthewmccracken/ckq8q35kr1f5x17o9f6wom6b7?optimize=true',
             withoutBorders: 'mapbox://styles/matthewmccracken/ckq8r6yy05fm617nssmdvo9ul',
+            labels: "mapbox://styles/matthewmccracken/ckrjs42wg0yqx17rwazjmvq2i" 
         },
         LIGHT: {
             withBorders: 'mapbox://styles/matthewmccracken/ckqe6wn960vt717qa57ns25os?optimize=true',
             withoutBorders: 'mapbox://styles/matthewmccracken/ckqe6xvh36q2u17n2t6789h8y',
+            labels: "mapbox://styles/matthewmccracken/ckrjs42wg0yqx17rwazjmvq2i" 
         },
         STREET: {
             withBorders: 'mapbox://styles/matthewmccracken/ckqo7kkoj1oad18mf8pu411yd',
-            withoutBorders: 'mapbox://styles/matthewmccracken/ckqo8aw8x3lz218pab65f7ipb',     
+            withoutBorders: 'mapbox://styles/matthewmccracken/ckqo8aw8x3lz218pab65f7ipb',  
+            labels: "mapbox://styles/matthewmccracken/ckrjs42wg0yqx17rwazjmvq2i"   
         }
     }
     

@@ -1,5 +1,6 @@
-import { AddPlayerAction, ClearGameDataAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
-    player, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerDistanceAndGuessAction, UpdatePlayerGuessNumAction, UpdatePlayerListAction, UpdateResultsToChooseFromAction, UpdateRoundNumberAction } from "./types"
+import mapboxgl from "mapbox-gl"
+import { AddPlayerAction, AddRoundEndLocationDataAction, ClearGameDataAction, ClearLocationDataAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
+    player, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerDistanceAndGuessAction, UpdatePlayerGuessNumAction, UpdatePlayerListAction, UpdateResultsToChooseFromAction, UpdateRoundEndCountdownAction, UpdateRoundEndPlayerDataAction, UpdateRoundNumberAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
     return {
@@ -67,6 +68,15 @@ export const UpdateCountdown = (countdown: number): UpdateCountdownAction => {
         type: GameDataActionTypes.UPDATE_COUNTDOWN,
         payload: {
             countdown
+        }
+    }
+}
+
+export const UpdateRoundEndCountdown = (roundEndCountdown: number): UpdateRoundEndCountdownAction => {
+    return {
+        type: GameDataActionTypes.UPDATE_ROUND_END_COUNTDOWN,
+        payload: {
+            roundEndCountdown
         }
     }
 }
@@ -155,6 +165,7 @@ export const UpdateMaxCountdown = (maxCountdown: number): UpdateMaxCountdownActi
     }
 }
 
+
 export const UpdateBaseGameSetting = (data: any): UpdateBaseGameSettingAction => {
     return {
         type: GameDataActionTypes.UPDATE_BASE_SETTING,
@@ -164,3 +175,28 @@ export const UpdateBaseGameSetting = (data: any): UpdateBaseGameSettingAction =>
     }
 }
 
+export const AddRoundEndLocationData = (lnglat: mapboxgl.LngLat, wikiId: string): AddRoundEndLocationDataAction => {
+    return {
+        type: GameDataActionTypes.ADD_ROUND_END_LOCATION_DATA,
+        payload: {
+            lnglat,
+            wikiId
+        }
+    }
+}
+
+export const ClearLocationData = (): ClearLocationDataAction => {
+    return {
+        type: GameDataActionTypes.CLEAR_LOCATION_DATA,
+        payload: {}
+    }
+}
+
+export const UpdateRoundEndPlayerData = (playerList: player[]): UpdateRoundEndPlayerDataAction => {
+    return{
+        type: GameDataActionTypes.UPDATE_ROUND_END_PLAYER_DATA,
+        payload: {
+            playerList
+        }
+    }
+}

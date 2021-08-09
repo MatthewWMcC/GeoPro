@@ -7,7 +7,7 @@ const getNumberOfLocationResults = require('./serverHelpers/location-data-api-ha
 const getRandomLocationData = require('./serverHelpers/location-data-api-handler').getRandomLocationData;
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use(express.static('dist'));
 
@@ -45,7 +45,10 @@ io.sockets.on("connection", (socket) => {
             loadingHeader: true,
             guessLimit: 3,
             numberOfLocationResults: await getNumberOfLocationResults(),
-            resultsToChooseFrom: 5,
+            resultsToChooseFrom: 1,
+            showRoundEndModal: false,
+            roundEndCountdown: 0,
+            maxRoundEndCountdown: 20,
         }
 
         await socket.join(roomId)
@@ -66,6 +69,7 @@ io.sockets.on("connection", (socket) => {
             guessNum: room.data.guessLimit,
             guess: null,
             distance: null,
+            addedScore: 0,
         }
 
         playerList.push(newPlayerData);
@@ -74,6 +78,10 @@ io.sockets.on("connection", (socket) => {
 
         socket.roomId = roomId;
         socket.emit("joined-new-game-data", getPublicData(roomId))
+        if(room.data.showRoundEndModal) {
+            socket.emit('emit-round-end-location-data', getRoundEndLocationData(roomId))
+            socket.emit('emit-round-end-player-data', room.data.playerList)
+        }
 
         const {guess, distance, ...viewablePlayerData} = newPlayerData
         socket.to(roomId).emit("new-player", {...viewablePlayerData});
@@ -116,13 +124,11 @@ io.sockets.on("connection", (socket) => {
     })
     socket.on("player-location-guess", (newGuessMade) => {
         const room = getRoom(socket.roomId);
-        console.log(newGuessMade)
         
         const { playerData } = getPlayerDataFromRoom(socket.id, socket.roomId);
         const { guess, distance, guessNum, ...restOfPlayerData } = playerData;
 
         if(isGuessAllowed(newGuessMade, guessNum)){ 
-            console.log("guessAllowed")
             const {lat, lng} = room.data.locationData;
 
             const newDistance = getDistance({lat, lng}, convertLocationDataForGeolib(newGuessMade))
@@ -161,6 +167,8 @@ io.sockets.on("connection", (socket) => {
 
             room.data.roundNumber = i;
 
+            room.data.locationData = {};
+
             io.in(roomId).emit('new-round', {
                 guessNum: room.data.guessLimit,
                 countdown: room.data.countdown,
@@ -181,6 +189,27 @@ io.sockets.on("connection", (socket) => {
                 room.data.countdown--;
                 io.in(roomId).emit('update-countdown', room.data.countdown)
             }
+
+            room.data.playerList = updatePlayerScores(roomId)
+
+            room.data.roundEndCountdown = room.data.maxRoundEndCountdown;
+            room.data.showRoundEndModal = true;
+            
+            io.in(roomId).emit('update-round-end-countdown', room.data.roundEndCountdown)
+            io.in(roomId).emit('emit-round-end-location-data', getRoundEndLocationData(roomId))
+            io.in(roomId).emit('emit-round-end-player-data', room.data.playerList)
+            io.in(roomId).emit('update-show-round-end-modal', true);
+
+            while(room.data.roundEndCountdown > 0){
+                await delay(1000);
+                if(!room) return;
+                if(!getValueFromRoom(roomId, "inGame")) return;
+
+                room.data.roundEndCountdown--;
+                io.in(roomId).emit('update-round-end-countdown', room.data.roundEndCountdown)
+            }
+            room.data.showRoundEndModal = false;
+            io.in(roomId).emit('update-show-round-end-modal', false);
         }
     }
 
@@ -244,9 +273,17 @@ const getPublicData = (roomId) => {
 const getClientLocationData = (roomId) => {
     const room = getRoom(roomId);
     const { locationData } = room.data;
-    const { lng, lat, ...clientData} = locationData
+    const { lng, lat, wikiId, ...clientData} = locationData
     return {
         ...clientData
+    }
+}
+
+const getRoundEndLocationData = (roomId) => {
+    const { locationData } = getRoom(roomId).data;
+    const {lng, lat, wikiId} = locationData;
+    return {
+        lnglat: {lng, lat}, wikiId
     }
 }
 
@@ -278,7 +315,6 @@ const setPlayerData = (socketId, roomId, data) => {
 const clearPrivatePlayerData = (roomId) => {
     const room = getRoom(roomId);
 
-
     return room.data.playerList.map(playerData => {
         return({
             ...playerData,
@@ -287,4 +323,29 @@ const clearPrivatePlayerData = (roomId) => {
             distance: null,
         })
     })
+}
+
+const updatePlayerScores = (roomId) => {
+    const room = getRoom(roomId);
+    
+    return room.data.playerList.map(player => {
+        const score = generateScore(player.distance);
+        return ({
+            ...player,
+            addedScore: score,
+            score: player.score + score,
+        })
+    }).sort((a,b) => {
+        if(a.score < b.score) {
+            return 1
+        } else {
+            return -1
+        }
+    })
+}
+
+const generateScore = (distance) => {
+    if(!distance) return 0;
+    const val = Math.ceil(1000 * Math.exp(-1/800 * ((distance - 20000) ** (0.5))));
+    return (!!val && val <= 1000) ? val : 1000;
 }

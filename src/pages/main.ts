@@ -1,0 +1,1 @@
+export const main = (val) => `${val} pog`;
