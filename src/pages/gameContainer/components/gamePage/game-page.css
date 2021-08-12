@@ -1,3 +1,4 @@
 .map-and-players-list-container {
     display: flex;
+    justify-content: space-between;
 }

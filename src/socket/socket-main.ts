@@ -98,3 +98,9 @@ socket.on("emit-round-end-location-data", data => {
 socket.on('emit-round-end-player-data', playerList => {
     store.dispatch(UpdateRoundEndPlayerData(playerList))
 })
+
+socket.on('init-game-data-status', initDataStatus => {
+    store.dispatch(UpdateBaseGameSetting({
+        initDataStatus
+    }))
+})

@@ -43,11 +43,11 @@ export const gameSettings: m.Component<GameSettingsAttrs, GameSettingsState> = {
                         m("input#set-guess-slider.slider", {
                             type: "range",
                             min: 1,
-                            max: 10,
+                            max: 8,
                             value: guessLimit,
                             oninput: (e) => model.handleGuessSliderOnInput(vnode, e)
                         }),
-                        m("label.settings-option-label", "10"),
+                        m("label.settings-option-label", "8"),
                     ])
                 ]),
             ]),

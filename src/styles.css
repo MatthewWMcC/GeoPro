@@ -38,12 +38,13 @@ body {
 :root {
     --header-height: 60px;
     --navigation-width: 18vw;
-    --header-color: rgb(5, 5, 179);
+    --header-color: rgb(0, 97, 21);
     --grey-overlay-color: rgb(236, 234, 236);
     --grey-background-color: rgba(0, 0, 255, 0.658); 
     --waiting-menu-color: rgb(48, 47, 63);
     --button-color: rgb(9, 13, 36);
-    --player-card-color: #a278c4;
+    --player-card-color: #5eee51;
+    --modal-background: rgba(255, 255, 255, 0.808);
 }
 
 .styled-button {

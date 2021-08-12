@@ -2,7 +2,7 @@ import { extendBaseModel } from 'base/baseModel';
 import { bindTo } from 'base/operators';
 import mapboxgl from 'mapbox-gl';
 import m from 'mithril';
-import { distinctUntilChanged, map, pluck, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, pluck, switchMap, take, tap } from 'rxjs/operators';
 import { player } from 'state/GameData/types';
 import { store } from 'state/store';
 import { getMapboxAPIToken } from 'utils/environment-vars-helper';
@@ -135,13 +135,20 @@ export const model: RoundEndModalType = extendBaseModel({
             distinctUntilChanged(),
         )
 
+        const initDataStatus$ = store$.pipe(
+            pluck("GameData", "initDataStatus"),
+            distinctUntilChanged(),
+        )
+
         const playerData$ = store$.pipe(
             pluck("GameData", "playerList"),
             distinctUntilChanged(),
         )
 
         vnode.state.subscriptions.push(
-            locationData$.pipe(
+            initDataStatus$.pipe(
+                filter(initDataStatus => !!initDataStatus),
+                switchMap(() => locationData$),
                 tap(locationData => {
                     m.request({
                         method: "GET",
@@ -187,13 +194,20 @@ export const model: RoundEndModalType = extendBaseModel({
     handleComponentCreate: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>) => {
         const { store$ } = vnode.attrs;
 
+        const initDataStatus$ = store$.pipe(
+            pluck("GameData", "initDataStatus"),
+            distinctUntilChanged(),
+        )
+
         const locationData$ = store$.pipe(
             pluck("GameData", "locationData"),
             distinctUntilChanged(),
         )
 
         vnode.state.subscriptions.push(
-            locationData$.pipe(
+            initDataStatus$.pipe(
+                filter(initDataStatus => !!initDataStatus),
+                switchMap(() => locationData$),
                 map(locationData => model.initializeMap(vnode, locationData.lnglat)),
                 take(1),
                 bindTo("map", vnode)    

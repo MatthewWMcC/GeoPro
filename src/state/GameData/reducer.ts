@@ -26,6 +26,7 @@ const initGameData: GameDataState = {
     maxCountdown: 20,
     guessLimit: 3,
     roundEndCountdown: 0,
+    initDataStatus: false,
 }
 
 

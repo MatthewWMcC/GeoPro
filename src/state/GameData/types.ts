@@ -17,6 +17,7 @@ export interface GameDataState {
     currentMapGuess?: mapboxgl.LngLatLike;
     bestMapGuess?: mapboxgl.LngLatLike;
     roundEndCountdown: number;
+    initDataStatus: boolean;
 }
 
 export interface player {
