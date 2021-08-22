@@ -53,6 +53,19 @@ body {
     color: aliceblue;
     border: 0;
     border-radius: 5px;
+    font-size: 30px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.secondary-styled-button {
+    padding: 10px 20px;
+    background-color: aliceblue;
+    color: var(--button-color);
+    border: 0;
+    border-radius: 5px;
     font-size: 20px;
     cursor: pointer;
+    text-align: center;
+    border: 2px solid var(--button-color);
 }

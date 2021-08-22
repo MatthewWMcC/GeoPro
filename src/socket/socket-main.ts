@@ -1,6 +1,7 @@
 import socketIOClient from "socket.io-client";
 import { changeShowRoundEndModal } from "state/currentPageData/actions";
 import { AddPlayer, AddRoundEndLocationData, ClearLocationData, DeletePlayer, InGameChange, InitGameData, 
+    ResetGameDataForNewGame, 
     SetLocationHeaderData, UpdateBaseGameSetting, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, 
     UpdateLoadingHeader, UpdatePlayerGuessNum, UpdateResultsToChooseFrom, UpdateRoundEndCountdown, UpdateRoundEndPlayerData, 
     UpdateRoundNumber } from "state/GameData/actions";
@@ -103,4 +104,14 @@ socket.on('init-game-data-status', initDataStatus => {
     store.dispatch(UpdateBaseGameSetting({
         initDataStatus
     }))
+})
+
+socket.on("update-show-game-end", showGameEnd => {
+    store.dispatch(UpdateBaseGameSetting({
+        showGameEnd
+    }))
+})
+
+socket.on("reset-game-data", () => {
+    store.dispatch(ResetGameDataForNewGame())
 })

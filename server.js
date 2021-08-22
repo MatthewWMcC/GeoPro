@@ -38,17 +38,18 @@ io.sockets.on("connection", (socket) => {
             roomId: roomId,
             playerList: [],
             roundNumber: 0,
-            maxRound: 10,
+            maxRound: 1,
             locationData: {},
             countdown: 0,
-            maxCountdown: 20,
+            maxCountdown: 5,
             loadingHeader: true,
             guessLimit: 3,
             numberOfLocationResults: await getNumberOfLocationResults(),
             resultsToChooseFrom: 1,
             showRoundEndModal: false,
+            showGameEnd: false,
             roundEndCountdown: 0,
-            maxRoundEndCountdown: 25,
+            maxRoundEndCountdown: 5,
         }
         
         await socket.join(roomId);        
@@ -60,7 +61,6 @@ io.sockets.on("connection", (socket) => {
             room.data.admin = socket.userId;
         }
 
-        
         const playerData = io.sockets.sockets.get(socket.id);
         const playerList = [...room.data.playerList];
 
@@ -85,7 +85,7 @@ io.sockets.on("connection", (socket) => {
         if(room.data.showRoundEndModal) {
             socket.emit('emit-round-end-location-data', getRoundEndLocationData(roomId));
             socket.emit('emit-round-end-player-data', room.data.playerList);
-        }
+        } 
         socket.emit("init-game-data-status", true);
 
         const {guess, distance, ...viewablePlayerData} = newPlayerData
@@ -111,12 +111,40 @@ io.sockets.on("connection", (socket) => {
         if(room && socket.userId === room.data.admin){
             room.data.guessLimit = guessLimit;
             io.in(roomId).emit("updated-guess-limit", guessLimit);
+
+            room.data.playerList = room.data.playerList.map(player => {
+                return {
+                    ...player,
+                    guessNum: guessLimit
+                }
+            })
         }
     })
     socket.on("start-game", (roomId) => {
         const room = getRoom(roomId)
         if(room && socket.userId === room.data.admin){
             startGame(roomId);
+        }
+    })
+    socket.on("return-game-to-wait", () => {
+        const roomId = socket.roomId
+        const room = getRoom(roomId)
+        if(room && socket.userId === room.data.admin){
+            room.data = resetInGameData(roomId)
+            io.in(roomId).emit("reset-game-data")
+
+            room.data.inGame = false;
+            io.in(roomId).emit("change-in-game-state", false);
+        }
+    })
+    socket.on("restart-game", () => {
+        const roomId = socket.roomId
+        const room = getRoom(roomId)
+        if(room && socket.userId === room.data.admin){
+            room.data = resetInGameData(roomId)
+            // io.in(roomId).emit("reset-game-data")
+            io.in(roomId).emit("joined-new-game-data", getPublicData(roomId));
+            startGame(roomId)
         }
     })
     socket.on("leave-game", () => {
@@ -156,16 +184,11 @@ io.sockets.on("connection", (socket) => {
 
     const startGame = async(roomId) => {
         const room = getRoom(roomId);
-        
         room.data.inGame = true;
         io.in(roomId).emit("change-in-game-state", true);
 
-        room.data.roundNumber = 0;
-        io.in(roomId).emit('update-round-number', room.data.roundNumber)
     
         for(let i = 1; i <= room.data.maxRound; i++){
-            room.data.playerList = clearPrivatePlayerData(roomId);
-
             room.data.loadingHeader = true;
 
             room.data.countdown = room.data.maxCountdown;
@@ -214,7 +237,11 @@ io.sockets.on("connection", (socket) => {
             }
             room.data.showRoundEndModal = false;
             io.in(roomId).emit('update-show-round-end-modal', false);
+
+            room.data.playerList = clearPrivatePlayerData(roomId);
         }
+        room.data.showGameEnd = true;
+        io.in(roomId).emit("update-show-game-end", true)
     }
 
     const isGuessAllowed = (newGuessMade, guessNum) => {
@@ -339,7 +366,6 @@ const clearPrivatePlayerData = (roomId) => {
 
 const updatePlayerScores = (roomId) => {
     const room = getRoom(roomId);
-    
     return room.data.playerList.map(player => {
         const score = generateScore(player.distance);
         return ({
@@ -353,6 +379,27 @@ const updatePlayerScores = (roomId) => {
         } else {
             return -1
         }
+    })
+}
+
+const resetInGameData = (roomId) => {
+    const { data } = getRoom(roomId);
+    return ({
+        ...data,
+        playerList: data.playerList.map(player => {
+            return {
+                ...player,
+                score: 0,
+                guessNum: data.guessLimit,
+                guess: null,
+                distance: null,
+                addedScore: 0,
+            }
+        }),
+        showGameEnd: false,
+        locationData: {},
+        loadingHeader: true,
+        roundNumber: 0,
     })
 }
 

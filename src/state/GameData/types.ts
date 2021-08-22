@@ -5,8 +5,8 @@ export interface GameDataState {
     inGame: boolean;
     roomId: string;
     playerList: player[];
-    locationHeaderData: locationHeaderData;
-    locationData: locationData;
+    locationHeaderData?: locationHeaderData;
+    locationData?: locationData;
     countdown: number;
     roundNumber: number;
     maxRound: number;
@@ -18,6 +18,7 @@ export interface GameDataState {
     bestMapGuess?: mapboxgl.LngLatLike;
     roundEndCountdown: number;
     initDataStatus: boolean;
+    showGameEnd: boolean;
 }
 
 export interface player {
@@ -27,8 +28,8 @@ export interface player {
     score: number;
     addedScore: number;
     guessNum: number;
-    guess: mapboxgl.LngLatLike;
-    distance: number;
+    guess?: mapboxgl.LngLatLike;
+    distance?: number;
 }
 
 export interface locationHeaderData {
@@ -199,6 +200,13 @@ export interface UpdateRoundEndPlayerDataAction {
     }
 }
 
+export interface ResetGameDataForNewGameAction {
+    type: GameDataActionTypes.RESET_GAME_DATA_FOR_NEW_GAME,
+    payload: {
+
+    }
+}
+
 export enum GameDataActionTypes {
     INIT_GAME_DATA = "gameDataActions/INIT_GAME_DATA",
     CLEAR_GAME_DATA = "gameDataActions/CLEAR_GAME_DATA",
@@ -221,9 +229,12 @@ export enum GameDataActionTypes {
     UPDATE_BASE_SETTING = "gameDataActions/UPDATE_BASE_SETTING",
     ADD_ROUND_END_LOCATION_DATA = "gameDataActions/ADD_ROUND_END_LOCATION_DATA",
     CLEAR_LOCATION_DATA = 'gameDataActions/CLEAR_LOCATION_DATA',
-    UPDATE_ROUND_END_PLAYER_DATA = "gameDataActions/UPDATE_ROUND_END_PLAYER_DATA"
+    UPDATE_ROUND_END_PLAYER_DATA = "gameDataActions/UPDATE_ROUND_END_PLAYER_DATA",
+    RESET_GAME_DATA_FOR_NEW_GAME = "gameDataActions/RESET_GAME_DATA_FOR_NEW_GAME"
 }
 
 export type GameDataActions = InitGameDataAction | InGameChangeAction | AddPlayerAction | DeletePlayerAction | SetLocationHeaderDataAction
 | UpdateRoundNumberAction | UpdateCountdownAction | UpdateLoadingHeaderAction | ClearGameDataAction | SetCurrentMapGuessAction | UpdatePlayerListAction 
-| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateRoundEndPlayerDataAction | AddRoundEndLocationDataAction| ClearLocationDataAction | UpdateBestMapGuessAction | UpdateResultsToChooseFromAction | UpdateMaxCountdownAction | UpdateRoundEndCountdownAction|UpdateBaseGameSettingAction;
+| UpdatePlayerGuessNumAction | UpdateDataToAllPlayersAction | UpdateRoundEndPlayerDataAction | AddRoundEndLocationDataAction
+| ClearLocationDataAction | UpdateBestMapGuessAction | UpdateResultsToChooseFromAction | UpdateMaxCountdownAction 
+| UpdateRoundEndCountdownAction|UpdateBaseGameSettingAction | ResetGameDataForNewGameAction;

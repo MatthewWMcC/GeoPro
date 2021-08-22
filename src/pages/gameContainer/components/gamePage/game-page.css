@@ -2,3 +2,25 @@
     display: flex;
     justify-content: space-between;
 }
+
+#game-end-message-container {
+    margin-bottom: 300px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.game-end-container {
+    flex: 5;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.end-game-button {
+    font-size: 30px;
+    width: 15vw;
+}
