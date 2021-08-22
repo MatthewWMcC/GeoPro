@@ -5,8 +5,9 @@ import { getMapboxAPIToken } from 'utils/environment-vars-helper';
 import { tap, pluck, distinctUntilChanged, map, filter, take } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { store } from "state/store";
-import { setCurrentMapGuess } from "state/GameData/actions";
+import { SetCurrentMapGuess } from "state/capitalProData/actions";
 import { bindTo } from "base/operators";
+import { capitialProViewStates } from "state/capitalProData/types";
 
 
 interface MapModel {
@@ -32,17 +33,21 @@ export const model: MapModel = extendBaseModel({
                     })
             ).subscribe()
         )
-
-        
-
+        vnode.state.subscriptions.push(
+            store$.pipe(
+                pluck("CapitalProData", "viewState"),
+                distinctUntilChanged(),
+                bindTo("viewState", vnode)
+            ).subscribe()
+        )
     },
     handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
         const {store$} = vnode.attrs; 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("CurrentPageData", "showRoundEndModal"),
+                pluck("CapitalProData", "viewState"),
                 distinctUntilChanged(),
-                filter(showRoundEndModal => !showRoundEndModal),
+                filter(viewState => viewState !== capitialProViewStates.ROUND_END_MODAL),
                 take(1),
                 map(() => {
                     return new mapboxgl.Map({
@@ -58,7 +63,7 @@ export const model: MapModel = extendBaseModel({
                     map.scrollZoom.setWheelZoomRate(1/250);
                     map.on('style.load', function() {
                         map.on("click", (e) => {
-                            store.dispatch(setCurrentMapGuess(e.lngLat));
+                            store.dispatch(SetCurrentMapGuess(e.lngLat));
                         })
                     })
                 }),
@@ -69,7 +74,7 @@ export const model: MapModel = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "currentMapGuess"),
+                pluck("CapitalProData", "currentMapGuess"),
                 distinctUntilChanged(),
                 map(currentMapGuess => {
                     if (!currentMapGuess) return;
@@ -87,7 +92,7 @@ export const model: MapModel = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "bestMapGuess"),
+                pluck("CapitalProData", "bestMapGuess"),
                 distinctUntilChanged(),
                 map(bestMapGuess => {
                     if(!bestMapGuess) return;
@@ -103,14 +108,6 @@ export const model: MapModel = extendBaseModel({
                     vnode.state.marker && vnode.state.marker.remove();
                 }),
                 bindTo("bestMarker", vnode)
-            ).subscribe()
-        )
-
-        vnode.state.subscriptions.push(
-            store$.pipe(
-                pluck("CurrentPageData", "showRoundEndModal"),
-                distinctUntilChanged(),
-                bindTo("showRoundEndModal", vnode)
             ).subscribe()
         )
     }

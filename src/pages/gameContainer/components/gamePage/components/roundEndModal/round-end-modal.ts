@@ -9,12 +9,12 @@ export const RoundEndModal: m.Component<RoundEndModalAttrs, RoundEndModalState> 
     oncreate: model.handleComponentCreate,
     onremove: model.handleComponentRemove,
     view: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>) => {
-        const {locationHeaderData, yourData, roundEndCountdown} = vnode.state;
+        const {locationData, yourData, roundEndCountdown} = vnode.state;
         const { playerDistancekm, addedScore } = yourData;
         return m(".round-end-modal-outer-container", [
             m(".round-end-modal-container", [
                 m(".round-end-header", [
-                    locationHeaderData.city && m("h2.round-end-header-label", `All the guesses are in for ${locationHeaderData.city + ", " + locationHeaderData.country}`) ,
+                    locationData.city && m("h2.round-end-header-label", `All the guesses are in for ${locationData.city + ", " + locationData.country}`) ,
                     m("h3.countdown", roundEndCountdown)
                 ]),
                 m("#round-end-body-container", [

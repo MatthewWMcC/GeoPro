@@ -136,7 +136,7 @@ img {
     height: auto;
 }
 
-a {
+#wiki-link > a {
     font-size: 15px;
     color: rgb(85, 86, 90);
 }

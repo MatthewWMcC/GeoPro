@@ -1,117 +1,144 @@
 import socketIOClient from "socket.io-client";
-import { changeShowRoundEndModal } from "state/currentPageData/actions";
-import { AddPlayer, AddRoundEndLocationData, ClearLocationData, DeletePlayer, InGameChange, InitGameData, 
-    ResetGameDataForNewGame, 
-    SetLocationHeaderData, UpdateBaseGameSetting, UpdateBestMapGuess, UpdateCountdown, UpdateDataToAllPlayers, 
-    UpdateLoadingHeader, UpdatePlayerGuessNum, UpdateResultsToChooseFrom, UpdateRoundEndCountdown, UpdateRoundEndPlayerData, 
-    UpdateRoundNumber } from "state/GameData/actions";
+import { AddPlayer, DeletePlayer,
+    InitRoomData, 
+    SetGameViewState} from "state/GameData/actions";
 import { store } from "state/store";
 const serverEndpoint = process.env.SERVER as string; 
+import m from 'mithril';
+import { GameViewStates, player } from "state/GameData/types";
+import { AddPlayerCapital, DeletePlayerCapital, GameEnd, GameStartData, InitRoomDataCapital, NewLocationData, NewRoundData, RemoveInGameData, RoundEndSetup, UpdateGuessLimit, UpdateMaxCountdown, UpdatePlayerGuessNum, UpdateBestMapGuess, UpdateRoundEndCountdown, UpdateCountdown, UpdateResultNum } from "state/capitalProData/actions";
+import { CapitalProPlayer } from "state/capitalProData/types";
+
 export const socket = socketIOClient(serverEndpoint);
 
 socket.on("connection-event", data => {
     console.log(data);
 })
 
+socket.on("started-new-game-data", data => {
+    m.route.set(`/game-container/${data.roomId}`);
+    store.dispatch(InitRoomData({
+        admin: data.admin,
+        playerList: data.playerList.map((player: CapitalProPlayer) => {
+            return simplifyPlayerData(player)
+        }),
+        roomId: data.roomId,
+        gameMode: data.gameMode,
+        GameViewState: GameViewStates.IN_GAME
+    }))
+    store.dispatch(InitRoomDataCapital({
+        playerList: data.playerList,
+        locationData: data.locationData,
+        countdown: data.countdown,
+        roundNumber: data.roundNumber,
+        maxRound: data.maxRound,
+        resultsToChooseFrom: data.resultsToChooseFrom,
+        maxCountdown: data.maxCountdown,
+        guessLimit: data.guessLimit,
+        roundEndCountdown: data.roundEndCountdown,
+        viewState: data.viewState,
+    }))
+})
+
 socket.on("joined-new-game-data", data => {
-    const {showRoundEndModal, ...restOfData} = data;
-    store.dispatch(InitGameData(restOfData));
-    store.dispatch(changeShowRoundEndModal(showRoundEndModal));
+    store.dispatch(InitRoomData({
+        admin: data.admin,
+        playerList: data.playerList.map((player: CapitalProPlayer) => {
+            return simplifyPlayerData(player)
+        }),
+        roomId: data.roomId,
+        gameMode: data.gameMode,
+        GameViewState: GameViewStates.IN_GAME
+    }))
+    store.dispatch(InitRoomDataCapital({
+        playerList: data.playerList,
+        locationData: data.locationData,
+        countdown: data.countdown,
+        roundNumber: data.roundNumber,
+        maxRound: data.maxRound,
+        resultsToChooseFrom: data.resultsToChooseFrom,
+        maxCountdown: data.maxCountdown,
+        guessLimit: data.guessLimit,
+        roundEndCountdown: data.roundEndCountdown,
+        viewState: data.viewState,
+    }))
 })
 
-socket.on("change-in-game-state", inGame => {
-    store.dispatch(InGameChange(inGame));
+socket.on("new-player", player => {
+    console.log(player[0]);
+    store.dispatch(AddPlayer(simplifyPlayerData(player)));
+    store.dispatch(AddPlayerCapital(player));
 })
 
-socket.on("new-player", newPlayer => {
-    store.dispatch(AddPlayer(newPlayer));
+socket.on("updated-results-to-choose", resultsNum => {
+    store.dispatch(UpdateResultNum(resultsNum));
 })
 
-socket.on("player-left", socketId => {
-    store.dispatch(DeletePlayer(socketId));
+socket.on("updated-max-countdown", maxCountdown => {
+    store.dispatch(UpdateMaxCountdown(maxCountdown));
 })
 
-socket.on('update-location-header-data', data => {
-    store.dispatch(UpdateLoadingHeader(false));
-    store.dispatch(SetLocationHeaderData(data));
+socket.on("updated-guess-limit", guessLimit => {
+    store.dispatch(UpdateGuessLimit(guessLimit));
 })
 
-socket.on('update-round-number', roundNumber => {
-    store.dispatch(UpdateRoundNumber(roundNumber));
+socket.on("remove-game-data", ({playerList,
+    roundNumber,
+    locationData,
+    viewState}) => {
+        store.dispatch(RemoveInGameData(playerList,roundNumber,locationData,viewState));
+})
+
+socket.on("player-left", playerLeftId => {
+    store.dispatch(DeletePlayer(playerLeftId));
+    store.dispatch(DeletePlayerCapital(playerLeftId))
+})
+
+socket.on("game-start-data", ({viewState, playerList, locationData}) => {
+    console.log("startttttt")
+    store.dispatch(GameStartData(playerList,locationData,viewState));
 })
 
 socket.on("update-countdown", countdown => {
     store.dispatch(UpdateCountdown(countdown));
 })
 
-socket.on("loading-header", loadingHeader =>{
-    store.dispatch(UpdateLoadingHeader(loadingHeader));
+socket.on("new-round", ({guessNum, countdown, roundNumber, viewState, locationData}) => {
+    store.dispatch(NewRoundData(guessNum,countdown,roundNumber,viewState,locationData))
 })
 
-socket.on("updated-guessnum", (socketId, guessNum) => {
-    store.dispatch(UpdatePlayerGuessNum(socketId, guessNum));
+socket.on("new-location", newLocation => {
+    store.dispatch(NewLocationData(newLocation));
 })
 
-socket.on("updated-best-guess", (guess) => {
-    store.dispatch(UpdateBestMapGuess(guess))
+socket.on("round-end-modal-setup", ({viewState, playerList, roundEndCountdown, roundEndLocationData}) => {
+    store.dispatch(RoundEndSetup(viewState,playerList,roundEndCountdown,roundEndLocationData));
 })
 
-socket.on("updated-results-to-choose", val => {
-    store.dispatch(UpdateResultsToChooseFrom(val))
+socket.on("update-round-end-countdown", roundEndCountdown => {
+    store.dispatch(UpdateRoundEndCountdown(roundEndCountdown));
 })
 
-socket.on("updated-max-countdown", maxCountdown => {
-    store.dispatch(UpdateBaseGameSetting({
-        maxCountdown
-    }))
+socket.on("game-end", viewState => {
+    store.dispatch(GameEnd(viewState));
 })
 
-socket.on("updated-guess-limit", (guessLimit) => {
-    store.dispatch(UpdateBaseGameSetting({
-        guessLimit
-    }))
+socket.on("updated-guessnum", (userId, guessNum) => {
+    store.dispatch(UpdatePlayerGuessNum(userId, guessNum));
 })
 
-socket.on('new-round', ({guessNum, countdown, roundNumber}) => {
-    store.dispatch(UpdateCountdown(countdown));
-    store.dispatch(UpdateRoundNumber(roundNumber));
-    store.dispatch(UpdateLoadingHeader(true));
-    store.dispatch(UpdateDataToAllPlayers({
-        guessNum
-    }))
-    store.dispatch(UpdateBestMapGuess(undefined));
-    store.dispatch(ClearLocationData());
-    
+socket.on("updated-best-guess", bestGuess => {
+    store.dispatch(UpdateBestMapGuess(bestGuess))
 })
 
-socket.on('update-show-round-end-modal', (showRoundEndModal) => {
-    store.dispatch(changeShowRoundEndModal(showRoundEndModal));
+socket.on("no-room-found", () => {
+    store.dispatch(SetGameViewState(GameViewStates.ROOM_NOT_FOUND))
 })
 
-socket.on("update-round-end-countdown", (roundEndCountdown) => {
-    store.dispatch(UpdateRoundEndCountdown(roundEndCountdown))
-})
-
-socket.on("emit-round-end-location-data", data => {
-    store.dispatch(AddRoundEndLocationData(data.lnglat, data.wikiId))
-})
-
-socket.on('emit-round-end-player-data', playerList => {
-    store.dispatch(UpdateRoundEndPlayerData(playerList))
-})
-
-socket.on('init-game-data-status', initDataStatus => {
-    store.dispatch(UpdateBaseGameSetting({
-        initDataStatus
-    }))
-})
-
-socket.on("update-show-game-end", showGameEnd => {
-    store.dispatch(UpdateBaseGameSetting({
-        showGameEnd
-    }))
-})
-
-socket.on("reset-game-data", () => {
-    store.dispatch(ResetGameDataForNewGame())
-})
+const simplifyPlayerData = (player: CapitalProPlayer): player => {
+    return {
+        userId: player.userId,
+        socketId: player.socketId,
+        username: player.username,
+    }
+}

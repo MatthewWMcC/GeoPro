@@ -1,8 +1,9 @@
 import { bindTo } from 'base/operators';
 import m from 'mithril';
-import { distinctUntilChanged, pluck, tap } from 'rxjs/operators';
+import { distinctUntilChanged, pluck } from 'rxjs/operators';
 import { initSocketDataSetup } from 'socket/socket-helpers';
 import { socket } from 'socket/socket-main';
+import { ClearCapitalProData } from 'state/capitalProData/actions';
 import { ClearGameData } from 'state/GameData/actions';
 import { store } from 'state/store';
 import { GameContainerAttrs, GameContainerState } from "./types";
@@ -16,12 +17,12 @@ export const model: GameContainerModel = {
     handleComponentRemove: (vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>) => {
         vnode.state.subscriptions.forEach(subscription => subscription.unsubscribe());
         vnode.state.subscriptions = [];
-        console.log("leaving container")
         socket.emit("leave-game")
         store.dispatch(ClearGameData())
+        store.dispatch(ClearCapitalProData())
+
     },
     handleComponentInit: (vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>) => {
-        vnode.state.inGame = true;
         vnode.state.subscriptions = [];
 
         const {store$, roomId} = vnode.attrs;
@@ -31,21 +32,36 @@ export const model: GameContainerModel = {
             socket.emit("join-room", roomId);
         }, 1000)
 
-
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "initDataStatus"),
+                pluck("CapitalProData", "viewState"),
                 distinctUntilChanged(),
-                bindTo("doneLoading", vnode)
+                bindTo("viewState", vnode)
             ).subscribe()
         )
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "inGame"),
+                pluck("GameData", "GameViewState"),
                 distinctUntilChanged(),
-                bindTo("inGame", vnode)
+                bindTo("GameViewState", vnode)
             ).subscribe()
         )
+
+        // vnode.state.subscriptions.push(
+        //     store$.pipe(
+        //         pluck("GameData", "initDataStatus"),
+        //         distinctUntilChanged(),
+        //         bindTo("doneLoading", vnode)
+        //     ).subscribe()
+        // )
+
+        // vnode.state.subscriptions.push(
+        //     store$.pipe(
+        //         pluck("GameData", "inGame"),
+        //         distinctUntilChanged(),
+        //         bindTo("inGame", vnode)
+        //     ).subscribe()
+        // )
     }
 }

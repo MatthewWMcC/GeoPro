@@ -20,7 +20,7 @@ export const model: GameWaitingModel = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "resultsToChooseFrom"),
+                pluck("CapitalProData", "resultsToChooseFrom"),
                 distinctUntilChanged(),
                 bindTo("resultsToChooseFrom", vnode)
             ).subscribe()
@@ -28,7 +28,7 @@ export const model: GameWaitingModel = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "maxCountdown"),
+                pluck("CapitalProData", "maxCountdown"),
                 distinctUntilChanged(),
                 bindTo("maxCountdown", vnode)
             ).subscribe()
@@ -36,7 +36,7 @@ export const model: GameWaitingModel = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "guessLimit"),
+                pluck("CapitalProData", "guessLimit"),
                 distinctUntilChanged(),
                 bindTo("guessLimit", vnode)
             ).subscribe()
@@ -46,7 +46,7 @@ export const model: GameWaitingModel = extendBaseModel({
             store$.pipe(
                 pluck("GameData", "roomId"),
                 distinctUntilChanged(),
-                tap(roomId => vnode.state.roomId = roomId)
+                bindTo("roomId", vnode)
             ).subscribe()
         )
     },

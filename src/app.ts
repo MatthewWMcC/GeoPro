@@ -63,7 +63,6 @@ const createApp = () => {
             {
                 store$
             }) 
-    
     });
     
     m.route.prefix = "#";
