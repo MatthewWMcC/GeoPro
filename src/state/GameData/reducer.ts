@@ -1,5 +1,5 @@
 import { AddPlayerAction, AddRoundEndLocationDataAction, ClearGameDataAction, DeletePlayerAction, GameDataActions, GameDataActionTypes, GameDataState, 
-    InGameChangeAction, InitGameDataAction, locationData, locationHeaderData, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerGuessNumAction, UpdateResultsToChooseFromAction, UpdateRoundEndCountdownAction, UpdateRoundEndPlayerDataAction, UpdateRoundNumberAction } from "./types";
+    InGameChangeAction, InitGameDataAction, locationData, locationHeaderData, player, ResetGameDataForNewGameAction, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerGuessNumAction, UpdateResultsToChooseFromAction, UpdateRoundEndCountdownAction, UpdateRoundEndPlayerDataAction, UpdateRoundNumberAction } from "./types";
 
 
 const freshLocationHeaderData: locationHeaderData = {
@@ -27,9 +27,8 @@ const initGameData: GameDataState = {
     guessLimit: 3,
     roundEndCountdown: 0,
     initDataStatus: false,
+    showGameEnd: false,
 }
-
-
 
 export const GameDataReducer = (state: GameDataState = initGameData, action: GameDataActions) : GameDataState => {
     switch(action.type) {
@@ -73,6 +72,8 @@ export const GameDataReducer = (state: GameDataState = initGameData, action: Gam
             return ClearLocationDataReducer(state)
         case(GameDataActionTypes.UPDATE_ROUND_END_PLAYER_DATA):
             return UpdateRoundEndPlayerListReducer(state, action)
+        case(GameDataActionTypes.RESET_GAME_DATA_FOR_NEW_GAME):
+            return ResetGameDataForNewGameReducer(state)
         default:
             return state
     }
@@ -176,7 +177,7 @@ const UpdateDataToAllPlayersReducer = (state: GameDataState, action: UpdateDataT
     })
 }
 
-const UpdateBestMapGuessReducer = (state: GameDataState, action: UpdateBestMapGuessAction) => {
+const UpdateBestMapGuessReducer = (state: GameDataState, action: UpdateBestMapGuessAction): GameDataState => {
     return({
         ...state,
         bestMapGuess: action.payload.bestMapGuess,
@@ -185,14 +186,14 @@ const UpdateBestMapGuessReducer = (state: GameDataState, action: UpdateBestMapGu
     })
 }
 
-const UpdateResultsToChooseFromReducer = (state: GameDataState, action: UpdateResultsToChooseFromAction) => {
+const UpdateResultsToChooseFromReducer = (state: GameDataState, action: UpdateResultsToChooseFromAction): GameDataState => {
     return({
         ...state,
         resultsToChooseFrom: action.payload.resultsToChooseFrom
     })
 }
 
-const UpdateMaxCountdownReducer = (state: GameDataState, action: UpdateMaxCountdownAction) => {
+const UpdateMaxCountdownReducer = (state: GameDataState, action: UpdateMaxCountdownAction): GameDataState => {
     return({
         ...state,
         maxCountdown: action.payload.maxCountdown
@@ -200,14 +201,14 @@ const UpdateMaxCountdownReducer = (state: GameDataState, action: UpdateMaxCountd
     })
 }
 
-const UpdateBaseGameSettingReducer = (state: GameDataState, action: UpdateBaseGameSettingAction) => {
+const UpdateBaseGameSettingReducer = (state: GameDataState, action: UpdateBaseGameSettingAction): GameDataState => {
     return({
         ...state,
         ...action.payload.data
     })
 }
 
-const AddRoundEndLocationDataReducer = (state: GameDataState, action: AddRoundEndLocationDataAction) => {
+const AddRoundEndLocationDataReducer = (state: GameDataState, action: AddRoundEndLocationDataAction): GameDataState => {
     return({
         ...state,
         locationData: {
@@ -217,7 +218,7 @@ const AddRoundEndLocationDataReducer = (state: GameDataState, action: AddRoundEn
     })
 }
 
-const ClearLocationDataReducer = (state: GameDataState) => {
+const ClearLocationDataReducer = (state: GameDataState): GameDataState => {
     return ({
         ...state,
         locationHeaderData: {...freshLocationHeaderData},
@@ -225,9 +226,32 @@ const ClearLocationDataReducer = (state: GameDataState) => {
     })
 }
 
-const UpdateRoundEndPlayerListReducer = (state: GameDataState, action: UpdateRoundEndPlayerDataAction) => {
+const UpdateRoundEndPlayerListReducer = (state: GameDataState, action: UpdateRoundEndPlayerDataAction): GameDataState => {
     return ({
         ...state,
         playerList: action.payload.playerList
+    })
+}
+
+const ResetGameDataForNewGameReducer = (state: GameDataState): GameDataState => {
+    return ({
+        ...state,
+        bestMapGuess: undefined,
+        currentMapGuess: undefined,
+        locationData: undefined,
+        locationHeaderData: undefined,
+        showGameEnd: false,
+        loadingHeader: true,
+        roundNumber: 0,
+        playerList: state.playerList.map((player: player) => {
+            return {
+                ...player,
+                score: 0,
+                guessNum: state.guessLimit,
+                guess: undefined,
+                distance: undefined,
+                addedScore: 0,
+            }
+        })
     })
 }

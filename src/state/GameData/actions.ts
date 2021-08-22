@@ -1,6 +1,6 @@
 import mapboxgl from "mapbox-gl"
 import { AddPlayerAction, AddRoundEndLocationDataAction, ClearGameDataAction, ClearLocationDataAction, DeletePlayerAction, GameDataActionTypes, GameDataState, InGameChangeAction, InitGameDataAction, locationHeaderData, 
-    player, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerDistanceAndGuessAction, UpdatePlayerGuessNumAction, UpdatePlayerListAction, UpdateResultsToChooseFromAction, UpdateRoundEndCountdownAction, UpdateRoundEndPlayerDataAction, UpdateRoundNumberAction } from "./types"
+    player, ResetGameDataForNewGameAction, SetCurrentMapGuessAction, SetLocationHeaderDataAction, UpdateBaseGameSettingAction, UpdateBestMapGuessAction, UpdateCountdownAction, UpdateDataToAllPlayersAction, UpdateLoadingHeaderAction, UpdateMaxCountdownAction, UpdatePlayerDistanceAndGuessAction, UpdatePlayerGuessNumAction, UpdatePlayerListAction, UpdateResultsToChooseFromAction, UpdateRoundEndCountdownAction, UpdateRoundEndPlayerDataAction, UpdateRoundNumberAction } from "./types"
 
 export const InitGameData = (state: GameDataState): InitGameDataAction => {
     return {
@@ -198,5 +198,12 @@ export const UpdateRoundEndPlayerData = (playerList: player[]): UpdateRoundEndPl
         payload: {
             playerList
         }
+    }
+}
+
+export const ResetGameDataForNewGame = (): ResetGameDataForNewGameAction => {
+    return {
+        type: GameDataActionTypes.RESET_GAME_DATA_FOR_NEW_GAME,
+        payload: {}
     }
 }

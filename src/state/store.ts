@@ -6,7 +6,7 @@ export type storeType = typeof store;
 
 export const configureStore = () => {
     return createStore(rootReducer,
-        // applyMiddleware(logger)
+        applyMiddleware(logger)
     );
 }
 
