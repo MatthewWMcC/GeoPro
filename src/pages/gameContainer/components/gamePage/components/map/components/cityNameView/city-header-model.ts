@@ -1,11 +1,12 @@
 import { CityHeaderAttrs, CityHeaderState } from "./types";
 import m from "mithril";
-import { tap, pluck, distinctUntilChanged, map } from "rxjs/operators";
+import { pluck, distinctUntilChanged, map } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { bindTo, findObjectWithKeyValuePair } from "base/operators";
 import { socket } from "socket/socket-main";
 import { store } from "state/store";
 import { combineLatest } from "rxjs";
+import { SetCurrentMapGuess } from "state/capitalProData/actions";
 
 
 interface CityHeaderModel {
@@ -23,40 +24,40 @@ export const model: CityHeaderModel = extendBaseModel({
         vnode.state.countdown = 0;
 
         vnode.state.subscriptions.push(
-            store$.pipe(pluck("GameData", "locationHeaderData"),
+            store$.pipe(pluck("CapitalProData", "locationData"),
             distinctUntilChanged(),
-            bindTo("locationHeaderData", vnode)
+            bindTo("locationData", vnode)
             ).subscribe()
         )
 
         vnode.state.subscriptions.push(
-            store$.pipe(pluck("GameData", "countdown"),
+            store$.pipe(pluck("CapitalProData", "countdown"),
             distinctUntilChanged(),
             bindTo("countdown", vnode)
             ).subscribe()
         )
 
         vnode.state.subscriptions.push(
-            store$.pipe(pluck("GameData", "roundNumber"),
+            store$.pipe(pluck("CapitalProData", "roundNumber"),
             distinctUntilChanged(),
             bindTo("roundNumber", vnode)
             ).subscribe()
         )
 
         vnode.state.subscriptions.push(
-            store$.pipe(pluck("GameData", "loadingHeader"),
+            store$.pipe(pluck("GameData", "roomId"),
             distinctUntilChanged(),
-            bindTo("loadingHeader", vnode)
+            bindTo("roomId", vnode)
             ).subscribe()
         )
 
         const currentMapGuess$ = store$.pipe(
-            pluck("GameData", "currentMapGuess"),
+            pluck("CapitalProData", "currentMapGuess"),
             distinctUntilChanged(),
         )
 
         const haveGuesses$ = store$.pipe(
-            pluck("GameData", "playerList"),
+            pluck("CapitalProData", "playerList"),
             distinctUntilChanged(),
             findObjectWithKeyValuePair("userId", store.getState().UserData.userId),
             pluck("guessNum"),
@@ -77,9 +78,10 @@ export const model: CityHeaderModel = extendBaseModel({
         )
     },
     handleSubmitClick: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>) => {
-        const { currentMapGuess } = vnode.state;
+        const { currentMapGuess, roomId } = vnode.state;
         if(currentMapGuess) {
-            socket.emit('player-location-guess', currentMapGuess);
+            socket.emit('player-location-guess', roomId, currentMapGuess);
+            store.dispatch(SetCurrentMapGuess(undefined));
         }
     }
 })

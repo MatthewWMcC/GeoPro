@@ -3,6 +3,7 @@ import { bindTo } from 'base/operators';
 import mapboxgl from 'mapbox-gl';
 import m from 'mithril';
 import { distinctUntilChanged, filter, map, pluck, switchMap, take, tap } from 'rxjs/operators';
+import { CapitalProPlayer } from 'state/capitalProData/types';
 import { player } from 'state/GameData/types';
 import { store } from 'state/store';
 import { getMapboxAPIToken } from 'utils/environment-vars-helper';
@@ -43,7 +44,7 @@ export const model: RoundEndModalType = extendBaseModel({
     addMapLocationMarker: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>, map: mapboxgl.Map) => {
         const {store$} = vnode.attrs;
         const locationData$ = store$.pipe(
-            pluck("GameData", "locationData"),
+            pluck("CapitalProData", "locationData"),
             distinctUntilChanged(),
         )
 
@@ -62,7 +63,7 @@ export const model: RoundEndModalType = extendBaseModel({
     addPlayerMarkers: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>, mapbox: mapboxgl.Map) => {
         const {store$} = vnode.attrs;
         const playerData$ = store$.pipe(
-            pluck("GameData", "playerList"),
+            pluck("CapitalProData", "playerList"),
             distinctUntilChanged(),
         )
 
@@ -91,7 +92,7 @@ export const model: RoundEndModalType = extendBaseModel({
     scrollOutMap: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>, mapbox: mapboxgl.Map) => {
         const {store$} = vnode.attrs;
         const playerData$ = store$.pipe(
-            pluck("GameData", "playerList"),
+            pluck("CapitalProData", "playerList"),
             distinctUntilChanged(),
         )
 
@@ -120,7 +121,7 @@ export const model: RoundEndModalType = extendBaseModel({
             ).subscribe()
         )
     },
-    getFurthestDistance: (playerData: player[]): number => {
+    getFurthestDistance: (playerData: CapitalProPlayer[]): number => {
         return playerData.reduce<number>((prev, curr) => {
             return prev > curr.distance ? prev : curr.distance
         }, 0)
@@ -131,29 +132,28 @@ export const model: RoundEndModalType = extendBaseModel({
         vnode.state.playerLocationMarkers = [];
 
         const locationData$ = store$.pipe(
-            pluck("GameData", "locationData"),
+            pluck("CapitalProData", "locationData"),
             distinctUntilChanged(),
         )
 
-        const initDataStatus$ = store$.pipe(
-            pluck("GameData", "initDataStatus"),
-            distinctUntilChanged(),
-        )
+        // const initDataStatus$ = store$.pipe(
+        //     pluck("GameData", "initDataStatus"),
+        //     distinctUntilChanged(),
+        // )
 
         const playerData$ = store$.pipe(
-            pluck("GameData", "playerList"),
+            pluck("CapitalProData", "playerList"),
             distinctUntilChanged(),
         )
 
         vnode.state.subscriptions.push(
-            initDataStatus$.pipe(
-                filter(initDataStatus => !!initDataStatus),
-                switchMap(() => locationData$),
+            locationData$.pipe(
+                filter(locationData => !!locationData.lnglat),
                 tap(locationData => {
                     m.request({
                         method: "GET",
                         url: `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&ids=${locationData.wikiId}`
-                    }).then((result: any) => result.entities[locationData.wikiId].sitelinks.enwiki.title)
+                    }).then((result: any) => locationData.wikiId && result.entities[locationData.wikiId].sitelinks.enwiki.title)
                     .then(title => setDataWithTitle(title))
                 }),
                 take(1),
@@ -162,14 +162,14 @@ export const model: RoundEndModalType = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "locationHeaderData"),
+                pluck("CapitalProData", "locationData"),
                 distinctUntilChanged(),
-                bindTo("locationHeaderData", vnode)
+                bindTo("locationData", vnode)
             ).subscribe()
         )
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "roundEndCountdown"),
+                pluck("CapitalProData", "roundEndCountdown"),
                 distinctUntilChanged(),
                 bindTo("roundEndCountdown", vnode)
             ).subscribe()
@@ -194,21 +194,20 @@ export const model: RoundEndModalType = extendBaseModel({
     handleComponentCreate: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>) => {
         const { store$ } = vnode.attrs;
 
-        const initDataStatus$ = store$.pipe(
-            pluck("GameData", "initDataStatus"),
-            distinctUntilChanged(),
-        )
+        // const initDataStatus$ = store$.pipe(
+        //     pluck("CapitalProData", "initDataStatus"),
+        //     distinctUntilChanged(),
+        // )
 
         const locationData$ = store$.pipe(
-            pluck("GameData", "locationData"),
+            pluck("CapitalProData", "locationData"),
             distinctUntilChanged(),
         )
 
         vnode.state.subscriptions.push(
-            initDataStatus$.pipe(
-                filter(initDataStatus => !!initDataStatus),
-                switchMap(() => locationData$),
-                map(locationData => model.initializeMap(vnode, locationData.lnglat)),
+            locationData$.pipe(
+                filter(locationData => !!locationData.lnglat),
+                map(locationData => model.initializeMap(vnode, locationData.lnglat!)),
                 take(1),
                 bindTo("map", vnode)    
             ).subscribe()

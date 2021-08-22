@@ -1,13 +1,13 @@
 import { BaseAttrs, BaseState } from "base/types";
-import { locationHeaderData } from "state/GameData/types";
+import { LocationData } from "state/capitalProData/types";
 
 export interface CityHeaderAttrs extends BaseAttrs{}
 
 export interface CityHeaderState extends BaseState{
-    locationHeaderData: locationHeaderData;
+    locationData: LocationData;
     countdown: number;
     roundNumber: number;
-    loadingHeader: boolean;
     currentMapGuess?: mapboxgl.LngLatLike;
     submitActive: boolean;
+    roomId: string;
 }

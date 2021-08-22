@@ -1,6 +1,5 @@
 import { PlayerListAttrs, PlayerListState } from "./types";
 import m from "mithril";
-import mapboxgl from 'mapbox-gl';
 import { tap, pluck, distinctUntilChanged } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { bindTo } from "base/operators";
@@ -19,7 +18,7 @@ export const model: PlayerListModel = extendBaseModel({
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("GameData", "playerList"),
+                pluck("CapitalProData", "playerList"),
                 distinctUntilChanged((prev, curr) => {
                    return JSON.stringify(prev) === JSON.stringify(curr)
                 }),

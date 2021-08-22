@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    background-color: var(--grey-background-color);
+    background-color: var(--background-color);
     font-family: Arial, Helvetica, sans-serif;
     height: 100vh;
     display: flex;
@@ -40,7 +40,9 @@ body {
     --navigation-width: 18vw;
     --header-color: rgb(0, 97, 21);
     --grey-overlay-color: rgb(236, 234, 236);
-    --grey-background-color: rgba(0, 0, 255, 0.658); 
+    --background-color: rgb(84, 84, 245); 
+    --mode-color: rgb(57, 57, 148); 
+    --light-mode-color: rgb(123, 123, 168); 
     --waiting-menu-color: rgb(48, 47, 63);
     --button-color: rgb(9, 13, 36);
     --player-card-color: #5eee51;
@@ -68,4 +70,26 @@ body {
     cursor: pointer;
     text-align: center;
     border: 2px solid var(--button-color);
+}
+
+.styled-text-input {
+    height: 30px;
+    width: 50%;
+    border-radius: 5px;
+    border-width:0px;
+    border:none;
+    font-size:24px;
+}
+
+.styled-text-input:focus {
+    outline: none;
+}
+
+.inline-link {
+    color: blue;
+    cursor: pointer;
+  }
+  
+.inline-link:hover {
+    text-decoration: underline;
 }
