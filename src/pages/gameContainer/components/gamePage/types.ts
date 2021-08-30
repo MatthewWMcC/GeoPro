@@ -1,10 +1,9 @@
 import {BaseState, BaseAttrs} from "base/types"
-import { player } from "state/GameData/types";
+import { CapitalProPlayer, capitialProViewStates } from "state/capitalProData/types";
 
 export interface GamePageState extends BaseState {
-    showRoundEndModal: boolean;
-    showGameEnd: boolean;
-    winningPlayer?: player;
+    viewState: capitialProViewStates;
+    winningPlayer?: CapitalProPlayer;
 }
 
 export interface GamePageAttrs extends BaseAttrs {

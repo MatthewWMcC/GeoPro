@@ -1,10 +1,10 @@
 import { GamePageAttrs, GamePageState } from "./types";
 import m from "mithril";
-import { tap, pluck, distinctUntilChanged, filter, switchMap, take } from "rxjs/operators";
-import { store } from "state/store";
+import { pluck, distinctUntilChanged, filter, switchMap, take } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { bindTo } from "base/operators";
 import { socket } from "socket/socket-main";
+import { capitialProViewStates } from "state/capitalProData/types";
 
 
 interface GamePageModel {
@@ -20,30 +20,24 @@ export const model: GamePageModel = extendBaseModel({
         const { store$ } = vnode.attrs;
         vnode.state.subscriptions = [];
 
-        const gameEnd$ = store$.pipe(
-            pluck("GameData", "showGameEnd"),
+        const viewState$ = store$.pipe(
+            pluck("CapitalProData", "viewState"),
             distinctUntilChanged()
         )
 
         vnode.state.subscriptions.push(
             store$.pipe(
-                pluck("CurrentPageData", "showRoundEndModal"),
+                pluck("CapitalProData", "viewState"),
                 distinctUntilChanged(),
-                bindTo("showRoundEndModal", vnode)
+                bindTo("viewState", vnode)
             ).subscribe()
         )
 
         vnode.state.subscriptions.push(
-            gameEnd$.pipe(
-                bindTo("showGameEnd", vnode)
-            ).subscribe()
-        )
-
-        vnode.state.subscriptions.push(
-            gameEnd$.pipe(
-                filter(gameEnd => !!gameEnd),
+            viewState$.pipe(
+                filter(viewState => viewState === capitialProViewStates.GAME_END),
                 switchMap(() => store$.pipe(
-                    pluck("GameData", "playerList", 0),
+                    pluck("CapitalProData", "playerList", 0),
                     distinctUntilChanged(),
                     take(1),
                 )),

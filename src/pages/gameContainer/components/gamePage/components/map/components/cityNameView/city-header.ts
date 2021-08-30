@@ -8,19 +8,14 @@ export const cityHeader: m.Component<CityHeaderAttrs, CityHeaderState> = {
     onremove: model.handleComponentRemove,
     oncreate: model.handleComponentCreate,
     view: (vnode: m.VnodeDOM<CityHeaderAttrs, CityHeaderState>): m.Children => {
-        const { locationHeaderData, countdown, roundNumber, loadingHeader, submitActive } = vnode.state;
-        let locationList;
-        if(!loadingHeader) {
-            locationList = Object.keys(locationHeaderData).map((key: string) => {
-                return locationHeaderData[key]
-            })
-        }
+        const { locationData, countdown, roundNumber, submitActive } = vnode.state;
+        const locationList = [locationData.city, locationData.region, locationData.country];
     
         return  m(".city-header-container", [
-            loadingHeader && m(".loading-holder", [
+            !locationData.city && m(".loading-holder", [
                 m("label.loading-label.map-header-label", "Loading...")
             ]),
-            !loadingHeader && m(".not-loading-holder", [
+            locationData.city && m(".not-loading-holder", [
                 locationList && locationList.map(location => {
                     return m(".location-data-holder", [
                         m("label.location-data-label.map-header-label", location)

@@ -1,11 +1,13 @@
 import m from 'mithril';
 import { initSocketDataSetup } from 'socket/socket-helpers';
 import { MainPageAttrs, MainPageState } from "./types";
-import uniqid from 'uniqid';
+import { socket } from 'socket/socket-main';
 
 interface MainPageModel {
     handleComponentInit: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => void;
-    handleMakeNewGamePress: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => void;
+    handleComponentCreate: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => void;
+    handleMakeNewGamePress: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>, gameMode: string) => void;
+    handleGoToRoom: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => void;
 }
 
 export const model: MainPageModel = {
@@ -14,7 +16,21 @@ export const model: MainPageModel = {
 
         initSocketDataSetup(store$);
     },
-    handleMakeNewGamePress: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => {
-        m.route.set(`/game-container/${uniqid()}`)
+    handleComponentCreate: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => {
+        const textbox = document.getElementById("enter-game-uri");
+        if(textbox) textbox.focus();
+    },
+    handleMakeNewGamePress: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>, gameMode: string) => {
+        socket.emit("start-new-lobby", gameMode);
+    },
+    handleGoToRoom: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => {
+        let { roomURI } = vnode.state;
+        console.log(roomURI);
+        if(!roomURI.includes("http://localhost:8080/#/game-container/")) {
+            console.log("no")
+        } else {
+            roomURI = roomURI.replace("http://localhost:8080/#", "")
+            m.route.set(roomURI);
+        }
     }
 }

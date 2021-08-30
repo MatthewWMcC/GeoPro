@@ -5,6 +5,7 @@ import {map} from "./components/map/map"
 import "./game-page.css"
 import { playerList } from './components/player-list/player-list';
 import { RoundEndModal } from './components/roundEndModal/round-end-modal';
+import { capitialProViewStates } from 'state/capitalProData/types';
 
 export const gamePage: m.Component<GamePageAttrs, GamePageState> = {
     oninit: model.handleComponentInit,
@@ -12,16 +13,16 @@ export const gamePage: m.Component<GamePageAttrs, GamePageState> = {
     oncreate: model.handleComponentCreate,
     view: (vnode: m.VnodeDOM<GamePageAttrs, GamePageState>): m.Children => {
         const {store$} = vnode.attrs;
-        const { showRoundEndModal, showGameEnd, winningPlayer } = vnode.state;
+        const { viewState, winningPlayer } = vnode.state;
+        console.log(winningPlayer)
 
-        const showMapAndFeatures = !showGameEnd && !showRoundEndModal;
         return  m(".game-page-container",[
             m(".map-and-players-list-container", [
-                showMapAndFeatures && m(map, {
+                viewState === capitialProViewStates.IN_GAME && m(map, {
                     store$
                 }),
-                showRoundEndModal && m(RoundEndModal, { store$ }),
-                showGameEnd && m(".game-end-container", [
+                viewState === capitialProViewStates.ROUND_END_MODAL && m(RoundEndModal, { store$ }),
+                viewState === capitialProViewStates.GAME_END && m(".game-end-container", [
                     m(".inner-game-end-container", [
                         winningPlayer && m("#game-end-message-container", [
                             m("h1.game-end-message", 
