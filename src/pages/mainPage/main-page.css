@@ -16,7 +16,7 @@
     color: aliceblue;
     background-color: var(--mode-color);
     border-radius: 20px;
-    border: 2px black dashed;
+    border: 2px black solid;
     margin-bottom: 25px;
 }
 
@@ -65,10 +65,10 @@
     padding: 3px;
     white-space: nowrap;
     background-color: grey;
-
     display: inline-flex;
     align-items: center;
     border-radius: 5px;
+    border: 1px black solid;
 }
 
 .player-icon {
@@ -86,21 +86,34 @@
     font-size: 14px;
 }
 #url-enter-container {
-    width: 100%;
+    width: 70%;
     display: flex;
     justify-content: center;
     margin-bottom: 25px;
 }
-.styled-text-input {
+#enter-game-uri {
+    width: 100%;
     border-radius: 5px 0 0 5px;
 }
 
 #submit-url-button {
     border-radius: 0 5px 5px 0;
     height: 30px;
+    width: 50px;
     /* padding: 5px; */
     background-color: var(--button-color);
     color: aliceblue;
     border: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+#submit-url-button:hover { 
+    background-color: var(--hover-button-color);
+}
+
+#submit-url-button:active {
+    
 }
