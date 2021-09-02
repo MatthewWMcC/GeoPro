@@ -1,13 +1,11 @@
 {
-    "compilerOptions": {
-        "target": "es2017",
-        "allowSyntheticDefaultImports": false,
-        "baseUrl": "./",
-        "paths": {
-            "stream": [
-                "node_modules/stream-browserify"
-              ],
-        }
-    },
-    "exclude": ["node_modules", "dist"]
+  "compilerOptions": {
+    "target": "es2017",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "stream": ["node_modules/stream-browserify"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
 }
