@@ -1,95 +1,111 @@
-*, *:before, *:after {
-    box-sizing: inherit;
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 body {
-    margin: 0;
-    background-color: var(--background-color);
-    font-family: Arial, Helvetica, sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  margin: 0;
+  background-color: var(--background-color);
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #body-content-container {
-    z-index: 0;
-    position: relative;
-    padding: 40px 50px;
-    height: 100%;
+  z-index: 0;
+  position: relative;
+  padding: 40px 50px;
+  height: 100%;
+  overflow: hidden;
 }
 
 #navigation-content-container {
-    z-index: 1;
-    position: fixed;
-    height: calc(100vh - var(--header-height));
+  z-index: 1;
+  position: fixed;
+  height: calc(100vh - var(--header-height));
 }
 
 #header-content-container {
-    z-index: 2;
-    top: 0%;
-    height: var(--header-height);
-    width: 100%;
-    background-color: var(--header-color);
-    /* padding: 20px 40px; */
+  z-index: 2;
+  top: 0%;
+  /* height: var(--header-height); */
+  width: 100%;
+  background-color: var(--header-color);
+  /* display: none; */
 }
-
 
 /* variables */
 :root {
-    --header-height: 60px;
-    --navigation-width: 18vw;
-    --header-color: rgb(0, 97, 21);
-    --grey-overlay-color: rgb(236, 234, 236);
-    --background-color: rgb(84, 84, 245); 
-    --mode-color: rgb(57, 57, 148); 
-    --light-mode-color: rgb(123, 123, 168); 
-    --waiting-menu-color: rgb(48, 47, 63);
-    --button-color: rgb(9, 13, 36);
-    --player-card-color: #5eee51;
-    --modal-background: rgba(255, 255, 255, 0.808);
+  --header-height: 55px;
+  --navigation-width: 18vw;
+  /* --header-color: rgb(0, 97, 21); */
+  --header-color: #3e5823;
+  --grey-overlay-color: rgb(236, 234, 236);
+  /* --background-color: rgb(84, 84, 245); */
+  --background-color: #0045b8;
+  --mode-color: rgb(57, 57, 148);
+  --light-mode-color: rgb(123, 123, 168);
+  --waiting-menu-color: rgb(48, 47, 63);
+  --button-color: rgb(9, 13, 36);
+  --hover-button-color: rgb(48, 54, 92);
+  --player-card-color: #5eee51;
+  --modal-background: rgba(255, 255, 255, 0.808);
+  --quicksilver: #a6a6a6;
+  --seljuk-blue: #4285f4;
+  --dark-grey-opacity: rgba(80, 80, 80, 0.719);
 }
 
 .styled-button {
-    padding: 10px 20px;
-    background-color: var(--button-color);
-    color: aliceblue;
-    border: 0;
-    border-radius: 5px;
-    font-size: 30px;
-    cursor: pointer;
-    text-align: center;
+  padding: 10px 20px;
+  background-color: var(--button-color);
+  color: aliceblue;
+  border: 0;
+  border-radius: 5px;
+  font-size: 30px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.styled-button:hover {
+  background-color: var(--hover-button-color);
+  transition: 0.2s;
 }
 
 .secondary-styled-button {
-    padding: 10px 20px;
-    background-color: aliceblue;
-    color: var(--button-color);
-    border: 0;
-    border-radius: 5px;
-    font-size: 20px;
-    cursor: pointer;
-    text-align: center;
-    border: 2px solid var(--button-color);
+  padding: 10px 20px;
+  background-color: aliceblue;
+  color: var(--button-color);
+  border: 0;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid var(--button-color);
 }
 
 .styled-text-input {
-    height: 30px;
-    width: 50%;
-    border-radius: 5px;
-    border-width:0px;
-    border:none;
-    font-size:24px;
+  height: 30px;
+  width: 50%;
+  border-radius: 5px;
+  border-width: 0px;
+  border: none;
+  font-size: 24px;
 }
 
 .styled-text-input:focus {
-    outline: none;
+  outline: none;
 }
 
 .inline-link {
-    color: blue;
-    cursor: pointer;
-  }
-  
+  color: blue;
+  cursor: pointer;
+}
+
 .inline-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

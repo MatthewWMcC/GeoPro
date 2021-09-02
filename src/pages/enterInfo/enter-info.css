@@ -1,0 +1,92 @@
+/* #body-content-container {
+  background-image: url("https://storage.googleapis.com/geopro-324602.appspot.com/world-background.jpg");
+} */
+
+#sign-in-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% + 80px);
+  width: calc(100% + 100px);
+  position: relative;
+  margin: -40px -50px;
+  overflow: hidden;
+}
+#sign-in-page::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -40%;
+  left: -50%;
+  z-index: -1;
+  background: url(https://storage.googleapis.com/geopro-324602.appspot.com/world-background.jpg)
+    0 0 repeat;
+  background-size: 100% 100%;
+}
+
+#enter-info-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--dark-grey-opacity);
+  padding: 20px;
+  margin-bottom: 200px;
+  border-radius: 5px;
+  border: 1px var(--grey-overlay-color) solid;
+}
+
+#google-login-section {
+  min-width: 300px;
+  height: 65px;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.login-header {
+  color: aliceblue;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+#display-name-container {
+  width: 100%;
+  height: 50px;
+  display: flex;
+}
+#display-name-input {
+  width: calc(100% - 4px);
+  height: 25px;
+  font-size: 18px;
+  border-radius: 1px;
+  margin-bottom: 10px;
+}
+.login-button {
+  background-color: var(--seljuk-blue);
+  border-radius: 1px;
+  font-size: 15px;
+}
+.go-to-game {
+  font-size: 20px;
+}
+
+.logged-in-message-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 200px;
+  align-items: center;
+}
+
+.check-icon {
+  width: 25px;
+  height: 25px;
+  color: var(--seljuk-blue);
+}
+
+.check-icon > svg {
+  height: 100%;
+  width: 100%;
+}

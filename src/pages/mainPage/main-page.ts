@@ -3,7 +3,7 @@ import { model } from './main-page-model';
 import { MainPageAttrs, MainPageState } from './types';
 import "./main-page.css";
 import { gameModeList } from 'global/constants/game-modes';
-import { leftArrowSVG, playerIcon } from 'global/constants/icons';
+import { playerIcon, searchSVG } from 'global/constants/icons';
 
 export const mainPage: m.Component<MainPageAttrs, MainPageState> = {
     oninit: model.handleComponentInit,
@@ -26,7 +26,7 @@ export const mainPage: m.Component<MainPageAttrs, MainPageState> = {
                 }),
                 m("button#submit-url-button", {
                     onclick: () => model.handleGoToRoom(vnode)
-                }, m.trust(leftArrowSVG))
+                }, m.trust(searchSVG))
             ]),
             m("#game-mode-list", [
                 gameModeList.map(gameMode => {

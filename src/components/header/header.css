@@ -1,35 +1,120 @@
 .header {
-    display: flex;
-    height: 100%;
-    justify-content: space-between;
+  display: flex;
+  height: var(--header-height);
+  justify-content: space-between;
 }
 
-.header-label-container{
-    margin-left: 100px;
-    display: flex;
-    align-items: center;
-    height: 100%;
+.display-none {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+.left-side {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 250px;
+}
+
+.right-side {
+  min-width: 200px;
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.header-label-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .header-label {
-    font-size: 35px;
-    color: rgb(38, 148, 111);
+  font-size: 35px;
+  color: rgb(38, 148, 111);
   -webkit-text-fill-color: aquamarine;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: red;
   cursor: pointer;
-
-}
-
-.header-username-container {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    margin-right: 100px;
 }
 
 .username {
-    font-weight: 500;
-    color: aliceblue;
-    font-size: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  color: aliceblue;
+  font-size: 22px;
+}
+#back-button {
+  background-color: transparent;
+  color: white;
+  padding: 2px;
+}
+#back-button > svg {
+  width: 30px;
+  height: 30px;
+}
+#back-button:hover {
+  background-color: rgba(0, 0, 0, 0.096);
+  transition: 0.2s;
+}
+.back-button-container {
+  margin-right: 20px;
+}
+
+.dropdown-container {
+  /* height: 100%; */
+  width: 200px;
+}
+
+.dropdown-title-container {
+  height: var(--header-height);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+}
+.dropdown-title-container > svg {
+  height: 20px;
+  width: 20px;
+}
+.dropdown-title-container:hover {
+  background-color: rgba(0, 0, 0, 0.308);
+}
+.dropdown-content-container {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
+  position: absolute;
+}
+.dropdown-container {
+  margin-left: 10px;
+  width: 200px;
+}
+.dropdown-option-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dropdown-option-text-container > svg {
+  height: 25px;
+  width: 25px;
+  margin: 0 30px;
+}
+.dropdown-option {
+  width: 100%;
+  height: var(--header-height);
+  background-color: aliceblue;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+}
+.dropdown-option:hover {
+  background-color: rgb(202, 202, 202);
 }
