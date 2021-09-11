@@ -1,135 +1,81 @@
-import { MapAttrs, MapState } from "./types";
-import m from "mithril";
-import mapboxgl from "mapbox-gl";
-import { getMapboxAPIToken } from "utils/environment-vars-helper";
-import {
-  tap,
-  pluck,
-  distinctUntilChanged,
-  map,
-  filter,
-  take,
-} from "rxjs/operators";
-import { store } from "state/store";
-import { SetCurrentMapGuess } from "state/capitalProData/actions";
-import { bindTo } from "base/operators";
-import { capitialProViewStates } from "state/capitalProData/types";
-import { MapStyles } from "state/UserData/types";
 import { extendMapModel } from "base/mapModel";
+import { bindTo } from "base/operators";
+import mapboxgl from "mapbox-gl";
+import m from "mithril";
+import { distinctUntilChanged, pluck, tap } from "rxjs/operators";
+import { setSelectedCountry } from "state/GameData/modes/NukePartyData/actions";
+import { gameTypeId } from "state/GameData/types";
+import { store } from "state/store";
+import { MapStyles } from "state/UserData/types";
+import { getMapboxAPIToken } from "utils/environment-vars-helper";
+import { IMapAttrs, IMapState } from "./types";
 
-interface MapModel {
-  handleComponentInit: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
-  handleComponentRemove: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
-  handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => void;
-}
-
-export const model: MapModel = extendMapModel({
-  handleComponentInit: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
+export const model = extendMapModel({
+  handleComponentInit: (vnode: m.VnodeDOM<IMapAttrs, IMapState>) => {
     const { store$ } = vnode.attrs;
     vnode.state.subscriptions = [];
+    vnode.state.subscriptions.push(
+      store$
+        .pipe(
+          pluck("GameData", "modeData", "turnUserId"),
+          distinctUntilChanged(),
+          tap((turnUserId) => turnUserId === store.getState().UserData.userId),
+          bindTo("myTurn", vnode)
+        )
+        .subscribe()
+    );
+  },
+  initializeMap: (vnode: m.VnodeDOM<IMapAttrs, IMapState>) => {
+    const mapbox = new mapboxgl.Map({
+      accessToken: getMapboxAPIToken(),
+      container: document.getElementById("map-view") as HTMLElement,
+      style: MapStyles[store.getState().UserData.preferedMapStyle].withBorders,
+    });
+    mapbox.on("style.load", function () {
+      mapbox.on("click", (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
+        const { gameMode } = store.getState().GameData;
+        const { myTurn } = vnode.state;
+        if (gameMode === gameTypeId.NUKE_PARTY && myTurn) {
+          model.handleNukePartyClick(e);
+        }
+      });
+    });
+    vnode.state.map = mapbox;
+  },
+  handleComponentCreate: (vnode: m.VnodeDOM<IMapAttrs, IMapState>) => {
+    const { store$ } = vnode.attrs;
 
     vnode.state.subscriptions.push(
       store$
         .pipe(
           pluck("UserData", "preferedMapStyle"),
-          distinctUntilChanged((prev, curr) => {
-            return JSON.stringify(prev) === JSON.stringify(curr);
-          }),
-          tap((mapStyle) => {
-            vnode.state.mapStyle = mapStyle;
-            vnode.state.map &&
-              vnode.state.map.setStyle(MapStyles[mapStyle].withBorders);
+          distinctUntilChanged(),
+          tap(() => {
+            vnode.state?.map?.remove();
+            model.initializeMap(vnode);
           })
         )
         .subscribe()
     );
-    vnode.state.subscriptions.push(
-      store$
-        .pipe(
-          pluck("CapitalProData", "viewState"),
-          distinctUntilChanged(),
-          bindTo("viewState", vnode)
-        )
-        .subscribe()
-    );
   },
-  handleComponentCreate: (vnode: m.VnodeDOM<MapAttrs, MapState>) => {
-    const { store$ } = vnode.attrs;
-    vnode.state.subscriptions.push(
-      store$
-        .pipe(
-          pluck("CapitalProData", "viewState"),
-          distinctUntilChanged(),
-          filter(
-            (viewState) => viewState !== capitialProViewStates.ROUND_END_MODAL
-          ),
-          take(1),
-          map(() => {
-            return new mapboxgl.Map({
-              accessToken: getMapboxAPIToken(),
-              container: document.getElementById(
-                "map-container"
-              ) as HTMLElement,
-              style: MapStyles[vnode.state.mapStyle].withBorders,
-              center: [-30, 45],
-              zoom: 1,
-              interactive: true,
-            });
-          }),
-          tap((map) => {
-            map.scrollZoom.setWheelZoomRate(1 / 250);
-            map.on("style.load", function () {
-              map.on("click", (e) => {
-                store.dispatch(SetCurrentMapGuess(e.lngLat));
-              });
-            });
-          }),
-          bindTo("map", vnode)
-        )
-        .subscribe()
-    );
+  handleNukePartyClick: (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
+    const { lng } = e.lngLat;
+    const { lat } = e.lngLat;
+    m.request({
+      method: "GET",
+      url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?types=country&access_token=${getMapboxAPIToken()}`,
+    })
+      .then((result: any) => {
+        const country = result.features[0];
 
-    vnode.state.subscriptions.push(
-      store$
-        .pipe(
-          pluck("CapitalProData", "currentMapGuess"),
-          distinctUntilChanged(),
-          map((currentMapGuess) => {
-            if (!currentMapGuess) return;
-            const marker = new mapboxgl.Marker()
-              .setLngLat(currentMapGuess)
-              .addTo(vnode.state.map);
-            return marker;
-          }),
-          tap((_) => {
-            vnode.state.marker && vnode.state.marker.remove();
-          }),
-          bindTo("marker", vnode)
-        )
-        .subscribe()
-    );
-
-    vnode.state.subscriptions.push(
-      store$
-        .pipe(
-          pluck("CapitalProData", "bestMapGuess"),
-          distinctUntilChanged(),
-          map((bestMapGuess) => {
-            if (!bestMapGuess) return;
-            const bestMarker = new mapboxgl.Marker({
-              color: "#000000",
-            })
-              .setLngLat(bestMapGuess)
-              .addTo(vnode.state.map);
-            return bestMarker;
-          }),
-          tap((_) => {
-            vnode.state.bestMarker && vnode.state.bestMarker.remove();
-            vnode.state.marker && vnode.state.marker.remove();
-          }),
-          bindTo("bestMarker", vnode)
-        )
-        .subscribe()
-    );
+        return {
+          name: country.place_name,
+          countryCode: country.properties.short_code.toUpperCase(),
+        };
+      })
+      .then((country) => store.dispatch(setSelectedCountry(country)))
+      .catch(() => {
+        console.log("not a country");
+      });
   },
 });

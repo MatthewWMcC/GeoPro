@@ -35,6 +35,7 @@ export const model: MainPageModel = {
     vnode: m.VnodeDOM<MainPageAttrs, MainPageState>,
     gameMode: string
   ) => {
+    socket.emit("test-event");
     socket.emit("start-new-lobby", gameMode);
   },
   handleGoToRoom: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => {

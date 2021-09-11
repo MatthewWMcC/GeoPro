@@ -1,14 +1,21 @@
+import {
+  CapitalProPlayer,
+  CapitalProState,
+} from "./modes/CapitalProData/types";
+import { nukePartyPlayer, nukePartyState } from "./modes/NukePartyData/types";
+
 export interface GameDataState {
   admin: string;
   roomId: string;
-  playerList: player[];
   gameMode: gameTypeId;
   GameViewState: GameViewStates;
+  modeData?: CapitalProState | nukePartyState;
 }
 
 export enum gameTypeId {
   NO_GAME = "gameType/NO_GAME",
   CAPITAL_PRO = "gameType/CAPITAL_PRO",
+  NUKE_PARTY = "gameType/NUKE_PARTY",
 }
 
 export interface player {
@@ -17,6 +24,8 @@ export interface player {
   username: string;
   userIconSrc: string;
 }
+
+export type playerType = CapitalProPlayer | nukePartyPlayer;
 
 export interface InitRoomDataType {
   type: GameDataActionTypes.INIT_ROOM_DATA;
@@ -28,7 +37,7 @@ export interface InitRoomDataType {
 export interface AddPlayerType {
   type: GameDataActionTypes.ADD_PLAYER;
   payload: {
-    player: player;
+    player: playerType;
   };
 }
 
@@ -68,6 +77,7 @@ export type GameDataActions =
 
 export enum GameViewStates {
   IN_GAME = "gameViewStates/IN_GAME",
+  WAITING = "gameViewStates/WAITING",
   LOADING = "gameViewStates/LOADING",
   ROOM_NOT_FOUND = "gameViewStates/ROOM_NOT_FOUND",
   DUPLICATE_PLAYER_IN_ROOM = "gameViewStates/DUPLICATE_PLAYER_IN_ROOM",

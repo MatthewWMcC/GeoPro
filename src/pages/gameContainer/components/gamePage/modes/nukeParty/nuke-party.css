@@ -1,0 +1,49 @@
+#nuke-party-container {
+  height: 100%;
+  width: 100%;
+}
+
+#nuke-party-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#country-display-placement {
+  position: absolute;
+  bottom: 4%;
+  left: 10px;
+}
+
+#submit-button-placement {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+#submit-nuke-party-guess {
+  width: 50vw;
+  height: 30px;
+  font-size: 25px;
+  padding: 5px;
+}
+
+#question-display-placement {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#question-container {
+  background-color: rgba(0, 0, 0, 0.65);
+  color: aliceblue;
+  font-size: 25px;
+  padding: 8px;
+  border-radius: 5px;
+}

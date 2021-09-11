@@ -3,9 +3,9 @@ import m from "mithril";
 import { GameContainerAttrs, GameContainerState } from "./types";
 import { gameWaiting } from "./components/gameWaiting/game-waiting";
 import { gamePage } from "./components/gamePage/game-page";
-import { capitialProViewStates } from "state/capitalProData/types";
 import { GameViewStates } from "state/GameData/types";
 import { loadingModal } from "components/loadingModal/loading-modal";
+import "./game-container.css";
 
 export const gameContainer: m.Component<
   GameContainerAttrs,
@@ -65,7 +65,7 @@ export const gameContainer: m.Component<
       ]);
     } else {
       return m(".game-container-container", [
-        viewState === capitialProViewStates.WAITING
+        viewState === GameViewStates.WAITING
           ? m(gameWaiting, { store$ })
           : m(gamePage, { store$ }),
       ]);

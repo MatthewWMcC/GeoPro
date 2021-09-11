@@ -1,14 +1,9 @@
-import { BaseState, BaseAttrs } from "base/types";
-import mapboxgl from "mapbox-gl";
-import { CapitalProState } from "state/capitalProData/types";
+import { MapState, MapAttrs } from "base/types";
 import { MapStyleTypes } from "state/UserData/types";
 
-export interface MapState extends BaseState {
-  mapStyle: MapStyleTypes;
-  map: mapboxgl.Map;
-  marker: mapboxgl.Marker;
-  bestMarker: mapboxgl.Marker;
-  viewState: CapitalProState;
+export interface IMapState extends MapState {
+  preferedMapStyle: MapStyleTypes;
+  myTurn?: boolean;
 }
 
-export interface MapAttrs extends BaseAttrs {}
+export interface IMapAttrs extends MapAttrs {}

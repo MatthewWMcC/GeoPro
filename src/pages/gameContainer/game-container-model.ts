@@ -3,7 +3,6 @@ import m from "mithril";
 import { distinctUntilChanged, pluck } from "rxjs/operators";
 import { initSocketDataSetup } from "socket/socket-helpers";
 import { socket } from "socket/socket-main";
-import { ClearCapitalProData } from "state/capitalProData/actions";
 import { UpdateCurrentPage } from "state/CurrentPageState/actions";
 import { Pages } from "state/CurrentPageState/types";
 import { ClearGameData } from "state/GameData/actions";
@@ -29,7 +28,6 @@ export const model: GameContainerModel = {
     vnode.state.subscriptions = [];
     socket.emit("leave-game");
     store.dispatch(ClearGameData());
-    store.dispatch(ClearCapitalProData());
   },
   handleComponentInit: (
     vnode: m.VnodeDOM<GameContainerAttrs, GameContainerState>
@@ -47,9 +45,19 @@ export const model: GameContainerModel = {
     vnode.state.subscriptions.push(
       store$
         .pipe(
-          pluck("CapitalProData", "viewState"),
+          pluck("GameData", "modeData", "viewState"),
           distinctUntilChanged(),
           bindTo("viewState", vnode)
+        )
+        .subscribe()
+    );
+
+    vnode.state.subscriptions.push(
+      store$
+        .pipe(
+          pluck("GameData", "modeData", "gameMode"),
+          distinctUntilChanged(),
+          bindTo("gameMode", vnode)
         )
         .subscribe()
     );
@@ -63,21 +71,5 @@ export const model: GameContainerModel = {
         )
         .subscribe()
     );
-
-    // vnode.state.subscriptions.push(
-    //     store$.pipe(
-    //         pluck("GameData", "initDataStatus"),
-    //         distinctUntilChanged(),
-    //         bindTo("doneLoading", vnode)
-    //     ).subscribe()
-    // )
-
-    // vnode.state.subscriptions.push(
-    //     store$.pipe(
-    //         pluck("GameData", "inGame"),
-    //         distinctUntilChanged(),
-    //         bindTo("inGame", vnode)
-    //     ).subscribe()
-    // )
   },
 };

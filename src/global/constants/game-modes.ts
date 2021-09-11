@@ -10,4 +10,14 @@ export const capitalPro: gameModeType = {
   numOfPlayers: "2-10",
 };
 
-export const gameModeList: gameModeType[] = [capitalPro, capitalPro];
+export const nukeParty: gameModeType = {
+  id: gameTypeId.NUKE_PARTY,
+  iconSrc:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Nuclear_symbol.svg/1024px-Nuclear_symbol.svg.png",
+  name: "Nuke Party",
+  description:
+    "Select Countries based on the prompt given but don't be left holding the nuke :O",
+  numOfPlayers: "2-8",
+};
+
+export const gameModeList: gameModeType[] = [nukeParty, capitalPro];
