@@ -1,33 +1,32 @@
 {
-    "include": ["src/**/*.ts"],
-    "compileOnSave": true,
-    "compilerOptions": {
-        "target": "es5",
-        "module": "CommonJS",
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "allowJs": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "forceConsistentCasingInFileNames": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "baseUrl": ".",
-        "sourceMap": true,
-        "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ES2019"],
-        "paths": {
-            "components/*": ["src/components/*"],
-            "base/*": ["src/base/*"],
-            "pages/*": ["src/pages/*"],
-            "utils/*": ["src/utils/*"],
-            "state/*": ["src/state/*"],
-            "global/*": ["src/global/*"],
-            "socket/*": ["src/socket/*"],
-            "stream": [
-                "node_modules/stream-browserify"
-              ],
-        }
+  "include": ["src/**/*.ts"],
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "allowJs": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "sourceMap": true,
+    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ES2019"],
+    "paths": {
+      "components/*": ["src/components/*"],
+      "base/*": ["src/base/*"],
+      "pages/*": ["src/pages/*"],
+      "utils/*": ["src/utils/*"],
+      "state/*": ["src/state/*"],
+      "global/*": ["src/global/*"],
+      "socket/*": ["src/socket/*"],
+      "services/*": ["src/services/*"],
+      "stream": ["node_modules/stream-browserify"]
     }
+  }
 }
