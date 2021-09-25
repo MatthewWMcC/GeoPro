@@ -41,7 +41,12 @@ export const header: m.Component<HeaderAttrs, HeaderState> = {
             {
               onclick: () => model.handleLogoClick(vnode),
             },
-            [m("label.header-label", "Geo Pro")]
+            [
+              m("img#logo-and-title-header", {
+                src: "https://storage.googleapis.com/geopro-324602.appspot.com/geopro-logo-title-image.png",
+                alt: "logo and title",
+              }),
+            ]
           ),
         ]),
         m(".right-side", [

@@ -1,11 +1,8 @@
-import {BaseState, BaseAttrs} from "base/types"
-import { CapitalProPlayer, capitialProViewStates } from "state/capitalProData/types";
+import { BaseState, BaseAttrs } from "base/types";
+import { gameTypeId } from "state/GameData/types";
 
 export interface GamePageState extends BaseState {
-    viewState: capitialProViewStates;
-    winningPlayer?: CapitalProPlayer;
+  gameMode: gameTypeId;
 }
 
-export interface GamePageAttrs extends BaseAttrs {
-
-}
+export interface GamePageAttrs extends BaseAttrs {}

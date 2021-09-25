@@ -12,6 +12,13 @@ export const enterInfo: m.Component<EnterInfoAttrs, EnterInfoState> = {
     const { loggedIn, UserData } = vnode.state;
     const { userIconSrc, username } = UserData;
     return m("#sign-in-page", [
+      m(".logo-title-holder", [
+        m("img#logo-and-title", {
+          src: "https://storage.googleapis.com/geopro-324602.appspot.com/geopro-logo-title-image.png",
+          alt: "logo and title",
+        }),
+      ]),
+
       m("#enter-info-section", [
         m("label.login-header", "Google Sign In"),
         m("#google-login-section", [

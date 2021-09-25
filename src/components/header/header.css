@@ -118,3 +118,8 @@
 .dropdown-option:hover {
   background-color: rgb(202, 202, 202);
 }
+
+#logo-and-title-header {
+  height: var(--header-height);
+  cursor: pointer;
+}

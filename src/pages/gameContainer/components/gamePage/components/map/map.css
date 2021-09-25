@@ -1,13 +1,12 @@
-.map-and-surrounding-elems-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    flex: 5;
+#map-view {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
 }
 
-#map-container {
-    width: 75%;
-    position: absolute;
-    border-radius: 20px;
-    border: solid 10px black;
+canvas.mapboxgl-canvas {
+  cursor: crosshair;
 }

@@ -85,7 +85,11 @@ body {
   font-size: 20px;
   cursor: pointer;
   text-align: center;
-  border: 2px solid var(--button-color);
+}
+
+.secondary-styled-button:hover {
+  background-color: grey;
+  transition: 0.2s;
 }
 
 .styled-text-input {
