@@ -2,13 +2,14 @@ import { extendMapModel } from "base/mapModel";
 import { bindTo } from "base/operators";
 import mapboxgl from "mapbox-gl";
 import m from "mithril";
-import { distinctUntilChanged, pluck, tap } from "rxjs/operators";
+import { distinctUntilChanged, map, pluck, tap } from "rxjs/operators";
 import { setSelectedCountry } from "state/GameData/modes/NukePartyData/actions";
 import { gameTypeId } from "state/GameData/types";
 import { store } from "state/store";
 import { MapStyles } from "state/UserData/types";
 import { getMapboxAPIToken } from "utils/environment-vars-helper";
 import { IMapAttrs, IMapState } from "./types";
+import { socket } from "socket/socket-main";
 
 export const model = extendMapModel({
   handleComponentInit: (vnode: m.VnodeDOM<IMapAttrs, IMapState>) => {
@@ -19,7 +20,7 @@ export const model = extendMapModel({
         .pipe(
           pluck("GameData", "modeData", "turnUserId"),
           distinctUntilChanged(),
-          tap((turnUserId) => turnUserId === store.getState().UserData.userId),
+          map((turnUserId) => turnUserId === store.getState().UserData.userId),
           bindTo("myTurn", vnode)
         )
         .subscribe()
@@ -61,6 +62,9 @@ export const model = extendMapModel({
   handleNukePartyClick: (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
     const { lng } = e.lngLat;
     const { lat } = e.lngLat;
+    if (!store.getState().GameData.modeData?.canGuess) {
+      return;
+    }
     m.request({
       method: "GET",
       url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?types=country&access_token=${getMapboxAPIToken()}`,
@@ -73,7 +77,9 @@ export const model = extendMapModel({
           countryCode: country.properties.short_code.toUpperCase(),
         };
       })
-      .then((country) => store.dispatch(setSelectedCountry(country)))
+      .then((country) => {
+        socket.emit("select-country", country);
+      })
       .catch(() => {
         console.log("not a country");
       });

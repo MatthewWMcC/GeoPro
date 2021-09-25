@@ -47,3 +47,20 @@
   padding: 8px;
   border-radius: 5px;
 }
+
+#player-list-placement {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+}
+
+#question-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#question-image {
+  width: 100px;
+}

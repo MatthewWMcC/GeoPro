@@ -6,6 +6,7 @@ import { gamePage } from "./components/gamePage/game-page";
 import { GameViewStates } from "state/GameData/types";
 import { loadingModal } from "components/loadingModal/loading-modal";
 import "./game-container.css";
+import { store } from "state/store";
 
 export const gameContainer: m.Component<
   GameContainerAttrs,
@@ -61,6 +62,14 @@ export const gameContainer: m.Component<
               "Player cannot join the same game multiple times."
             ),
           ]),
+        ]),
+      ]);
+    } else if (GameViewState === GameViewStates.CANNOT_JOIN_ROOM) {
+      return m("#modal-background", [
+        m("h2.text-center", [
+          m("label.message", store.getState().GameData.message),
+          m("br"),
+          m(returnToMainLink),
         ]),
       ]);
     } else {

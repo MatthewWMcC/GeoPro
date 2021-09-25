@@ -14,7 +14,7 @@ export const capitalProView: m.Component<CapitalProAttrs, CapitalProState> = {
   oncreate: model.handleComponentCreate,
   view: (vnode: m.VnodeDOM<CapitalProAttrs, CapitalProState>): m.Children => {
     const { store$ } = vnode.attrs;
-    const { viewState, winningPlayer, gameMode } = vnode.state;
+    const { viewState, winningPlayer } = vnode.state;
 
     return m(".game-page-container", [
       m(".map-and-players-list-container", [

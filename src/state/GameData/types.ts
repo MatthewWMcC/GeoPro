@@ -10,6 +10,8 @@ export interface GameDataState {
   gameMode: gameTypeId;
   GameViewState: GameViewStates;
   modeData?: CapitalProState | nukePartyState;
+  beginningCountdown?: number;
+  message?: string;
 }
 
 export enum gameTypeId {
@@ -64,6 +66,14 @@ export interface SetGameViewType {
   type: GameDataActionTypes.SET_GAME_VIEW_STATE;
   payload: {
     GameViewState: GameViewStates;
+    message?: string;
+  };
+}
+
+export interface UpdateBeginningCountdownType {
+  type: GameDataActionTypes.UPDATE_BEGINNING_COUNTDOWN;
+  payload: {
+    beginningCountdown: number;
   };
 }
 
@@ -73,7 +83,8 @@ export type GameDataActions =
   | DeletePlayerType
   | InitRoomDataType
   | NewAdminType
-  | SetGameViewType;
+  | SetGameViewType
+  | UpdateBeginningCountdownType;
 
 export enum GameViewStates {
   IN_GAME = "gameViewStates/IN_GAME",
@@ -81,6 +92,7 @@ export enum GameViewStates {
   LOADING = "gameViewStates/LOADING",
   ROOM_NOT_FOUND = "gameViewStates/ROOM_NOT_FOUND",
   DUPLICATE_PLAYER_IN_ROOM = "gameViewStates/DUPLICATE_PLAYER_IN_ROOM",
+  CANNOT_JOIN_ROOM = "gameViewStates/CANNOT_JOIN_ROOM",
 }
 
 export enum GameDataActionTypes {
@@ -90,6 +102,7 @@ export enum GameDataActionTypes {
   NEW_ADMIN = "gameDataActions/NEW_ADMIN",
   CLEAR_DATA = "gameDataActions/CLEAR_DATA",
   SET_GAME_VIEW_STATE = "gameDataActions/SET_GAME_VIEW_STATE",
+  UPDATE_BEGINNING_COUNTDOWN = "gameDataActions/UPDATE_BEGINNING_COUNTDOWN",
 }
 
 export interface gameModeType {

@@ -1,4 +1,5 @@
 const { getRoom } = require("../../helpers");
+const { makeGuess } = require("./helpers");
 
 const nukePartyEvents = (io, socket) => {
   socket.on("test-event", () => {
@@ -8,14 +9,11 @@ const nukePartyEvents = (io, socket) => {
   socket.on("nuke-party-guess", (guess) => {
     let room = getRoom(io, socket.roomId);
 
-    if (socket.userId === room.data.currentTurnId) {
-      console.log(guess);
-      if (room.data.prompt.answers.includes(guess)) {
-        console.log("right");
-      } else {
-        console.log("wrong");
-      }
-    }
+    makeGuess(io, socket, guess);
+  });
+
+  socket.on("select-country", (country) => {
+    io.in(socket.roomId).emit("country-selected", country);
   });
 };
 

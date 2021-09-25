@@ -13,6 +13,7 @@ import {
   InitRoomDataType,
   NewAdminType,
   SetGameViewType,
+  UpdateBeginningCountdownType,
 } from "./types";
 
 const initGameData: GameDataState = {
@@ -45,6 +46,8 @@ export const GameDataReducer = (
           return AddPlayerReducer(state, action);
         case GameDataActionTypes.DELETE_PLAYER:
           return DeletePlayerReducer(state, action);
+        case GameDataActionTypes.UPDATE_BEGINNING_COUNTDOWN:
+          return UpdateBeginningCountdownReducer(state, action);
         default:
           return state;
       }
@@ -132,5 +135,16 @@ const SetGameViewReducer = (
   return {
     ...state,
     GameViewState: action.payload.GameViewState,
+    message: action.payload.message ? action.payload.message : undefined,
+  };
+};
+
+const UpdateBeginningCountdownReducer = (
+  state: GameDataState,
+  action: UpdateBeginningCountdownType
+): GameDataState => {
+  return {
+    ...state,
+    beginningCountdown: action.payload.beginningCountdown,
   };
 };
