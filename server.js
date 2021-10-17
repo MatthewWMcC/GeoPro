@@ -21,7 +21,7 @@ const {
   GameViewStates,
 } = require("./constants");
 
-const { getRoom } = require("./helpers");
+const { getRoom, delay } = require("./helpers");
 const nukePartyEvents = require("./modes/nukeParty/socket-events");
 
 const {
@@ -94,6 +94,13 @@ io.sockets.on("connection", (socket) => {
             .to(roomId)
             .emit("new-player", getPublicPlayerData(roomId, socket.userId)); //send whole player list
         } else if (room.data.gameMode === gameType.NUKE_PARTY) {
+          if (room.data.viewState === GameViewStates.IN_GAME) {
+            socket.emit(
+              "cannot-join",
+              "Game has already started. Cannot join."
+            );
+            return;
+          }
           joinNukePartyRoom(io, socket, roomId);
         }
       } else {
@@ -325,10 +332,6 @@ io.sockets.on("connection", (socket) => {
     }
   };
 });
-
-async function delay(ms) {
-  return await new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 const getDistance = (actualPosition, newGuess) => {
   return geolib.getDistance(actualPosition, newGuess);

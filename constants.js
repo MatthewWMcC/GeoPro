@@ -39,10 +39,27 @@ const initCapitalProData = {
   viewState: GameViewStates.WAITING,
 };
 
+const nukeStatus = {
+  GREEN: "GREEN",
+  YELLOW: "YELLOW",
+  ORANGE: "ORANGE",
+  RED: "RED",
+  EXPLODED: "EXPLODED",
+};
+const guessStatus = {
+  CORRECT: "CORRECT",
+  WRONG: "WRONG",
+  DUPLICATE: "DUPLICATE",
+};
+
 const initNukePartyData = {
-  usedCountries: ["CA", "FR", "FI"],
+  usedCountries: [],
   viewState: GameViewStates.WAITING,
   queue: [],
+  maxNukeCountdown: 5,
+  maxSafeCountdown: 5,
+  nukeStatus: nukeStatus.GREEN,
+  canGuess: true,
 };
 
 const initCapitalProPlayerData = {
@@ -53,13 +70,13 @@ const initCapitalProPlayerData = {
 };
 
 const initNukePartyPlayerData = {
-  lives: 3,
+  lives: 2,
 };
 
 const testDataNukeParty = [
   {
     substring: "oza",
-    answers: ["FI"],
+    answers: ["FI", "BG"],
     question: "Name contains the substring 'oza'",
   },
   {
@@ -110,4 +127,6 @@ module.exports = {
   nukePartyViewStates,
   GameViewStates,
   testDataNukeParty,
+  nukeStatus,
+  guessStatus,
 };

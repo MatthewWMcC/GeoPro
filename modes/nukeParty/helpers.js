@@ -1,12 +1,15 @@
 const { cloneDeep } = require("lodash");
+const EventEmitter = require("events");
 const fs = require("fs");
 const {
   initNukePartyData,
   initNukePartyPlayerData,
   GameViewStates,
   testDataNukeParty,
+  nukeStatus,
+  guessStatus,
 } = require("../../constants");
-const { getRoom } = require("../../helpers");
+const { getRoom, delay, getPlayer } = require("../../helpers");
 const fetch = require("node-fetch");
 
 const startNewNukePartyRoom = (io, socket, roomId) => {
@@ -62,27 +65,170 @@ const nukePartyAddPlayer = (io, socket, roomId) => {
 const startNukeParty = async (io, roomId) => {
   let room = getRoom(io, roomId);
   room.data.viewState = GameViewStates.IN_GAME;
-  io.in(roomId).emit("started-nuke-party", room.data.viewState);
+  newGameSetup(io, roomId);
+  io.in(roomId).emit(
+    "started-nuke-party",
+    room.data.viewState,
+    initNukePartyPlayerData.lives
+  );
+  room.data.nukeCountdown = room.data.maxNukeCountdown;
+
   await fillQuestionsQueue(io, roomId);
-  let j = 0;
-  // while (j < 20) {
-  for (let i = 0; i < room.data.playerList.length; i++) {
-    room.data.currentTurnId = room.data.playerList[i].userId;
-    io.in(roomId).emit("new-nuke-round", room.data.currentTurnId);
-    setPrompt(io, roomId);
-    io.in(roomId).emit("emit-new-question", {
-      question: room.data.prompt.question,
-    });
+
+  for (let i of [3, 2, 1]) {
+    io.in(roomId).emit("overlay-countdown-update", i);
+    await delay(1000);
   }
-  j++;
-  // }
+  io.in(roomId).emit("overlay-countdown-update", null);
+
+  while (
+    room.data.playerList.filter((player) => player.lives > 0).length >= 1
+  ) {
+    for (let i = 0; i < room.data.playerList.length; i++) {
+      if (!getRoom(io, roomId)) return;
+      if (!room.data.playerList[i]) return;
+      if (room.data.playerList.filter((player) => player.lives > 0).length < 1)
+        break;
+      room.data.currentTurnId = room.data.playerList[i].userId;
+      room.data.nukeStatus = nukeStatus.GREEN;
+      io.in(roomId).emit("new-nuke-round", room.data.currentTurnId);
+      setPrompt(io, roomId);
+      io.in(roomId).emit("emit-new-question", {
+        question: room.data.prompt.question,
+        imageSrc: room.data.prompt.imageSrc,
+      });
+
+      await runTurn(io, roomId);
+      console.log("round over");
+      room.data.correct = false;
+    }
+  }
+
+  io.in(roomId).emit("nuke-party-over");
+
+  console.log("game over");
+};
+
+const newGameSetup = (io, roomId) => {
+  let room = getRoom(io, roomId);
+
+  room.data.playerList = room.data.playerList.map((player) => {
+    return {
+      ...player,
+      lives: initNukePartyPlayerData.lives,
+    };
+  });
+};
+
+const runTurn = async (io, roomId) => {
+  let room = getRoom(io, roomId);
+  // let i = (room.data.maxNukeCountdown + room.data.maxSafeCountdown) * 10;
+  let i = room.data.maxSafeCountdown * 10;
+  let j = room.data.nukeCountdown * 10;
+
+  while (i > 0 || j >= 0) {
+    await delay(100);
+    if (!getRoom(io, roomId)) return;
+    if (!getPlayer(io, roomId, room.data.currentTurnId)) {
+      return;
+    }
+    if (room.data.correct) {
+      console.log("correct");
+      break;
+    }
+
+    if (i > 0) {
+      i--;
+    } else {
+      j--;
+      const nukeStatus = getNukeStatus(j, room.data.maxNukeCountdown);
+      if (nukeStatus !== room.data.nukeStatus) {
+        room.data.nukeStatus = nukeStatus;
+        io.in(roomId).emit("set-nuke-status", room.data.nukeStatus);
+      }
+    }
+  }
+  if (room.data.queue.length <= 0) {
+    console.log("filling");
+    await fillQuestionsQueue(io, roomId);
+  }
+  if (j <= 0) {
+    //player ran out of time and loses a life
+    room.data.playerList.forEach((player) => {
+      if (player.userId === room.data.currentTurnId) {
+        player.lives--;
+        io.in(roomId).emit(
+          "set-lives-value",
+          room.data.currentTurnId,
+          player.lives
+        );
+      }
+    });
+    room.data.nukeCountdown = room.data.maxNukeCountdown;
+    await delay(2000);
+  } else {
+    room.data.nukeCountdown = Math.floor(j / 10);
+  }
+  console.log(room.data.nukeCountdown);
+  return;
+  // return await new Promise((res, rej) => {});
+};
+
+const getNukeStatus = (nukeTimer, maxNukeCountdown) => {
+  maxNukeCountdown = maxNukeCountdown * 10;
+  if (nukeTimer > maxNukeCountdown) {
+  } else if (
+    nukeTimer <= maxNukeCountdown &&
+    nukeTimer > (maxNukeCountdown * 2) / 3
+  ) {
+    return nukeStatus.YELLOW;
+  } else if (
+    nukeTimer <= (maxNukeCountdown * 2) / 3 &&
+    nukeTimer > maxNukeCountdown / 3
+  ) {
+    return nukeStatus.ORANGE;
+  } else if (nukeTimer <= maxNukeCountdown / 3 && nukeTimer > 0) {
+    return nukeStatus.RED;
+  } else {
+    return nukeStatus.EXPLODED;
+  }
+};
+
+const makeGuess = async (io, socket, guess) => {
+  const room = getRoom(io, socket.roomId);
+  if (socket.userId === room.data.currentTurnId) {
+    if (room.data.prompt.answers.includes(guess)) {
+      room.data.queue = room.data.queue.filter((prompt) => {
+        prompt.answers = prompt.answers.filter((answer) => answer !== guess);
+        if (prompt.answers.length <= 0) {
+          return false;
+        }
+        return true;
+      });
+      room.data.usedCountries.push(guess);
+      room.data.correct = true;
+      io.in(socket.roomId).emit("update-guess-status", guessStatus.CORRECT);
+    } else if (room.data.usedCountries.includes(guess)) {
+      console.log("duplicate");
+      io.in(socket.roomId).emit("update-guess-status", guessStatus.DUPLICATE);
+    } else {
+      console.log("wrong");
+      io.in(socket.roomId).emit("update-guess-status", guessStatus.WRONG);
+    }
+
+    await delay(1000);
+    if (socket.userId === room.data.currentTurnId) {
+      io.in(socket.roomId).emit("can-guess", true);
+    } else {
+      return;
+    }
+  }
 };
 
 const setupBeforeNukePartyStart = (io, roomId) => {};
 
 const getNukePartyPublicData = (io, roomId) => {
   let room = getRoom(io, roomId);
-  console.log(room.data);
 
   return {
     ...room.data,
@@ -102,30 +248,45 @@ const getNukePartyPlayerPublicData = (io, roomId, userId) => {
 
 const fillQuestionsQueue = async (io, roomId) => {
   let room = getRoom(io, roomId);
+  const dataToAdd = [
+    // "https://storage.googleapis.com/geopro-324602.appspot.com/data/4-letter-name-data.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-3-letter-name-data.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/flag-data.json",
+  ];
+  let [...val1] = await Promise.all([
+    ...dataToAdd.map((bucket) => getDataTask(bucket, room.data.usedCountries)),
+  ]);
+  val1 = [].concat(...val1);
 
-  const content = await fetch(
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/3-letter-name-data.json"
-  )
-    .then((response) => response.json())
-    .then((json) => json.sort(() => 0.5 - Math.random()))
-    .then((randomList) => {
-      let tempList = [];
-      for (let i = 0; i < randomList.length; i++) {
-        randomList[i].answers = randomList[i].answers.filter(
-          (answer) => !room.data.usedCountries.includes(answer)
-        );
-        if (randomList[i].answers.length > 0) {
-          tempList.push(randomList[i]);
-          if (tempList.length >= 20) {
-            break;
+  val1.sort(() => 0.5 - Math.random());
+
+  room.data.queue.push(...val1);
+  return;
+};
+
+const getDataTask = (url, usedCountries) => {
+  return new Promise((resolve, reject) => {
+    const val = fetch(url)
+      .then((response) => response.json())
+      .then((json) => json.sort(() => 0.5 - Math.random()))
+      .then((randomList) => {
+        let tempList = [];
+        for (let i = 0; i < randomList.length; i++) {
+          randomList[i].answers = randomList[i].answers.filter(
+            (answer) => !usedCountries.includes(answer)
+          );
+          if (randomList[i].answers.length > 0) {
+            tempList.push(randomList[i]);
+            if (tempList.length >= 20) {
+              break;
+            }
           }
         }
-      }
-      return tempList;
-    });
-
-  room.data.queue.push(...content);
-  return;
+        return tempList;
+      });
+    resolve(val);
+  });
 };
 
 // const fillQuestionsQueue = async (io, roomId) => {
@@ -139,28 +300,18 @@ const fillQuestionsQueue = async (io, roomId) => {
 //     );
 //     if (randomList[i].answers.length > 0) {
 //       tempList.push(randomList[i]);
-//       if (tempList.length >= 5) {
+//       if (tempList.length >= 2) {
 //         break;
 //       }
 //     }
 //   }
 
 //   room.data.queue.push(...tempList);
-// return;
+//   return;
 // };
 
 const setPrompt = (io, roomId) => {
   let room = getRoom(io, roomId);
-  // val = val.filter((question) => {
-  //   let countries = question.countries;
-  //   countries = countries.filter((country) => !usedCountries.includes(country));
-  //   if (countries.length > 0) {
-  //     // question.countries = countries;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // });
   room.data.prompt = room.data.queue.shift();
 };
 
@@ -170,4 +321,5 @@ module.exports = {
   startNukeParty,
   startNewNukePartyRoom,
   joinNukePartyRoom,
+  makeGuess,
 };

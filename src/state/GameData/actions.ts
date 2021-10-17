@@ -10,6 +10,7 @@ import {
   player,
   playerType,
   SetGameViewType,
+  UpdateBeginningCountdownType,
 } from "./types";
 
 export const InitRoomData = (state: GameDataState): InitRoomDataType => {
@@ -56,12 +57,25 @@ export const NewAdmin = (userId: string): NewAdminType => {
 };
 
 export const SetGameViewState = (
-  GameViewState: GameViewStates
+  GameViewState: GameViewStates,
+  message?: string
 ): SetGameViewType => {
   return {
     type: GameDataActionTypes.SET_GAME_VIEW_STATE,
     payload: {
       GameViewState,
+      message,
+    },
+  };
+};
+
+export const UpdateBeginningCountdown = (
+  beginningCountdown: number
+): UpdateBeginningCountdownType => {
+  return {
+    type: GameDataActionTypes.UPDATE_BEGINNING_COUNTDOWN,
+    payload: {
+      beginningCountdown,
     },
   };
 };

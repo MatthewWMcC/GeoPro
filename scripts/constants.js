@@ -19,6 +19,44 @@ const THREE_LETTER_NAME_DATA_PATH = path.join(
   THREE_LETTER_NAME_DATA_NAME
 );
 
+const FOUR_LETTER_NAME_DATA_NAME = "4-letter-name-data.json";
+const FOUR_LETTER_NAME_DATA_PATH = path.join(
+  __dirname,
+  "tmp",
+  FOUR_LETTER_NAME_DATA_NAME
+);
+
+const START_TWO_LETTER_NAME_DATA_NAME = "start-2-letter-name-data.json";
+const START_TWO_LETTER_NAME_DATA_PATH = path.join(
+  __dirname,
+  "tmp",
+  START_TWO_LETTER_NAME_DATA_NAME
+);
+
+const START_THREE_LETTER_NAME_DATA_NAME = "start-3-letter-name-data.json";
+const START_THREE_LETTER_NAME_DATA_PATH = path.join(
+  __dirname,
+  "tmp",
+  START_THREE_LETTER_NAME_DATA_NAME
+);
+
+const FLAG_DATA_NAME = "flag-data.json";
+const FLAG_DATA_PATH = path.join(__dirname, "tmp", FLAG_DATA_NAME);
+
+const flagProperties = {
+  GREEN: "green",
+  RED: "red",
+  BLUE: "blue",
+  YELLOW: "yellow",
+  ORANGE: "orange",
+  WHITE: "white",
+  BLACK: "black",
+  STRIPES: "stripes",
+  STARS: "stars",
+  MOON: "moon",
+  UNION_JACK: "Union Jack",
+};
+
 module.exports = {
   GOOGLE_CLOUD_KEYFILE,
   GOOGLE_CLOUD_PROJECT_ID,
@@ -27,5 +65,13 @@ module.exports = {
   TWO_LETTER_NAME_DATA_PATH,
   THREE_LETTER_NAME_DATA_NAME,
   THREE_LETTER_NAME_DATA_PATH,
+  START_TWO_LETTER_NAME_DATA_PATH,
+  START_TWO_LETTER_NAME_DATA_NAME,
+  START_THREE_LETTER_NAME_DATA_PATH,
+  START_THREE_LETTER_NAME_DATA_NAME,
+  FOUR_LETTER_NAME_DATA_NAME,
+  FOUR_LETTER_NAME_DATA_PATH,
+  FLAG_DATA_NAME,
+  FLAG_DATA_PATH,
   defaultBucketName,
 };

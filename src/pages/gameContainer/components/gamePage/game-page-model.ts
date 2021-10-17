@@ -28,14 +28,18 @@ export const model: GamePageModel = extendBaseModel({
         )
         .subscribe()
     );
+
+    vnode.state.subscriptions.push(
+      store$
+        .pipe(
+          pluck("GameData", "beginningCountdown"),
+          distinctUntilChanged(),
+          bindTo("countdown", vnode)
+        )
+        .subscribe()
+    );
   },
   handleComponentCreate: (
     vnode: m.VnodeDOM<GamePageAttrs, GamePageState>
   ) => {},
-  handleOnReturnClick: () => {
-    socket.emit("return-game-to-wait");
-  },
-  handleOnRestartClick: () => {
-    socket.emit("restart-game");
-  },
 });

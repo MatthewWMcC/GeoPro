@@ -19,6 +19,20 @@
   padding: 2px;
 }
 
+.player-container-v2 {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.main-player-content {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  flex-direction: column;
+}
+
 .left-elements {
   display: flex;
   justify-content: space-between;
@@ -89,4 +103,41 @@
 }
 .score-container {
   margin-right: 10px;
+}
+
+.middle-player-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.name-container {
+  padding: 2px 5px;
+  background-color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 50px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.player-message {
+  position: absolute;
+  width: 300px;
+  display: flex;
+  justify-content: end;
+}
+
+.lives-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+}
+
+.nuke-image-placement {
+  height: 100px;
+  display: flex;
+  justify-content: end;
 }

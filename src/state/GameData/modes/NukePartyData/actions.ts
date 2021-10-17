@@ -1,15 +1,22 @@
 import { gameTypeId } from "state/GameData/types";
 import {
   countryType,
+  guessStatus,
   InitNukePartyType,
   nukePartyActions,
   nukePartyState,
   nukePartyViewStates,
+  nukeStatus,
   questionType,
   setCurrentTurnType,
+  setGuessStatusType,
   setInGameViewStateType,
   setNewQuestionType,
+  setNukeStatusType,
   setSelectedCountryType,
+  updateAllPlayerLivesType,
+  updateCanGuessType,
+  updatePlayerLivesType,
 } from "./types";
 
 export const initGameDataNukeParty = (
@@ -64,6 +71,64 @@ export const setNewQestion = (question: questionType): setNewQuestionType => {
     type: nukePartyActions.SET_NEW_QUESTION,
     payload: {
       question,
+    },
+  };
+};
+
+export const updatePlayerLives = (
+  userId: string,
+  lives: number
+): updatePlayerLivesType => {
+  return {
+    mode: gameTypeId.NUKE_PARTY,
+    type: nukePartyActions.UPDATE_PLAYER_LIVES,
+    payload: {
+      userId,
+      lives,
+    },
+  };
+};
+
+export const setNukeStatus = (status: nukeStatus): setNukeStatusType => {
+  return {
+    mode: gameTypeId.NUKE_PARTY,
+    type: nukePartyActions.SET_NUKE_STATUS,
+    payload: {
+      status,
+    },
+  };
+};
+
+export const updateCanGuess = (canGuess: boolean): updateCanGuessType => {
+  return {
+    mode: gameTypeId.NUKE_PARTY,
+    type: nukePartyActions.UPDATE_CAN_GUESS,
+    payload: {
+      canGuess,
+    },
+  };
+};
+
+export const setGuessStatus = (
+  guessStatus: guessStatus
+): setGuessStatusType => {
+  return {
+    mode: gameTypeId.NUKE_PARTY,
+    type: nukePartyActions.SET_GUESS_STATUS,
+    payload: {
+      guessStatus,
+    },
+  };
+};
+
+export const updateAllPlayerLives = (
+  maxLives: number
+): updateAllPlayerLivesType => {
+  return {
+    mode: gameTypeId.NUKE_PARTY,
+    type: nukePartyActions.UPDATE_ALL_PLAYER_LIVES,
+    payload: {
+      maxLives,
     },
   };
 };

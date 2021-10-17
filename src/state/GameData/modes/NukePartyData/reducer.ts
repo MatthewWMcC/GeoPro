@@ -2,12 +2,19 @@ import {
   InitNukePartyType,
   nukePartyActions,
   nukePartyDataActionTypes,
+  nukePartyPlayer,
   nukePartyState,
   nukePartyViewStates,
+  nukeStatus,
   setCurrentTurnType,
+  setGuessStatusType,
   setInGameViewStateType,
   setNewQuestionType,
+  setNukeStatusType,
   setSelectedCountryType,
+  updateAllPlayerLivesType,
+  updateCanGuessType,
+  updatePlayerLivesType,
 } from "./types";
 
 const initNukePartyData: nukePartyState = {
@@ -30,6 +37,16 @@ export const nukePartyDataReducer = (
       return setCurrentTurnReducer(state, action);
     case nukePartyActions.SET_NEW_QUESTION:
       return setNewQuestionReducer(state, action);
+    case nukePartyActions.UPDATE_PLAYER_LIVES:
+      return updatePlayerLives(state, action);
+    case nukePartyActions.SET_NUKE_STATUS:
+      return setNukeStatusReducer(state, action);
+    case nukePartyActions.UPDATE_CAN_GUESS:
+      return updateCanGuessReducer(state, action);
+    case nukePartyActions.SET_GUESS_STATUS:
+      return setGuessStatusReducer(state, action);
+    case nukePartyActions.UPDATE_ALL_PLAYER_LIVES:
+      return updateAllPlayerLivesReducer(state, action);
     default:
       return initNukePartyData;
   }
@@ -72,6 +89,7 @@ const setCurrentTurnReducer = (
   return {
     ...state,
     turnUserId: action.payload.turnUserId,
+    nukeStatus: nukeStatus.GREEN,
   };
 };
 
@@ -82,5 +100,70 @@ const setNewQuestionReducer = (
   return {
     ...state,
     question: action.payload.question,
+  };
+};
+
+const updatePlayerLives = (
+  state: nukePartyState,
+  action: updatePlayerLivesType
+): nukePartyState => {
+  return {
+    ...state,
+    playerList: state.playerList.map((player: nukePartyPlayer) => {
+      return {
+        ...player,
+        lives:
+          player.userId === action.payload.userId
+            ? action.payload.lives
+            : player.lives,
+      };
+    }),
+  };
+};
+
+const setNukeStatusReducer = (
+  state: nukePartyState,
+  action: setNukeStatusType
+): nukePartyState => {
+  return {
+    ...state,
+    nukeStatus: action.payload.status,
+  };
+};
+
+const updateCanGuessReducer = (
+  state: nukePartyState,
+  action: updateCanGuessType
+): nukePartyState => {
+  return {
+    ...state,
+    canGuess: action.payload.canGuess,
+    guessStatus: undefined,
+    selected: action.payload.canGuess ? undefined : state.selected,
+  };
+};
+
+const setGuessStatusReducer = (
+  state: nukePartyState,
+  action: setGuessStatusType
+): nukePartyState => {
+  return {
+    ...state,
+    guessStatus: action.payload.guessStatus,
+  };
+};
+
+const updateAllPlayerLivesReducer = (
+  state: nukePartyState,
+  action: updateAllPlayerLivesType
+): nukePartyState => {
+  return {
+    ...state,
+    playerList: state.playerList.map((player) => {
+      return {
+        ...player,
+        lives: action.payload.maxLives,
+      };
+    }),
   };
 };

@@ -5,6 +5,7 @@ import {
   DeletePlayer,
   InitRoomData,
   SetGameViewState,
+  UpdateBeginningCountdown,
 } from "state/GameData/actions";
 import { store } from "state/store";
 
@@ -162,6 +163,14 @@ socket.on("no-room-found", () => {
 
 socket.on("duplicate-player", () => {
   store.dispatch(SetGameViewState(GameViewStates.DUPLICATE_PLAYER_IN_ROOM));
+});
+
+socket.on("overlay-countdown-update", (countdown) =>
+  store.dispatch(UpdateBeginningCountdown(countdown))
+);
+
+socket.on("cannot-join", (message) => {
+  store.dispatch(SetGameViewState(GameViewStates.CANNOT_JOIN_ROOM, message));
 });
 
 nukePartySocketObservables(socket);
