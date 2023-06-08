@@ -29,7 +29,7 @@ export const countryDisplay: m.Component<
       m("#country-display-outer", [
         countryCode &&
           m("img.selected-country-flag", {
-            src: `https://www.countryflags.io/${countryCode}/flat/64.png`,
+            src: `https://flagcdn.com/w320/${countryCode.toLocaleLowerCase()}.png`,
             alt: `Flag of ${name}`,
           }),
         name && countryCode && m(".space"),

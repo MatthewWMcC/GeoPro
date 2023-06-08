@@ -5,7 +5,6 @@ const {
   initNukePartyData,
   initNukePartyPlayerData,
   GameViewStates,
-  testDataNukeParty,
   nukeStatus,
   guessStatus,
 } = require("../../constants");
@@ -217,11 +216,13 @@ const makeGuess = async (io, socket, guess) => {
     }
 
     await delay(1000);
-    if (socket.userId === room.data.currentTurnId) {
+    
+    
+    // if (socket.userId === room.data.currentTurnId) {
       io.in(socket.roomId).emit("can-guess", true);
-    } else {
-      return;
-    }
+    // } else {
+    //   return;
+    // }
   }
 };
 
@@ -250,8 +251,8 @@ const fillQuestionsQueue = async (io, roomId) => {
   let room = getRoom(io, roomId);
   const dataToAdd = [
     // "https://storage.googleapis.com/geopro-324602.appspot.com/data/4-letter-name-data.json",
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-3-letter-name-data.json",
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
+    // "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-3-letter-name-data.json",
+    // "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
     "https://storage.googleapis.com/geopro-324602.appspot.com/data/flag-data.json",
   ];
   let [...val1] = await Promise.all([
@@ -288,27 +289,6 @@ const getDataTask = (url, usedCountries) => {
     resolve(val);
   });
 };
-
-// const fillQuestionsQueue = async (io, roomId) => {
-//   let room = getRoom(io, roomId);
-
-//   let randomList = testDataNukeParty.sort(() => 0.5 - Math.random());
-//   let tempList = [];
-//   for (let i = 0; i < randomList.length; i++) {
-//     randomList[i].answers = randomList[i].answers.filter(
-//       (answer) => !room.data.usedCountries.includes(answer)
-//     );
-//     if (randomList[i].answers.length > 0) {
-//       tempList.push(randomList[i]);
-//       if (tempList.length >= 2) {
-//         break;
-//       }
-//     }
-//   }
-
-//   room.data.queue.push(...tempList);
-//   return;
-// };
 
 const setPrompt = (io, roomId) => {
   let room = getRoom(io, roomId);

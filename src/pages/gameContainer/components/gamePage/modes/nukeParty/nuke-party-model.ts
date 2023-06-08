@@ -38,7 +38,7 @@ export const model = extendBaseModel({
         .pipe(
           pluck("GameData", "modeData", "turnUserId"),
           distinctUntilChanged(),
-          tap((turnUserId) => turnUserId === store.getState().UserData.userId),
+          map((turnUserId) => turnUserId === store.getState().UserData.userId),
           bindTo("myTurn", vnode)
         )
         .subscribe()
@@ -103,7 +103,7 @@ export const model = extendBaseModel({
   },
   handleOnRestartClick: () => {
     if (store.getState().GameData.admin === store.getState().UserData.userId) {
-      socket.emit("start-game", store.getState().GameData.roomId);
+      socket.emit("start-nuke-party-game");
     }
   },
 });

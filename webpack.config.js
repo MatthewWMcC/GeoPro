@@ -75,7 +75,7 @@ module.exports = {
       filename: "./index.html",
     }),
     new webpack.DefinePlugin({
-      "process.env": dotenv.parsed,
+      "process.env": JSON.stringify(dotenv),
     }),
     new MiniCssExtractPlugin({
       filename: "style.css",

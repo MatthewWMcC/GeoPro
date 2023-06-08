@@ -2,10 +2,9 @@ import m from "mithril";
 import { PlayerListAttrs, PlayerListState } from "./types";
 import { model } from "./player-list-model";
 import "./player-list.css";
-import { earthIconSVG, heartSVG } from "global/constants/icons";
+import { heartSVG } from "global/constants/icons";
 import { IconContainer } from "components/iconContainer/icon-container";
 import { playerType } from "state/GameData/types";
-import { store } from "state/store";
 import { nukeImageView } from "../../modes/nukeParty/components/nuke-image/nuke-image";
 
 export const playerList: m.Component<PlayerListAttrs, PlayerListState> = {

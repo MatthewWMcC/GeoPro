@@ -42,7 +42,7 @@
 .username {
   cursor: pointer;
   font-weight: 500;
-  color: aliceblue;
+  color: var(--text-light);
   font-size: 22px;
 }
 #back-button {
@@ -109,7 +109,7 @@
 .dropdown-option {
   width: 100%;
   height: var(--header-height);
-  background-color: aliceblue;
+  background-color: var(--text-light);
   display: flex;
   justify-content: start;
   align-items: center;

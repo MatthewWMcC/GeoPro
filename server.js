@@ -129,16 +129,18 @@ io.sockets.on("connection", (socket) => {
       io.in(roomId).emit("updated-guess-limit", guessLimit);
     }
   });
-  socket.on("start-game", (roomId) => {
-    let room = getRoom(io, roomId);
-
-    if (room && socket.userId === room.data.admin) {
-      switch (room.data.gameMode) {
-        case gameType.NUKE_PARTY:
-          startNukeParty(io, roomId);
-          break;
-        default:
-          startGame(roomId);
+  socket.on("start-nuke-party-game", () => {
+    const {roomId} = socket;
+    if(roomId) {
+      let room = getRoom(io, roomId);
+      if (room && socket.userId === room.data.admin) {
+        switch (room.data.gameMode) {
+          case gameType.NUKE_PARTY:
+            startNukeParty(io, roomId);
+            break;
+          default:
+            startGame(roomId);
+        }
       }
     }
   });

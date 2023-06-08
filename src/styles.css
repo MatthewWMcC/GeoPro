@@ -24,16 +24,15 @@ body {
 #navigation-content-container {
   z-index: 1;
   position: fixed;
-  height: calc(100vh - var(--header-height));
+  height: 50vh;
+  top: 25%;
 }
 
 #header-content-container {
   z-index: 2;
   top: 0%;
-  /* height: var(--header-height); */
   width: 100%;
   background-color: var(--header-color);
-  /* display: none; */
 }
 
 /* variables */
@@ -41,27 +40,27 @@ body {
   --header-height: 55px;
   --navigation-width: 18vw;
   /* --header-color: rgb(0, 97, 21); */
-  --header-color: #3e5823;
+  --header-color: #1a3300;
   --grey-overlay-color: rgb(236, 234, 236);
-  /* --background-color: rgb(84, 84, 245); */
-  --background-color: #0045b8;
-  --mode-color: rgb(57, 57, 148);
-  --light-mode-color: rgb(123, 123, 168);
+  --background-color: #e0e0e0;
   --waiting-menu-color: rgb(48, 47, 63);
-  --button-color: rgb(9, 13, 36);
-  --hover-button-color: rgb(48, 54, 92);
-  --player-card-color: #5eee51;
   --modal-background: rgba(255, 255, 255, 0.808);
-  --quicksilver: #a6a6a6;
   --seljuk-blue: #4285f4;
-  --dark-grey-opacity: rgba(80, 80, 80, 0.719);
+  --dark-grey-opacity: #505050b7;
   --nuke-speed: 1s;
+  --text-dark: rgb(12, 12, 12);
+  --text-light: aliceblue;
+  --primary-color: #1a3300;
+  --primary-hover-color: #1a330091;
+  --secondary-color: #e0e0e0;
+  --button-color: #1a3300;
+  --hover-button-color: #1a330091;
 }
 
 .styled-button {
   padding: 10px 20px;
   background-color: var(--button-color);
-  color: aliceblue;
+  color: var(--text-light);
   border: 0;
   border-radius: 5px;
   font-size: 30px;
@@ -79,7 +78,7 @@ body {
 
 .secondary-styled-button {
   padding: 10px 20px;
-  background-color: aliceblue;
+  background-color: var(--text-light);
   color: var(--button-color);
   border: 0;
   border-radius: 5px;
