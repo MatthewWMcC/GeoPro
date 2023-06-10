@@ -10,12 +10,11 @@
 
 .player-container {
   min-height: 5vh;
-  background-color: var(--player-card-color);
+  background-color: var(--primary-color);
   margin-bottom: 10px;
   border-radius: 5px;
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   padding: 2px;
 }
 
@@ -113,7 +112,7 @@
 
 .name-container {
   padding: 2px 5px;
-  background-color: aliceblue;
+  background-color: var(--text-light);
   display: flex;
   justify-content: center;
   align-items: center;

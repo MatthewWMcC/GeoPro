@@ -13,8 +13,8 @@
 
 .game-mode-outer-container {
   padding: 10px 20px;
-  color: aliceblue;
-  background-color: var(--mode-color);
+  color: var(--text-light);
+  background-color: var(--primary-color);
   border-radius: 20px;
   border: 2px black solid;
   margin-bottom: 25px;
@@ -22,7 +22,7 @@
 
 .game-mode-outer-container:hover {
   cursor: pointer;
-  background-color: var(--light-mode-color);
+  background-color: var(--primary-hover-color);
   -webkit-transition: background-color 200ms linear;
   -ms-transition: background-color 200ms linear;
   transition: background-color 200ms linear;
@@ -88,7 +88,7 @@
   width: 50px;
   /* padding: 5px; */
   background-color: var(--button-color);
-  color: aliceblue;
+  color: var(--text-light);
   border: 0;
   cursor: pointer;
   display: flex;

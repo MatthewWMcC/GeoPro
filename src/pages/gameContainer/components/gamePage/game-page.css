@@ -1,4 +1,4 @@
 .overlay-countdown {
   font-size: 72px;
-  color: aliceblue;
+  color: var(--text-light);
 }

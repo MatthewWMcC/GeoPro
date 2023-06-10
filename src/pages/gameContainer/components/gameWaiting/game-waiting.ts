@@ -31,7 +31,6 @@ export const gameWaiting: m.Component<GameWaitingAttrs, GameWaitingState> = {
                       borderWidth: 0,
                     }),
                     m("label.player-name", player.username),
-                    m(".thing", player.userId),
                   ]);
                 }),
             ]),

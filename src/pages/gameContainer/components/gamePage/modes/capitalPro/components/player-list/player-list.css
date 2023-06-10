@@ -6,16 +6,16 @@
   border-radius: 5px;
   padding: 10px;
   max-width: 16vw;
+  color: var(--text-light);
 }
 
 .player-container {
   min-height: 5vh;
-  background-color: var(--player-card-color);
+  background-color: var(--primary-color);
   margin-bottom: 10px;
   border-radius: 5px;
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   padding: 2px;
 }
 

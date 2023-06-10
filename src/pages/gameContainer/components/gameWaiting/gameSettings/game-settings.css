@@ -1,7 +1,7 @@
 .sub-heading-label {
     margin-left: 50px;
     margin-bottom: 10px;
-    color: aliceblue;
+    color: var(--text-light);
     font-size: 30px;
 }
 

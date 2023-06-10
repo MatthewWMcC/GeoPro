@@ -57,7 +57,7 @@ const initNukePartyData = {
   viewState: GameViewStates.WAITING,
   queue: [],
   maxNukeCountdown: 5,
-  maxSafeCountdown: 5,
+  maxSafeCountdown: 20,
   nukeStatus: nukeStatus.GREEN,
   canGuess: true,
 };
@@ -73,48 +73,7 @@ const initNukePartyPlayerData = {
   lives: 2,
 };
 
-const testDataNukeParty = [
-  {
-    substring: "oza",
-    answers: ["FI", "BG"],
-    question: "Name contains the substring 'oza'",
-  },
-  {
-    substring: "biq",
-    answers: ["CA"],
-    question: "Name contains the substring 'biq'",
-  },
-  {
-    substring: "iqu",
-    answers: ["FR", "BG"],
-    question: "Name contains the substring 'iqu'",
-  },
-  {
-    substring: "que",
-    answers: ["MZ"],
-    question: "Name contains the substring 'que'",
-  },
-  {
-    substring: "oza",
-    answers: ["MZ"],
-    question: "Name contains the substring 'oza'",
-  },
-  {
-    substring: "biq",
-    answers: ["MZ"],
-    question: "Name contains the substring 'biq'",
-  },
-  {
-    substring: "iqu",
-    answers: ["MZ"],
-    question: "Name contains the substring 'iqu'",
-  },
-  {
-    substring: "t",
-    answers: ["MZ"],
-    question: "Name contains the substring 't'",
-  },
-];
+
 
 module.exports = {
   initBaseGameData,
@@ -126,7 +85,6 @@ module.exports = {
   initNukePartyPlayerData,
   nukePartyViewStates,
   GameViewStates,
-  testDataNukeParty,
   nukeStatus,
   guessStatus,
 };

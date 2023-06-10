@@ -8,7 +8,7 @@
 .waiting-label {
     font-weight: 400;
     font-size: 30px;
-    color: aliceblue;
+    color: var(--text-dark);
 }
 .game-waiting-outer-panel-container {
     width: 100%;
@@ -41,19 +41,23 @@
 .sub-heading-label {
     margin-left: 50px;
     margin-bottom: 30px;
-    color: aliceblue;
+    color: var(--text-light);
     font-size: 30px;
 }
 
 .player-holder {
     display: flex;
-    justify-content: space-between;
+
     width: 90%;
     border-radius: 5px;
     padding: 5px 10px;
     background-color: rgb(9, 13, 36);
     color: antiquewhite;
     margin-top: 10px;
+}
+
+.player-name {
+    margin-left: 20px;
 }
 
 .start-game-container {

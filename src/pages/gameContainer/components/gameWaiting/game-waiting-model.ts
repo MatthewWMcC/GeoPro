@@ -47,7 +47,6 @@ export const model: GameWaitingModel = extendBaseModel({
   handleStartButtonPress: (
     vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>
   ) => {
-    const { roomId } = vnode.state;
-    socket.emit("start-game", roomId);
+    socket.emit("start-nuke-party-game");
   },
 });

@@ -59,7 +59,7 @@ export const enterInfo: m.Component<EnterInfoAttrs, EnterInfoState> = {
           {
             onclick: () => model.handleClickNextButton(),
           },
-          "Next."
+          "Next"
         ),
       ]),
     ]);

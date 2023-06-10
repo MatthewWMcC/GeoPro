@@ -60,7 +60,7 @@ export const model: RoundEndModalType = extendMapModel({
       ) as HTMLElement,
       style: MapStyles[vnode.state.mapStyle].labels,
       center: [view.lng, view.lat],
-      zoom: 11,
+      zoom: 12,
       interactive: false,
     });
 
@@ -123,8 +123,7 @@ export const model: RoundEndModalType = extendMapModel({
                   `${player.username}, ${Math.ceil(player.distance / 1000)}km`
                 )
                 .addTo(mapbox);
-
-              player.guess &&
+              !!player.guess &&
                 vnode.state.playerLocationMarkers.push(
                   new mapboxgl.Marker()
                     .setLngLat(player.guess)
@@ -155,18 +154,26 @@ export const model: RoundEndModalType = extendMapModel({
           map((distance) => 12 * Math.exp((-1 / 8) * distance ** 0.32)),
           tap((zoom) => {
             setTimeout(() => {
-              mapbox.flyTo({
-                essential: true,
-                duration: 8000 * Math.exp(-0.125 * zoom),
-                zoom: zoom < mapbox.getZoom() ? zoom : mapbox.getZoom(),
-              });
-              mapbox.on("idle", () => {
+              if (zoom < mapbox.getZoom()) {
+                mapbox.flyTo({
+                  essential: true,
+                  duration: 8000 * Math.exp(-0.125 * zoom),
+                  zoom: zoom < mapbox.getZoom() ? zoom : mapbox.getZoom(),
+                });
+                mapbox.on("idle", () => {
+                  mapbox["scrollZoom"].enable();
+                  mapbox["boxZoom"].enable();
+                  mapbox["dragPan"].enable();
+                  mapbox["keyboard"].enable();
+                  mapbox["doubleClickZoom"].enable();
+                });
+              } else {
                 mapbox["scrollZoom"].enable();
                 mapbox["boxZoom"].enable();
                 mapbox["dragPan"].enable();
                 mapbox["keyboard"].enable();
                 mapbox["doubleClickZoom"].enable();
-              });
+              }
             }, 1000);
           }),
           take(1)
@@ -176,6 +183,7 @@ export const model: RoundEndModalType = extendMapModel({
   },
   getFurthestDistance: (playerData: CapitalProPlayer[]): number => {
     return playerData.reduce<number>((prev, curr) => {
+      if (!curr.distance) return prev;
       return prev > curr.distance ? prev : curr.distance;
     }, 0);
   },

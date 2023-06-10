@@ -18,7 +18,7 @@
 
 /* .loading-label {
     font-size: 25px;
-    color: aliceblue;
+    color: var(--text-light);
 } */
 
 .not-loading-holder {
@@ -35,7 +35,7 @@
 }
 
 /* .location-data-label {
-    color: aliceblue;
+    color: var(--text-light);
     font-size: 25px;
 } */
 
@@ -44,7 +44,7 @@
 }
 
 /* .countdown-label {
-    color: aliceblue;
+    color: var(--text-light);
     font-size: 25px;
 } */
 
@@ -54,7 +54,7 @@
 }
 
 .map-header-label {
-    color: aliceblue;
+    color: var(--text-light);
     font-size: 25px;
 }
 
