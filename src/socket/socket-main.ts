@@ -1,5 +1,4 @@
 import socketIOClient from "socket.io-client";
-const serverEndpoint = process.env.SERVER as string;
 import {
   AddPlayer,
   DeletePlayer,
