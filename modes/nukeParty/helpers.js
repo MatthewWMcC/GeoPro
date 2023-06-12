@@ -1,4 +1,4 @@
-const { cloneDeep } = require("lodash");
+const cloneDeep = require("lodash.clonedeep");
 const EventEmitter = require("events");
 const fs = require("fs");
 const {
@@ -216,10 +216,9 @@ const makeGuess = async (io, socket, guess) => {
     }
 
     await delay(1000);
-    
-    
+
     // if (socket.userId === room.data.currentTurnId) {
-      io.in(socket.roomId).emit("can-guess", true);
+    io.in(socket.roomId).emit("can-guess", true);
     // } else {
     //   return;
     // }

@@ -1,5 +1,6 @@
 const express = require("express");
 const geolib = require("geolib");
+const path = require("path");
 const app = express();
 const uniqid = require("uniqid");
 const convertLocationDataForGeolib =
@@ -22,13 +23,16 @@ const {
 } = require("./constants");
 
 const { getRoom, delay } = require("./helpers");
-const nukePartyEvents = require("./modes/nukeParty/socket-events");
+const nukePartyEvents = require(path.join(
+  __dirname,
+  "modes/nukeParty/socket-events"
+));
 
 const {
   startNukeParty,
   startNewNukePartyRoom,
   joinNukePartyRoom,
-} = require("./modes/nukeParty/helpers");
+} = require(path.join(__dirname, "modes/nukeParty/helpers"));
 
 const port = process.env.PORT || 8080;
 
@@ -130,8 +134,8 @@ io.sockets.on("connection", (socket) => {
     }
   });
   socket.on("start-nuke-party-game", () => {
-    const {roomId} = socket;
-    if(roomId) {
+    const { roomId } = socket;
+    if (roomId) {
       let room = getRoom(io, roomId);
       if (room && socket.userId === room.data.admin) {
         switch (room.data.gameMode) {
