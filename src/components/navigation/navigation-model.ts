@@ -39,8 +39,20 @@ export const model: NavigationModel = {
         )
         .subscribe()
     );
+
+    vnode.state.subscriptions.push(
+      store$
+        .pipe(
+          pluck("UserData", "preferedMapStyle"),
+          distinctUntilChanged(),
+          bindTo("preferedMapStyle", vnode)
+        )
+        .subscribe()
+    );
   },
-  handleComponentCreate: (vnode: m.Vnode<NavigationAttrs, NavigationState>) => {
+  handleComponentCreate: (
+    vnode: m.VnodeDOM<NavigationAttrs, NavigationState>
+  ) => {
     mapOptions.forEach(({ id, mapType }) => {
       vnode.state.mapOptionMaps.push(
         new mapboxgl.Map({
@@ -55,7 +67,7 @@ export const model: NavigationModel = {
       );
     });
   },
-  handleComponentRemove(vnode) {
+  handleComponentRemove(vnode: m.VnodeDOM<NavigationAttrs, NavigationState>) {
     vnode.state.mapOptionMaps.forEach((map) => {
       map.remove();
     });

@@ -35,7 +35,6 @@ export const model: GameContainerModel = {
     vnode.state.subscriptions = [];
 
     const { store$, roomId } = vnode.attrs;
-    console.log("re init");
     store.dispatch(UpdateCurrentPage(Pages.IN_GAME));
     initSocketDataSetup(store$);
     setTimeout(() => {

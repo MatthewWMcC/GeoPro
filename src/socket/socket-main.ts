@@ -29,9 +29,7 @@ import { nukePartySocketObservables } from "./socket-nuke-party-catch";
 
 export const socket = socketIOClient();
 
-socket.on("connection-event", (data) => {
-  console.log(data);
-});
+socket.on("connection-event", (data) => {});
 
 socket.on("started-new-game-data", (data) => {
   m.route.set(`/room/${data.roomId}`);

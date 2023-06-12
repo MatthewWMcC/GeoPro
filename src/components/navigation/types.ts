@@ -1,6 +1,7 @@
 import { BaseAttrs, BaseState } from "base/types";
 import { Pages } from "state/CurrentPageState/types";
 import { MapStyleTypes } from "state/UserData/types";
+import mapboxgl from "mapbox-gl";
 
 export interface NavigationAttrs extends BaseAttrs {}
 

@@ -54,6 +54,11 @@
   align-items: center;
   cursor: pointer;
 }
+
+.map-option.selected {
+  background-color: var(--dark-grey-opacity);
+}
+
 .map-option-image-container {
   height: 75px;
   width: 75px;

@@ -3,7 +3,6 @@ import { bindTo } from "base/operators";
 import mapboxgl from "mapbox-gl";
 import m from "mithril";
 import { distinctUntilChanged, map, pluck, tap } from "rxjs/operators";
-import { setSelectedCountry } from "state/GameData/modes/NukePartyData/actions";
 import { gameTypeId } from "state/GameData/types";
 import { store } from "state/store";
 import { MapStyles } from "state/UserData/types";

@@ -9,7 +9,6 @@ export const initSocketDataSetup = (store$: Observable<rootState>) => {
       pluck("UserData"),
       distinctUntilChanged(),
       map(({ username, userIconSrc, userId }) => {
-        console.log(username);
         return {
           username,
           userIconSrc,

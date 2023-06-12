@@ -39,9 +39,10 @@ export const model: MainPageModel = {
     socket.emit("start-new-lobby", gameMode);
   },
   handleGoToRoom: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => {
+    //need to fix
     let { roomURI } = vnode.state;
     if (!roomURI.includes("http://localhost:8080/#/room/")) {
-      console.log("no");
+      console.log("invalid room code");
     } else {
       roomURI = roomURI.replace("http://localhost:8080/#", "");
       m.route.set(roomURI);

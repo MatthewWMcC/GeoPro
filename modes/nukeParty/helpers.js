@@ -168,7 +168,6 @@ const runTurn = async (io, roomId) => {
   } else {
     room.data.nukeCountdown = Math.floor(j / 10);
   }
-  console.log(room.data.nukeCountdown);
   return;
   // return await new Promise((res, rej) => {});
 };

@@ -5,9 +5,7 @@ const produceNameToCodeFile = () => {
   for (let [key, value] of Object.entries(codeToName)) {
     value = value.replaceAll(" ", "");
     nameToCode[value] = key;
-    // console.log(`${key}: ${value}`);
   }
-  console.log(nameToCode);
   var json = JSON.stringify(nameToCode);
 
   var fs = require("fs");

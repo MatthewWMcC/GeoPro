@@ -11,7 +11,7 @@ export const navigation: m.Component<NavigationAttrs, NavigationState> = {
   oninit: model.handleComponentInit,
   oncreate: model.handleComponentCreate,
   view: (vnode: m.VnodeDOM<NavigationAttrs, NavigationState>): m.Children => {
-    const { navShown, CurrentPage } = vnode.state;
+    const { navShown, CurrentPage, preferedMapStyle } = vnode.state;
 
     return (
       CurrentPage !== Pages.LOGIN &&
@@ -21,7 +21,7 @@ export const navigation: m.Component<NavigationAttrs, NavigationState> = {
           m("#map-options", [
             mapOptions.map(({ id, label, mapType }) => {
               return m(
-                ".map-option",
+                `.map-option${mapType === preferedMapStyle ? ".selected" : ""}`,
                 { onclick: () => model.handleMapStyleChange(mapType) },
                 [
                   m(`.map-option-image-container#${id}`),
