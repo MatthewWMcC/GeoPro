@@ -1,5 +1,7 @@
 const envVars = process.env.parsed;
 
+console.log(process.env.FIRESTORE_API_KEY);
+
 export const firebaseConfig = {
   apiKey: envVars.FIRESTORE_API_KEY,
   authDomain: envVars.FIRESTORE_AUTH_DOMAIN,
