@@ -1,4 +1,4 @@
-const envVars = process.env.parsed;
+const envVars = process.env;
 
 export const firebaseConfig = {
   apiKey: envVars.FIRESTORE_API_KEY,

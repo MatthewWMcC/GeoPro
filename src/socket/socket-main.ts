@@ -28,7 +28,7 @@ import {
 } from "state/GameData/modes/CapitalProData/actions";
 import { nukePartySocketObservables } from "./socket-nuke-party-catch";
 
-export const socket = socketIOClient(serverEndpoint);
+export const socket = socketIOClient();
 
 socket.on("connection-event", (data) => {
   console.log(data);
