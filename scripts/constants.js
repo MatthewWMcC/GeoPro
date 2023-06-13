@@ -43,7 +43,7 @@ const START_THREE_LETTER_NAME_DATA_PATH = path.join(
 const FLAG_DATA_NAME = "flag-data.json";
 const FLAG_DATA_PATH = path.join(__dirname, "tmp", FLAG_DATA_NAME);
 
-const flagProperties = {
+const FLAG_PROPERTIES = {
   GREEN: "green",
   RED: "red",
   BLUE: "blue",
@@ -51,10 +51,14 @@ const flagProperties = {
   ORANGE: "orange",
   WHITE: "white",
   BLACK: "black",
+  PRUPLE: "purple",
   STRIPES: "stripes",
   STARS: "stars",
   MOON: "moon",
   UNION_JACK: "Union Jack",
+  TRI_COLOR: "Tri Color",
+  SUN: "Sun",
+  COAT_OF_ARMS: "Coat of Arms",
 };
 
 module.exports = {
@@ -74,4 +78,5 @@ module.exports = {
   FLAG_DATA_NAME,
   FLAG_DATA_PATH,
   defaultBucketName,
+  FLAG_PROPERTIES,
 };

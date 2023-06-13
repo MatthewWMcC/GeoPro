@@ -212,9 +212,9 @@ const sortFunction = (a, b) => {
 };
 
 const main = () => {
-  generate3LetterNameQuestions();
-  generate2LetterNameQuestions();
-  generate4LetterNameQuestions();
+  // generate3LetterNameQuestions();
+  // generate2LetterNameQuestions();
+  // generate4LetterNameQuestions();
   generate3StartLetterNameQuestions();
   generate2StartLetterNameQuestions();
   generateFlagsQuestions();

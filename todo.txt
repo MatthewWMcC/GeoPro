@@ -6,3 +6,4 @@
 - remove console logs and fix errors
 - fix all errors associated with Nuke Party player order
 - typescript errors
+- remove redux logs from prod
