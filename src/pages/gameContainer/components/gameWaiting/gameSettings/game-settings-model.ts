@@ -1,7 +1,11 @@
 import { extendBaseModel } from "base/baseModel";
 import m from "mithril";
 import { socket } from "socket/socket-main";
-import { GameSettingsAttrs, GameSettingsState } from "./types";
+import {
+  GameSettingsAttrs,
+  GameSettingsState,
+  GameSettingsTabs,
+} from "./types";
 import { pluck, distinctUntilChanged, tap } from "rxjs/operators";
 import { bindTo } from "base/operators";
 
@@ -24,6 +28,10 @@ interface GameWaitingModel {
     vnode: m.VnodeDOM<GameSettingsAttrs, GameSettingsState>,
     e: any
   ) => void;
+  handleTabChangeClick: (
+    vnode: m.VnodeDOM<GameSettingsAttrs, GameSettingsState>,
+    tabId: GameSettingsTabs
+  ) => void;
 }
 
 export const model: GameWaitingModel = extendBaseModel({
@@ -31,8 +39,8 @@ export const model: GameWaitingModel = extendBaseModel({
     vnode: m.VnodeDOM<GameSettingsAttrs, GameSettingsState>
   ) => {
     vnode.state.subscriptions = [];
+    vnode.state.tabSelected = GameSettingsTabs.HOW_TO_PLAY;
     const { store$ } = vnode.attrs;
-
     vnode.state.subscriptions.push(
       store$
         .pipe(
@@ -106,5 +114,12 @@ export const model: GameWaitingModel = extendBaseModel({
     const { roomId } = vnode.state;
     const num = +e.target.value;
     socket.emit("update-guess-limit", roomId, num);
+  },
+  handleTabChangeClick: (
+    vnode: m.VnodeDOM<GameSettingsAttrs, GameSettingsState>,
+    tabId: GameSettingsTabs
+  ) => {
+    vnode.state.tabSelected = tabId;
+    m.redraw();
   },
 });

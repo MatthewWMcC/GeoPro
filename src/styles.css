@@ -55,6 +55,8 @@ body {
   --secondary-color: #e0e0e0;
   --button-color: #1a3300;
   --hover-button-color: #1a330091;
+  --light-overlay-color: #fcf4f49d;
+  --waiting-menu-secondary: #090d24;
 }
 
 .styled-button {
