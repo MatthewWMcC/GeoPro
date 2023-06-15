@@ -1,10 +1,7 @@
 import m from "mithril";
-import { GameSettingsAttrs, GameSettingsState } from "../types";
 import "../game-settings.css";
 
-export const capitalProHowTo = (
-  vnode: m.VnodeDOM<GameSettingsAttrs, GameSettingsState>
-) => {
+export const capitalProHowTo = () => {
   return m(".capital-pro-how-to-container", [
     m("h4", "Welcome to Capital Pro!"),
     m(

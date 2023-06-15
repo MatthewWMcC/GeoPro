@@ -1,4 +1,4 @@
-.waiting-label-container {
+.waiting-top-container {
   text-align: center;
   width: 100%;
   margin-bottom: 20px;
@@ -9,6 +9,7 @@
   font-size: 30px;
   color: var(--text-dark);
 }
+
 .game-waiting-outer-panel-container {
   width: 100%;
   display: flex;
@@ -59,9 +60,53 @@
   margin-left: 20px;
 }
 
-.start-game-container {
+.waiting-bottom-game-container {
   margin-top: 25px;
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.invite-friends-container {
+  margin-right: 20px;
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+}
+
+#copy-url-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  border: var(--text-dark) solid 1px;
+  border-radius: 8px;
+}
+
+#copy-game-uri {
+  width: 100%;
+  border-radius: 0 5px 5px 0;
+  font-size: 16px;
+}
+
+#copy-button {
+  border-radius: 5px 0 0 5px;
+  height: 30px;
+  width: 50px;
+  background-color: var(--button-color);
+  color: var(--text-light);
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#copy-button:hover {
+  background-color: var(--hover-button-color);
+}
+
+svg {
+  height: 16px;
+  width: 16px;
 }

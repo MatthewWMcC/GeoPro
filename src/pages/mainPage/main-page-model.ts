@@ -5,6 +5,7 @@ import { socket } from "socket/socket-main";
 import { Pages } from "state/CurrentPageState/types";
 import { UpdateCurrentPage } from "state/CurrentPageState/actions";
 import { store } from "state/store";
+import { BASE_PROD_URL } from "utils/constants";
 
 interface MainPageModel {
   handleComponentInit: (
@@ -35,17 +36,15 @@ export const model: MainPageModel = {
     vnode: m.VnodeDOM<MainPageAttrs, MainPageState>,
     gameMode: string
   ) => {
-    socket.emit("test-event");
     socket.emit("start-new-lobby", gameMode);
   },
   handleGoToRoom: (vnode: m.VnodeDOM<MainPageAttrs, MainPageState>) => {
-    //need to fix
-    let { roomURI } = vnode.state;
-    if (!roomURI.includes("http://localhost:8080/#/room/")) {
+    let { roomURL } = vnode.state;
+    if (!roomURL.includes(BASE_PROD_URL + "room/")) {
       console.log("invalid room code");
     } else {
-      roomURI = roomURI.replace("http://localhost:8080/#", "");
-      m.route.set(roomURI);
+      roomURL = roomURL.replace(BASE_PROD_URL, "/");
+      m.route.set(roomURL);
     }
   },
 };

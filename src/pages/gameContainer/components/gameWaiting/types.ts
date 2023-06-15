@@ -2,8 +2,8 @@ import { BaseAttrs, BaseState } from "base/types";
 import { player } from "state/GameData/types";
 
 export interface GameWaitingState extends BaseState {
-  roomId: string;
   playerList: player[];
+  roomURL: string;
 }
 
 export interface GameWaitingAttrs extends BaseAttrs {}

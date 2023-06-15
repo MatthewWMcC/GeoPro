@@ -1,10 +1,7 @@
 import m from "mithril";
-import { GameSettingsAttrs, GameSettingsState } from "../types";
 import "../game-settings.css";
 
-export const nukePartyHowTo = (
-  vnode: m.VnodeDOM<GameSettingsAttrs, GameSettingsState>
-) => {
+export const nukePartyHowTo = () => {
   return m(".nuke-party-how-to-container", [
     m("h4", "Welcome to Nuke Party!"),
     m(

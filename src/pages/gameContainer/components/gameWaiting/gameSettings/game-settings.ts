@@ -43,7 +43,6 @@ export const gameSettings: m.Component<GameSettingsAttrs, GameSettingsState> = {
     return m(".game-settings-container", [
       m(".tab-header", [
         tabContent.map(({ id, label }) => {
-          console.log(id, tabSelected);
           return m(
             `.tab-option${id === tabSelected ? ".selected" : ""}`,
             { onclick: () => model.handleTabChangeClick(vnode, id) },
@@ -57,5 +56,3 @@ export const gameSettings: m.Component<GameSettingsAttrs, GameSettingsState> = {
     ]);
   },
 };
-
-// m(".settings-label.sub-heading-label", "Settings"),

@@ -86,7 +86,6 @@
   border-radius: 0 5px 5px 0;
   height: 30px;
   width: 50px;
-  /* padding: 5px; */
   background-color: var(--button-color);
   color: var(--text-light);
   border: 0;
@@ -98,7 +97,4 @@
 
 #submit-url-button:hover {
   background-color: var(--hover-button-color);
-}
-
-#submit-url-button:active {
 }
