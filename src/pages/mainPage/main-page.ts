@@ -20,7 +20,7 @@ export const mainPage: m.Component<MainPageAttrs, MainPageState> = {
           type: "text",
           placeholder: "Enter a game url here...",
           oninput: (e) => {
-            vnode.state.roomURI = e.target.value;
+            vnode.state.roomURL = e.target.value;
           },
           onkeypress: (e) => {
             if (e.keyCode === 13) {

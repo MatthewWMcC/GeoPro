@@ -1,69 +1,112 @@
-.waiting-label-container {
-    
-    text-align: center;
-    width: 100%;
-    margin-bottom: 20px;
+.waiting-top-container {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .waiting-label {
-    font-weight: 400;
-    font-size: 30px;
-    color: var(--text-dark);
+  font-weight: 400;
+  font-size: 30px;
+  color: var(--text-dark);
 }
+
 .game-waiting-outer-panel-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .game-waiting-outer-panel {
-    width: 100%;
-    max-width: 1200px;
-    min-width: 400px;
-    background-color: var(--waiting-menu-color);
-    height: 55vh;
-    border-radius: 60px;
-    display: flex;
-    padding: 30px;
+  width: 100%;
+  max-width: 1200px;
+  min-width: 400px;
+  background-color: var(--waiting-menu-color);
+  height: 55vh;
+  border-radius: 30px;
+  display: flex;
+  padding: 30px;
 }
 
 .game-waiting-settings {
-    border-right: 2px white solid;
-    padding-right: 30px;  
-    flex: 1;
+  border-right: 2px white solid;
+  padding-right: 30px;
+  flex: 1;
 }
 
 .game-waiting-players {
-    padding-left: 30px;
-    flex: 1;
+  padding-left: 30px;
+  flex: 1;
 }
 
 .sub-heading-label {
-    margin-left: 50px;
-    margin-bottom: 30px;
-    color: var(--text-light);
-    font-size: 30px;
+  margin-left: 50px;
+  margin-bottom: 30px;
+  color: var(--text-light);
+  font-size: 30px;
 }
 
 .player-holder {
-    display: flex;
+  display: flex;
 
-    width: 90%;
-    border-radius: 5px;
-    padding: 5px 10px;
-    background-color: rgb(9, 13, 36);
-    color: antiquewhite;
-    margin-top: 10px;
+  width: 90%;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: var(--waiting-menu-secondary);
+  color: antiquewhite;
+  margin-top: 10px;
 }
 
 .player-name {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
-.start-game-container {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+.waiting-bottom-game-container {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
+.invite-friends-container {
+  margin-right: 20px;
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+}
+
+#copy-url-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  border: var(--text-dark) solid 1px;
+  border-radius: 8px;
+}
+
+#copy-game-uri {
+  width: 100%;
+  border-radius: 0 5px 5px 0;
+  font-size: 16px;
+}
+
+#copy-button {
+  border-radius: 5px 0 0 5px;
+  height: 30px;
+  width: 50px;
+  background-color: var(--button-color);
+  color: var(--text-light);
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#copy-button:hover {
+  background-color: var(--hover-button-color);
+}
+
+svg {
+  height: 16px;
+  width: 16px;
+}

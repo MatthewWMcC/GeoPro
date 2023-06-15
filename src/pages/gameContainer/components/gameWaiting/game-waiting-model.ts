@@ -2,8 +2,9 @@ import { extendBaseModel } from "base/baseModel";
 import m from "mithril";
 import { socket } from "socket/socket-main";
 import { GameWaitingAttrs, GameWaitingState } from "./types";
-import { pluck, distinctUntilChanged, tap } from "rxjs/operators";
+import { pluck, distinctUntilChanged, map } from "rxjs/operators";
 import { bindTo } from "base/operators";
+import { getRoomUrl } from "utils/url-helpers";
 
 interface GameWaitingModel {
   handleComponentInit: (
@@ -13,6 +14,9 @@ interface GameWaitingModel {
     vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>
   ) => void;
   handleComponentRemove: (
+    vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>
+  ) => void;
+  handleCopyURL: (
     vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>
   ) => void;
 }
@@ -39,7 +43,10 @@ export const model: GameWaitingModel = extendBaseModel({
         .pipe(
           pluck("GameData", "roomId"),
           distinctUntilChanged(),
-          bindTo("roomId", vnode)
+          map((roomId) => {
+            return getRoomUrl(roomId);
+          }),
+          bindTo("roomURL", vnode)
         )
         .subscribe()
     );
@@ -48,5 +55,10 @@ export const model: GameWaitingModel = extendBaseModel({
     vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>
   ) => {
     socket.emit("start-nuke-party-game");
+  },
+  handleCopyURL: (vnode: m.VnodeDOM<GameWaitingAttrs, GameWaitingState>) => {
+    const { roomURL } = vnode.state;
+
+    navigator.clipboard.writeText(roomURL);
   },
 });

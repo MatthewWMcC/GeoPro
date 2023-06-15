@@ -2,10 +2,6 @@ const { getRoom } = require("../../helpers");
 const { makeGuess } = require("./helpers");
 
 const nukePartyEvents = (io, socket) => {
-  socket.on("test-event", () => {
-    // socket.emit("connection-event", "test event passed");
-  });
-
   socket.on("nuke-party-guess", (guess) => {
     let room = getRoom(io, socket.roomId);
 
