@@ -35,6 +35,13 @@ body {
   background-color: var(--header-color);
 }
 
+#github-link-container {
+  z-index: 3;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+
 /* variables */
 :root {
   --header-height: 55px;
@@ -57,6 +64,7 @@ body {
   --hover-button-color: #1a330091;
   --light-overlay-color: #fcf4f49d;
   --waiting-menu-secondary: #090d24;
+  --github-background: rgba(255, 255, 255, 0.733);
 }
 
 .styled-button {

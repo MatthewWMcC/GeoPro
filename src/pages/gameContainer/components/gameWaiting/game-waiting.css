@@ -105,8 +105,3 @@
 #copy-button:hover {
   background-color: var(--hover-button-color);
 }
-
-svg {
-  height: 16px;
-  width: 16px;
-}
