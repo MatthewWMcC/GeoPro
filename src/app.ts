@@ -10,6 +10,7 @@ import { navigation } from "components/navigation/navigation";
 import { mainPage } from "pages/mainPage/main-page";
 import { gameContainer } from "pages/gameContainer/game-container";
 import { loggedInRouter } from "components/loggedInRouter/logged-in-router";
+import { githubLink } from "components/githubLink/github-link";
 
 const initApp = async () => {
   await initDispatch();
@@ -31,6 +32,7 @@ const createApp = () => {
   const headerContentContainer = document.getElementById(
     "header-content-container"
   );
+  const githubContainer = document.getElementById("github-link-container");
 
   if (headerContentContainer === null) {
     throw new Error("The header-content-container was not found");
@@ -42,6 +44,10 @@ const createApp = () => {
 
   if (bodyContentContainer === null) {
     throw new Error("The content-container was not found");
+  }
+
+  if (githubContainer === null) {
+    throw new Error("The github-container was not found");
   }
 
   const getState = (): Observable<rootState> => {
@@ -68,6 +74,10 @@ const createApp = () => {
       m(navigation, {
         store$,
       }),
+  });
+
+  m.mount(githubContainer, {
+    view: () => m(githubLink),
   });
 
   m.route.prefix = "#";

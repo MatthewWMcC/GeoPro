@@ -1,0 +1,10 @@
+.github-link-outer {
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  background-color: var(--github-background);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
