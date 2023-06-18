@@ -26,8 +26,6 @@ export const nukePartyView: m.Component<NukePartyAttrs, NukePartyState> = {
     const name = selected?.name;
     const countryCode = selected?.countryCode;
 
-    console.log(canGuess);
-
     return m("#nuke-party-container", [
       viewState === GameViewStates.IN_GAME &&
         m(".in-game-container", [

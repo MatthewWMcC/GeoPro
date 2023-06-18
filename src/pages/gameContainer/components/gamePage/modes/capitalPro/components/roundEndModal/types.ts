@@ -1,4 +1,5 @@
 import { BaseState, BaseAttrs } from "base/types";
+import { IWikiModalData } from "global/types";
 import mapboxgl from "mapbox-gl";
 import { LocationData } from "state/GameData/modes/CapitalProData/types";
 import { MapStyleTypes } from "state/UserData/types";
@@ -14,6 +15,7 @@ export interface RoundEndModalState extends BaseState {
     playerDistancekm: number;
     addedScore: number;
   };
+  wikiData: IWikiModalData;
 }
 
 export interface RoundEndModalAttrs extends BaseAttrs {}
