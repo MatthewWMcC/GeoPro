@@ -12,8 +12,16 @@ export const RoundEndModal: m.Component<
   oncreate: model.handleComponentCreate,
   onremove: model.handleComponentRemove,
   view: (vnode: m.VnodeDOM<RoundEndModalAttrs, RoundEndModalState>) => {
-    const { locationData, yourData, roundEndCountdown } = vnode.state;
+    const { locationData, yourData, roundEndCountdown, wikiData } = vnode.state;
     const { playerDistancekm, addedScore } = yourData;
+
+    const {
+      link = "",
+      title = "",
+      summary = "",
+      photourl = "",
+    } = { ...wikiData };
+
     return m(".round-end-modal-outer-container", [
       m(".round-end-modal-container", [
         m(".round-end-header", [
@@ -41,14 +49,23 @@ export const RoundEndModal: m.Component<
           m("#info-holder", [
             m("#wiki-data-holder", [
               m("#wiki-title-link-holder", [
-                m("label#wiki-label"),
+                m("label#wiki-label", title),
                 m("label#dash", "-"),
-                m("#wiki-link"),
+                m("#wiki-link", [
+                  m(
+                    "a",
+                    {
+                      href: link,
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    },
+                    "wikipedia"
+                  ),
+                ]),
               ]),
               m("#inner-wiki-data-holder", [
-                m("#wiki-summary-holder"),
-                m("#wiki-content-holder"),
-                m("#wiki-image-holder"),
+                m("#wiki-summary-holder", summary),
+                m("#wiki-image-holder", [m("img", { src: photourl })]),
               ]),
             ]),
           ]),

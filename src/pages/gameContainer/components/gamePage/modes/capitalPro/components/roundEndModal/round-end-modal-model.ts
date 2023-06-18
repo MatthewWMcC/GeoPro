@@ -15,9 +15,9 @@ import { store } from "state/store";
 import { MapStyles } from "state/UserData/types";
 import { getMapboxAPIToken } from "utils/environment-vars-helper";
 import { extendMapModel } from "base/mapModel";
-import wiki from "wikijs";
 
 import { RoundEndModalAttrs, RoundEndModalState } from "./types";
+import { getPageDataWithWikiId } from "utils/wiki-helper";
 
 interface RoundEndModalType {
   handleComponentRemove: (
@@ -208,17 +208,9 @@ export const model: RoundEndModalType = extendMapModel({
       locationData$
         .pipe(
           filter((locationData) => !!locationData.lnglat),
-          tap((locationData) => {
-            m.request({
-              method: "GET",
-              url: `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&ids=${locationData.wikiId}`,
-            })
-              .then(
-                (result: any) =>
-                  locationData.wikiId &&
-                  result.entities[locationData.wikiId].sitelinks.enwiki.title
-              )
-              .then((title) => setDataWithTitle(title));
+          tap(async (locationData) => {
+            const wikiData = await getPageDataWithWikiId(locationData.wikiId);
+            vnode.state.wikiData = wikiData;
           }),
           take(1)
         )
@@ -298,63 +290,3 @@ export const model: RoundEndModalType = extendMapModel({
     );
   },
 });
-
-const setDataWithTitle = (title: string) => {
-  document.getElementById("wiki-label")?.innerText = title;
-  wiki()
-    .page(title)
-    .then((page) => page.url())
-    .then((url) => {
-      document.getElementById(
-        "wiki-link"
-      )?.innerHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer">wikipedia</a>`;
-    });
-  wiki()
-    .page(title)
-    .then((page) => page.summary())
-    .then((summary) => {
-      const val = reduceText(summary, 800);
-      document.getElementById("wiki-summary-holder")?.innerText = val;
-    });
-
-  wiki()
-    .page(title)
-    .then((page) => page.fullInfo())
-    .then((content: any) => {
-      switch (content.general.imageSkyline) {
-        case "Photomontage":
-          return content.general.photo1a.split("!")[0];
-        case "multiple image":
-          return content.general.image1;
-        default:
-          return content.general.imageSkyline;
-      }
-    })
-    .then((mainURI) => standardizeURI(mainURI))
-    .then((standardizedURI) => {
-      wiki()
-        .page(title)
-        .then((page) => page.rawImages())
-        .then((rawImages) => {
-          const image = rawImages.filter((rawImage) => {
-            const standardizedRawImage = standardizeURI(rawImage.title);
-            return standardizedRawImage === "File:" + standardizedURI;
-          })[0];
-          return image || rawImages.find((image) => "pageid" in image);
-        })
-        .then((image: any) => image.imageinfo[0].url)
-        .then((url) => {
-          document.getElementById(
-            "wiki-image-holder"
-          )?.innerHTML = `<img src="${url}"/>`;
-        });
-    });
-};
-
-const standardizeURI = (uri: string): string => {
-  return uri?.replace(" ", "_");
-};
-
-const reduceText = (text: string, size: number): string => {
-  return text.substring(0, text.indexOf(".", size) + 1) || text;
-};
