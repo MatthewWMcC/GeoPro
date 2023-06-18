@@ -251,7 +251,7 @@ io.sockets.on("connection", (socket) => {
 
   const startGame = async (roomId) => {
     let room = getRoom(io, roomId);
-    setupBeforeGameStart(roomId); ///////start here
+    setupBeforeGameStart(roomId);
     io.in(roomId).emit("game-start-data", {
       viewState: room.data.viewState,
       playerList: room.data.playerList,
