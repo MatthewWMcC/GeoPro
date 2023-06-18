@@ -160,7 +160,6 @@ io.sockets.on("connection", (socket) => {
     }
   });
   socket.on("restart-game", () => {
-    //ignore
     const roomId = socket.roomId;
     let room = getRoom(io, roomId);
     if (room && socket.userId === room.data.admin) {
@@ -284,6 +283,7 @@ io.sockets.on("connection", (socket) => {
       while (room.data.countdown > 0) {
         await delay(1000);
         if (!getRoom(io, roomId)) return;
+        if (!areGuessesLeft(roomId)) break;
         room.data.countdown--;
         io.in(roomId).emit("update-countdown", room.data.countdown);
       }
@@ -320,6 +320,13 @@ io.sockets.on("connection", (socket) => {
     if (guessNum <= 0) return false;
     if (!newGuessMade) return false;
     return true;
+  };
+
+  const areGuessesLeft = (roomId) => {
+    let room = getRoom(io, roomId);
+    return (
+      room.data.playerList.filter(({ guessNum }) => guessNum > 0).length > 0
+    );
   };
 
   const handleLeave = () => {
