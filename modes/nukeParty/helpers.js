@@ -86,6 +86,7 @@ const startNukeParty = async (io, roomId) => {
     for (let i = 0; i < room.data.playerList.length; i++) {
       if (!getRoom(io, roomId)) return;
       if (!room.data.playerList[i]) return;
+      if (room.data.playerList[i].lives <= 0) continue;
       if (room.data.playerList.filter((player) => player.lives > 0).length < 1)
         break;
       room.data.currentTurnId = room.data.playerList[i].userId;
@@ -121,7 +122,6 @@ const newGameSetup = (io, roomId) => {
 
 const runTurn = async (io, roomId) => {
   let room = getRoom(io, roomId);
-  // let i = (room.data.maxNukeCountdown + room.data.maxSafeCountdown) * 10;
   let i = room.data.maxSafeCountdown * 10;
   let j = room.data.nukeCountdown * 10;
 
@@ -169,7 +169,6 @@ const runTurn = async (io, roomId) => {
     room.data.nukeCountdown = Math.floor(j / 10);
   }
   return;
-  // return await new Promise((res, rej) => {});
 };
 
 const getNukeStatus = (nukeTimer, maxNukeCountdown) => {
@@ -216,11 +215,7 @@ const makeGuess = async (io, socket, guess) => {
 
     await delay(1000);
 
-    // if (socket.userId === room.data.currentTurnId) {
     io.in(socket.roomId).emit("can-guess", true);
-    // } else {
-    //   return;
-    // }
   }
 };
 
