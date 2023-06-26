@@ -20,7 +20,7 @@ export const enterInfo: m.Component<EnterInfoAttrs, EnterInfoState> = {
       ]),
 
       m("#enter-info-section", [
-        m("label.login-header", "Google Sign In"),
+        m("label.login-header", "Sign In"),
         m("#google-login-section", [
           m(IconContainer, {
             src: loggedIn
@@ -61,6 +61,14 @@ export const enterInfo: m.Component<EnterInfoAttrs, EnterInfoState> = {
           },
           "Next"
         ),
+        m("hr#sign-in-split"),
+        m("#guest-section", [
+          m(
+            "a#join-as-guest-link",
+            { onclick: () => model.handlePressSignInAsGuest() },
+            "Or Join as Guest"
+          ),
+        ]),
       ]),
     ]);
   },

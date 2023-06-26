@@ -63,7 +63,6 @@
 }
 #display-name-container {
   width: 100%;
-  height: 50px;
   display: flex;
 }
 #display-name-input {
@@ -98,4 +97,14 @@
 .check-icon > svg {
   height: 100%;
   width: 100%;
+}
+
+#join-as-guest-link {
+  color: var(--seljuk-blue);
+  cursor: pointer;
+}
+
+#sign-in-split {
+  width: 100%;
+  margin: 15px 0;
 }

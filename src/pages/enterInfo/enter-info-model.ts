@@ -23,6 +23,8 @@ interface EnterInfoModel {
   ) => void;
   handleLogIn: () => void;
   handleClickNextButton: () => void;
+  handlePressSignInAsGuest: () => void;
+  handleSignOut: () => void;
 }
 
 export const model: EnterInfoModel = extendBaseModel({
@@ -61,12 +63,14 @@ export const model: EnterInfoModel = extendBaseModel({
     vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>,
     event: any
   ) => {
-    console.log(firestore._getUser());
     const username = event.target.value;
     store.dispatch(UpdateUsername(username));
   },
   handleLogIn: () => {
     firestore._runAuth();
+  },
+  handlePressSignInAsGuest: () => {
+    console.log("Guest");
   },
   handleClickNextButton: () => {
     const username = store.getState().UserData.username;
@@ -78,4 +82,5 @@ export const model: EnterInfoModel = extendBaseModel({
       });
     }
   },
+  handleSignOut: () => {},
 });

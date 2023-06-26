@@ -65,6 +65,8 @@ body {
   --light-overlay-color: #fcf4f49d;
   --waiting-menu-secondary: #090d24;
   --github-background: rgba(255, 255, 255, 0.733);
+  --link-color: #0000ff;
+  --visited-link-color: #551a8b;
 }
 
 .styled-button {
