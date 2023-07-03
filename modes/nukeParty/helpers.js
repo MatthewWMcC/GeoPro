@@ -63,6 +63,9 @@ const nukePartyAddPlayer = (io, socket, roomId) => {
 
 const startNukeParty = async (io, roomId) => {
   let room = getRoom(io, roomId);
+  if (room.data.playerList.length <= 1) {
+    return;
+  }
   room.data.viewState = GameViewStates.IN_GAME;
   newGameSetup(io, roomId);
   io.in(roomId).emit(
@@ -81,7 +84,7 @@ const startNukeParty = async (io, roomId) => {
   io.in(roomId).emit("overlay-countdown-update", null);
 
   while (
-    room.data.playerList.filter((player) => player.lives > 0).length >= 1
+    room.data.playerList.filter((player) => player.lives > 0).length >= 2
   ) {
     for (let i = 0; i < room.data.playerList.length; i++) {
       if (!getRoom(io, roomId)) return;
@@ -245,7 +248,7 @@ const fillQuestionsQueue = async (io, roomId) => {
   const dataToAdd = [
     // "https://storage.googleapis.com/geopro-324602.appspot.com/data/4-letter-name-data.json",
     // "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-3-letter-name-data.json",
-    // "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
     "https://storage.googleapis.com/geopro-324602.appspot.com/data/flag-data.json",
   ];
   let [...val1] = await Promise.all([

@@ -339,6 +339,12 @@ io.sockets.on("connection", (socket) => {
       );
       io.in(socket.roomId).emit("player-left", socket.userId);
 
+      if (
+        room.data.playerList.length <= 1 &&
+        room.data.gameMode === gameType.NUKE_PARTY
+      ) {
+        io.in(socket.roomId).emit("nuke-party-over");
+      }
       if (socket.userId === room.data.admin && room?.data?.playerList[0]) {
         room.data.admin = room.data.playerList[0].userId;
       }

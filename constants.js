@@ -56,8 +56,8 @@ const initNukePartyData = {
   usedCountries: [],
   viewState: GameViewStates.WAITING,
   queue: [],
-  maxNukeCountdown: 5,
-  maxSafeCountdown: 20,
+  maxNukeCountdown: 30,
+  maxSafeCountdown: 10,
   nukeStatus: nukeStatus.GREEN,
   canGuess: true,
 };
@@ -72,8 +72,6 @@ const initCapitalProPlayerData = {
 const initNukePartyPlayerData = {
   lives: 2,
 };
-
-
 
 module.exports = {
   initBaseGameData,
