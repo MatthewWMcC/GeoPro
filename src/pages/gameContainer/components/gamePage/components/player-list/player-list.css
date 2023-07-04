@@ -8,28 +8,18 @@
   max-width: 16vw;
 }
 
-.player-container {
-  min-height: 5vh;
-  background-color: var(--primary-color);
-  margin-bottom: 10px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  padding: 2px;
-}
-
 .player-container-v2 {
   display: flex;
-  justify-content: end;
   align-items: center;
+  justify-content: end;
 }
 .main-player-content {
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
-
   align-items: center;
   flex-direction: column;
+  width: 70px;
 }
 
 .left-elements {
@@ -43,7 +33,6 @@
   display: flex;
   align-items: center;
   justify-content: right;
-  /* overflow: hidden; */
   max-width: 50%;
 }
 
@@ -111,21 +100,13 @@
 }
 
 .name-container {
-  padding: 2px 5px;
+  padding: 0px 2px;
   background-color: var(--text-light);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 50px;
-  font-size: 16px;
+  text-align: center;
+  font-size: 14px;
   border-radius: 5px;
-}
-
-.player-message {
-  position: absolute;
-  width: 300px;
-  display: flex;
-  justify-content: end;
+  width: 100%;
+  overflow-wrap: break-word;
 }
 
 .lives-container {

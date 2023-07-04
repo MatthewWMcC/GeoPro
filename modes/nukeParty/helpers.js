@@ -63,7 +63,7 @@ const nukePartyAddPlayer = (io, socket, roomId) => {
 
 const startNukeParty = async (io, roomId) => {
   let room = getRoom(io, roomId);
-  if (room.data.playerList.length <= 1) {
+  if (room.data.playerList.length < room.data.minPlayers) {
     return;
   }
   room.data.viewState = GameViewStates.IN_GAME;
@@ -83,15 +83,12 @@ const startNukeParty = async (io, roomId) => {
   }
   io.in(roomId).emit("overlay-countdown-update", null);
 
-  while (
-    room.data.playerList.filter((player) => player.lives > 0).length >= 2
-  ) {
+  while (!isGameOver(io, roomId)) {
     for (let i = 0; i < room.data.playerList.length; i++) {
       if (!getRoom(io, roomId)) return;
       if (!room.data.playerList[i]) return;
       if (room.data.playerList[i].lives <= 0) continue;
-      if (room.data.playerList.filter((player) => player.lives > 0).length < 1)
-        break;
+      if (isGameOver(io, roomId)) break;
       room.data.currentTurnId = room.data.playerList[i].userId;
       room.data.nukeStatus = nukeStatus.GREEN;
       io.in(roomId).emit("new-nuke-round", room.data.currentTurnId);
@@ -289,6 +286,15 @@ const getDataTask = (url, usedCountries) => {
 const setPrompt = (io, roomId) => {
   let room = getRoom(io, roomId);
   room.data.prompt = room.data.queue.shift();
+};
+
+const isGameOver = (io, roomId) => {
+  const room = getRoom(io, roomId);
+
+  return (
+    room.data.playerList.filter((player) => player.lives > 0).length <
+    room.data.minPlayers
+  );
 };
 
 module.exports = {

@@ -31,7 +31,7 @@ export const capitalProView: m.Component<CapitalProAttrs, CapitalProState> = {
                 m("#game-end-message-container", [
                   m(
                     "h1.game-end-message",
-                    `Game over. ${winningPlayer.username} has won with a score of ${winningPlayer.score}.`
+                    `${winningPlayer.username} has won with a score of ${winningPlayer.score}!`
                   ),
                 ]),
               m(".buttons-container", [

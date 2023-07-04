@@ -2,7 +2,7 @@ import m from "mithril";
 import { NukeImageAttrs } from "./types";
 import "./nuke-image.css";
 
-export const nukeImageView: m.Component<NukeImageAttrs> = {
+export const nukeImageView: m.Component<NukeImageAttrs, any> = {
   view: (vnode: m.VnodeDOM<NukeImageAttrs>) => {
     const { color } = vnode.attrs;
     if (color === "blue") {
