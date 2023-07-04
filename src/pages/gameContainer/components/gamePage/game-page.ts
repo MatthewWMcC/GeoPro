@@ -15,7 +15,7 @@ export const gamePage: m.Component<GamePageAttrs, GamePageState> = {
     const { store$ } = vnode.attrs;
     const { gameMode, countdown } = vnode.state;
 
-    return m(".out", [
+    return m(".mode-container", [
       countdown && m(countdownOverlay, { countdown }),
       gameMode === gameTypeId.CAPITAL_PRO && m(capitalProView, { store$ }),
       gameMode === gameTypeId.NUKE_PARTY && m(nukePartyView, { store$ }),

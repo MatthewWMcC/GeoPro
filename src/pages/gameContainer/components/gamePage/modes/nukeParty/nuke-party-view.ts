@@ -61,31 +61,24 @@ export const nukePartyView: m.Component<NukePartyAttrs, NukePartyState> = {
         ]),
       viewState === nukePartyViewStates.GAME_OVER &&
         m(".nuke-party-game-over", [
-          m(".game-end-container", [
-            m(".inner-game-end-container", [
-              m("#game-end-message-container", [
-                m(
-                  "h1.game-end-message",
-                  `Game over. ${winner ? winner : "no one"} has won.`
-                ),
-              ]),
-              m(".buttons-container", [
-                m(
-                  "button.secondary-styled-button.end-game-button",
-                  {
-                    onclick: () => model.handleOnReturnClick(),
-                  },
-                  "Return to Menu"
-                ),
-                m(
-                  "button.styled-button.end-game-button",
-                  {
-                    onclick: () => model.handleOnRestartClick(),
-                  },
-                  "Play Again"
-                ),
-              ]),
-            ]),
+          m("#nuke-party-end-message-container", [
+            m("h1", `${winner ? winner : "no one"} wins!`),
+          ]),
+          m(".nuke-party-game-over-buttons-container", [
+            m(
+              "button.secondary-styled-button.end-game-button",
+              {
+                onclick: () => model.handleOnReturnClick(),
+              },
+              "Return to Menu"
+            ),
+            m(
+              "button.styled-button.end-game-button",
+              {
+                onclick: () => model.handleOnRestartClick(),
+              },
+              "Play Again"
+            ),
           ]),
         ]),
     ]);

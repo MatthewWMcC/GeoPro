@@ -56,10 +56,11 @@ const initNukePartyData = {
   usedCountries: [],
   viewState: GameViewStates.WAITING,
   queue: [],
-  maxNukeCountdown: 30,
+  maxNukeCountdown: 20,
   maxSafeCountdown: 10,
   nukeStatus: nukeStatus.GREEN,
   canGuess: true,
+  minPlayers: 2,
 };
 
 const initCapitalProPlayerData = {
