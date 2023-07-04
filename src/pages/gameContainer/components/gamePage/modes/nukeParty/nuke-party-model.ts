@@ -4,7 +4,6 @@ import m from "mithril";
 import { distinctUntilChanged, map, pluck, tap } from "rxjs/operators";
 import { socket } from "socket/socket-main";
 import { updateCanGuess } from "state/GameData/modes/NukePartyData/actions";
-import { nukePartyPlayer } from "state/GameData/modes/NukePartyData/types";
 import { store } from "state/store";
 import { NukePartyAttrs, NukePartyState } from "./types";
 
