@@ -1,5 +1,53 @@
 [
   {
+    "question": "Fought in the War of 1812",
+    "answers": ["US", "GB"]
+  },
+  {
+    "question": "Fought in World War I",
+    "answers": ["US", "GB", "FR", "DE", "RU", "IT", "AU", "CA"]
+  },
+  {
+    "question": "Fought in World War II",
+    "answers": ["US", "GB", "FR", "DE", "RU", "JP", "IT", "AU", "CA", "CN"]
+  },
+  {
+    "question": "Fought in the Battle of Waterloo",
+    "answers": ["GB", "FR", "NL", "DE"]
+  },
+  {
+    "question": "Fought in the Battle of Gettysburg",
+    "answers": ["US"]
+  },
+  {
+    "question": "Fought in the Battle of Stalingrad",
+    "answers": ["RU", "DE"]
+  },
+  {
+    "question": "Fought in the Vietnam War",
+    "answers": ["US", "VN"]
+  },
+  {
+    "question": "Fought in the Korean War",
+    "answers": ["KR", "CN", "US"]
+  },
+  {
+    "question": "Fought in the Gulf War",
+    "answers": ["US", "UK", "SA", "IQ"]
+  },
+  {
+    "question": "Fought in the French Revolution",
+    "answers": ["FR", "GB", "DE", "RU", "AT"]
+  },
+  {
+    "question": "Fought in the Battle of Hastings",
+    "answers": ["GB", "FR"]
+  },
+  {
+    "question": "Fought in the Napoleonic Wars",
+    "answers": ["FR", "GB", "DE", "RU", "AT", "ES", "IT", "PL"]
+  },
+  {
     "question": "Was formerly a part of the Soviet Union",
     "answers": [
       "RU",

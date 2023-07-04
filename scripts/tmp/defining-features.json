@@ -1,0 +1,259 @@
+[
+  {
+    "question": "Contains part of the Andes mountain range",
+    "answers": ["CL", "AR", "EC", "PE", "BO", "CO", "VE"]
+  },
+  {
+    "question": "Contains part of the Himalayas mountain range",
+    "answers": ["IN", "NP", "CN", "PK", "BT", "AF"]
+  },
+  {
+    "question": "Contains part of the Rocky Mountains",
+    "answers": ["US", "CA"]
+  },
+  {
+    "question": "Contains part of the Alps mountain range",
+    "answers": ["FR", "IT", "CH", "AT", "DE", "SI", "LI", "MC"]
+  },
+  {
+    "question": "Contains part of the Amazon River",
+    "answers": ["BR", "PE", "CO", "EC", "VE", "GY", "BO"]
+  },
+  {
+    "question": "Contains part of the Nile River",
+    "answers": [
+      "EG",
+      "SD",
+      "ET",
+      "UG",
+      "KE",
+      "TZ",
+      "RW",
+      "BI",
+      "CD",
+      "SS",
+      "SD"
+    ]
+  },
+  {
+    "question": "Contains part of the Mississippi River",
+    "answers": ["US"]
+  },
+  {
+    "question": "Contains part of the Yangtze River",
+    "answers": ["CN"]
+  },
+  {
+    "question": "Contains part of the Danube River",
+    "answers": ["DE", "AT", "SK", "HU", "HR", "RS", "RO", "BG", "MD", "UA"]
+  },
+  {
+    "question": "Contains part of the Ganges River",
+    "answers": ["IN", "BD"]
+  },
+  {
+    "question": "Contains part of the Caucasus Mountains",
+    "answers": ["RU", "GE", "AM", "AZ"]
+  },
+  {
+    "question": "Contains part of the Great Dividing Range",
+    "answers": ["AU"]
+  },
+  {
+    "question": "Contains part of the Volga River",
+    "answers": ["RU"]
+  },
+  {
+    "question": "Contains part of the Rhine River",
+    "answers": ["DE", "CH", "FR", "NL", "LI", "AT"]
+  },
+  {
+    "language": "English",
+    "answers": [
+      "AG",
+      "AU",
+      "BS",
+      "BB",
+      "BZ",
+      "BW",
+      "CM",
+      "CA",
+      "KI",
+      "CY",
+      "DM",
+      "FJ",
+      "GM",
+      "GH",
+      "GD",
+      "GY",
+      "IN",
+      "IE",
+      "JM",
+      "KE",
+      "LS",
+      "LR",
+      "MW",
+      "MY",
+      "MT",
+      "MH",
+      "MU",
+      "FM",
+      "MZ",
+      "NA",
+      "NR",
+      "NZ",
+      "NG",
+      "PK",
+      "PW",
+      "PG",
+      "PH",
+      "RW",
+      "KN",
+      "LC",
+      "VC",
+      "WS",
+      "SC",
+      "SL",
+      "SG",
+      "SB",
+      "ZA",
+      "SS",
+      "SD",
+      "SZ",
+      "TZ",
+      "TO",
+      "TT",
+      "TV",
+      "UG",
+      "GB",
+      "US",
+      "VU",
+      "ZM",
+      "ZW"
+    ],
+    "question": "Has English as an official language"
+  },
+  {
+    "language": "French",
+    "answers": [
+      "BE",
+      "BJ",
+      "BF",
+      "BI",
+      "CM",
+      "CA",
+      "CF",
+      "TD",
+      "KM",
+      "CG",
+      "CD",
+      "CI",
+      "DJ",
+      "GA",
+      "GN",
+      "GQ",
+      "HT",
+      "LU",
+      "MG",
+      "ML",
+      "MC",
+      "NE",
+      "RW",
+      "SN",
+      "SC",
+      "CH",
+      "TG",
+      "VU",
+      "FR"
+    ],
+    "question": "Has French as an official language"
+  },
+  {
+    "language": "German",
+    "answers": ["DE", "AT", "CH", "LI", "LU", "BE"],
+    "question": "Has German as an official language"
+  },
+  {
+    "language": "Spanish",
+    "answers": [
+      "AR",
+      "BO",
+      "CL",
+      "CO",
+      "CR",
+      "CU",
+      "DO",
+      "EC",
+      "SV",
+      "GQ",
+      "GT",
+      "HN",
+      "MX",
+      "NI",
+      "PA",
+      "PY",
+      "PE",
+      "PH",
+      "ES",
+      "UY",
+      "VE"
+    ],
+    "question": "Has Spanish as an official language"
+  },
+  {
+    "language": "Portuguese",
+    "answers": ["AO", "BR", "CV", "GW", "MZ", "PT", "ST", "TL"],
+    "question": "Has Portuguese as an official language"
+  },
+  {
+    "language": "Russian",
+    "answers": ["BY", "KZ", "KG", "RU", "TJ", "TM", "UZ"],
+    "question": "Has Russian as an official language"
+  },
+  {
+    "language": "Persian",
+    "answers": ["IR", "AF", "TJ"],
+    "question": "Has Persian as an official language"
+  },
+  {
+    "language": "Arabic",
+    "answers": [
+      "AE",
+      "DZ",
+      "BH",
+      "DJ",
+      "EG",
+      "IQ",
+      "JO",
+      "KW",
+      "LB",
+      "LY",
+      "MA",
+      "MR",
+      "OM",
+      "PS",
+      "QA",
+      "SA",
+      "SD",
+      "SY",
+      "TN",
+      "YE"
+    ],
+    "question": "Has Arabic as an official language"
+  },
+  {
+    "language": "Swahili",
+    "answers": ["CD", "KE", "RW", "TZ", "UG"],
+    "question": "Has Swahili as an official language"
+  },
+  {
+    "language": "Malay",
+    "answers": ["BN", "ID", "MY", "SG"],
+    "question": "Has Malay as an official language"
+  },
+  {
+    "language": "Italian",
+    "answers": ["IT", "SM", "VA", "CH"],
+    "question": "Has Italian as an official language"
+  }
+]

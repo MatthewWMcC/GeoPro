@@ -112,6 +112,9 @@ const startNukeParty = async (io, roomId) => {
 const newGameSetup = (io, roomId) => {
   let room = getRoom(io, roomId);
 
+  room.data.usedCountries = [];
+  room.data.queue = [];
+
   room.data.playerList = room.data.playerList.map((player) => {
     return {
       ...player,
@@ -245,10 +248,8 @@ const fillQuestionsQueue = async (io, roomId) => {
   const dataToAdd = [
     "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
     "https://storage.googleapis.com/geopro-324602.appspot.com/data/flag-data.json",
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/language-questions.json",
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/history.json",
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/topography.json",
-    "https://storage.googleapis.com/geopro-324602.appspot.com/data/former-countries.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/defining-features.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/historical-facts.json",
   ];
   let [...val1] = await Promise.all([
     ...dataToAdd.map((bucket) => getDataTask(bucket, room.data.usedCountries)),
@@ -292,6 +293,8 @@ const setPrompt = (io, roomId) => {
 
 const isGameOver = (io, roomId) => {
   const room = getRoom(io, roomId);
+
+  if (!room?.data) return true;
 
   return (
     room.data.playerList.filter((player) => player.lives > 0).length <

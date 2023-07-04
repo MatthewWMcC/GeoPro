@@ -57,7 +57,7 @@ const initNukePartyData = {
   viewState: GameViewStates.WAITING,
   queue: [],
   maxNukeCountdown: 35,
-  maxSafeCountdown: 10,
+  maxSafeCountdown: 15,
   nukeStatus: nukeStatus.GREEN,
   canGuess: true,
   minPlayers: 2,
