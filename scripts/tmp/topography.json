@@ -1,0 +1,70 @@
+[
+  {
+    "question": "Contains part of the Andes mountain range",
+    "answers": ["CL", "AR", "EC", "PE", "BO", "CO", "VE"]
+  },
+  {
+    "question": "Contains part of the Himalayas mountain range",
+    "answers": ["IN", "NP", "CN", "PK", "BT", "AF"]
+  },
+  {
+    "question": "Contains part of the Rocky Mountains",
+    "answers": ["US", "CA"]
+  },
+  {
+    "question": "Contains part of the Alps mountain range",
+    "answers": ["FR", "IT", "CH", "AT", "DE", "SI", "LI", "MC"]
+  },
+  {
+    "question": "Contains part of the Amazon River",
+    "answers": ["BR", "PE", "CO", "EC", "VE", "GY", "BO"]
+  },
+  {
+    "question": "Contains part of the Nile River",
+    "answers": [
+      "EG",
+      "SD",
+      "ET",
+      "UG",
+      "KE",
+      "TZ",
+      "RW",
+      "BI",
+      "CD",
+      "SS",
+      "SD"
+    ]
+  },
+  {
+    "question": "Contains part of the Mississippi River",
+    "answers": ["US"]
+  },
+  {
+    "question": "Contains part of the Yangtze River",
+    "answers": ["CN"]
+  },
+  {
+    "question": "Contains part of the Danube River",
+    "answers": ["DE", "AT", "SK", "HU", "HR", "RS", "RO", "BG", "MD", "UA"]
+  },
+  {
+    "question": "Contains part of the Ganges River",
+    "answers": ["IN", "BD"]
+  },
+  {
+    "question": "Contains part of the Caucasus Mountains",
+    "answers": ["RU", "GE", "AM", "AZ"]
+  },
+  {
+    "question": "Contains part of the Great Dividing Range",
+    "answers": ["AU"]
+  },
+  {
+    "question": "Contains part of the Volga River",
+    "answers": ["RU"]
+  },
+  {
+    "question": "Contains part of the Rhine River",
+    "answers": ["DE", "CH", "FR", "NL", "LI", "AT"]
+  }
+]

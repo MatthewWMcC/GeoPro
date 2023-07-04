@@ -243,10 +243,12 @@ const getNukePartyPlayerPublicData = (io, roomId, userId) => {
 const fillQuestionsQueue = async (io, roomId) => {
   let room = getRoom(io, roomId);
   const dataToAdd = [
-    // "https://storage.googleapis.com/geopro-324602.appspot.com/data/4-letter-name-data.json",
-    // "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-3-letter-name-data.json",
     "https://storage.googleapis.com/geopro-324602.appspot.com/data/start-2-letter-name-data.json",
     "https://storage.googleapis.com/geopro-324602.appspot.com/data/flag-data.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/language-questions.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/history.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/topography.json",
+    "https://storage.googleapis.com/geopro-324602.appspot.com/data/former-countries.json",
   ];
   let [...val1] = await Promise.all([
     ...dataToAdd.map((bucket) => getDataTask(bucket, room.data.usedCountries)),
@@ -272,7 +274,7 @@ const getDataTask = (url, usedCountries) => {
           );
           if (randomList[i].answers.length > 0) {
             tempList.push(randomList[i]);
-            if (tempList.length >= 20) {
+            if (tempList.length >= 8) {
               break;
             }
           }

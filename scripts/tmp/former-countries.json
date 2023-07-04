@@ -1,0 +1,190 @@
+[
+  {
+    "question": "Was formerly a part of the Soviet Union",
+    "answers": [
+      "RU",
+      "UA",
+      "BY",
+      "KZ",
+      "LT",
+      "LV",
+      "EE",
+      "MD",
+      "KG",
+      "TJ",
+      "TM",
+      "UZ",
+      "GE",
+      "AM",
+      "AZ"
+    ]
+  },
+  {
+    "question": "Was formerly a part of the British Empire",
+    "answers": [
+      "GB",
+      "IN",
+      "AU",
+      "CA",
+      "NZ",
+      "ZA",
+      "MY",
+      "SG",
+      "IE",
+      "PK",
+      "BD",
+      "LK",
+      "NG",
+      "KE",
+      "UG",
+      "GH",
+      "JM",
+      "BW",
+      "MW",
+      "SZ",
+      "PG",
+      "FJ",
+      "SB",
+      "NA",
+      "ZM",
+      "TZ",
+      "WS",
+      "TO",
+      "VU",
+      "GY"
+    ]
+  },
+  {
+    "question": "Was formerly a part of the Ottoman Empire",
+    "answers": [
+      "TR",
+      "GR",
+      "EG",
+      "SY",
+      "IQ",
+      "IL",
+      "JO",
+      "LB",
+      "PS",
+      "SA",
+      "BH",
+      "KW",
+      "YE",
+      "OM",
+      "QA",
+      "AE"
+    ]
+  },
+  {
+    "question": "Was formerly a part of the French Empire",
+    "answers": [
+      "FR",
+      "MA",
+      "DZ",
+      "TN",
+      "ML",
+      "NE",
+      "SN",
+      "TD",
+      "BJ",
+      "BF",
+      "GN",
+      "MR",
+      "CI",
+      "CM",
+      "MG",
+      "CF",
+      "GA",
+      "CG",
+      "DJ",
+      "KM"
+    ]
+  },
+  {
+    "question": "Was formerly a part of the Spanish Empire",
+    "answers": [
+      "ES",
+      "MX",
+      "PE",
+      "CO",
+      "AR",
+      "VE",
+      "CL",
+      "EC",
+      "BO",
+      "PY",
+      "GT",
+      "CU",
+      "DO",
+      "HN",
+      "SV",
+      "NI",
+      "CR",
+      "PA",
+      "PH",
+      "GQ",
+      "GU",
+      "MP"
+    ]
+  },
+  {
+    "question": "Was formerly a part of the Portuguese Empire",
+    "answers": ["PT", "BR", "MZ", "AO", "MZ", "CV", "GW", "TL", "ST"]
+  },
+  {
+    "question": "Was formerly a part of the Dutch Empire",
+    "answers": ["NL", "ID", "SR", "CW", "SX", "BQ"]
+  },
+  {
+    "question": "Was formerly a part of the Austrian Empire",
+    "answers": ["AT", "CZ", "HU", "SI", "HR", "SK", "IT", "PL", "UA"]
+  },
+  {
+    "question": "Was formerly a part of the Mongol Empire",
+    "answers": [
+      "MN",
+      "CN",
+      "RU",
+      "KZ",
+      "KG",
+      "TJ",
+      "UZ",
+      "AF",
+      "IR",
+      "PK",
+      "IN",
+      "BD"
+    ]
+  },
+  {
+    "question": "Was formerly a part of the Roman Empire",
+    "answers": [
+      "IT",
+      "ES",
+      "PT",
+      "FR",
+      "GB",
+      "GR",
+      "TN",
+      "MA",
+      "DZ",
+      "LY",
+      "EG",
+      "IL",
+      "TR",
+      "AL",
+      "ME",
+      "RS",
+      "SI",
+      "HR",
+      "BA",
+      "MK",
+      "BG",
+      "RO"
+    ]
+  },
+  {
+    "question": "Was formerly a part of Yugoslavia",
+    "answers": ["SI", "HR", "BA", "ME", "RS", "MK"]
+  }
+]
