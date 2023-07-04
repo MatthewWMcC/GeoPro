@@ -60,7 +60,7 @@ const initNukePartyData = {
   maxSafeCountdown: 10,
   nukeStatus: nukeStatus.GREEN,
   canGuess: true,
-  minPlayers: 2,
+  minPlayers: 1,
 };
 
 const initCapitalProPlayerData = {

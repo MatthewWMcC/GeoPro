@@ -57,13 +57,13 @@
       "TT",
       "TV",
       "UG",
-      "UK",
+      "GB",
       "US",
       "VU",
       "ZM",
       "ZW"
     ],
-    "question": "Which countries have English as an official language?"
+    "question": "Has English as an official language"
   },
   {
     "language": "French",
@@ -98,12 +98,12 @@
       "VU",
       "FR"
     ],
-    "question": "Which countries have French as an official language?"
+    "question": "Has French as an official language"
   },
   {
     "language": "German",
     "answers": ["DE", "AT", "CH", "LI", "LU", "BE"],
-    "question": "Which countries have German as an official language?"
+    "question": "Has German as an official language"
   },
   {
     "language": "Spanish",
@@ -130,27 +130,22 @@
       "UY",
       "VE"
     ],
-    "question": "Which countries have Spanish as an official language?"
+    "question": "Has Spanish as an official language"
   },
   {
     "language": "Portuguese",
     "answers": ["AO", "BR", "CV", "GW", "MZ", "PT", "ST", "TL"],
-    "question": "Which countries have Portuguese as an official language?"
-  },
-  {
-    "language": "Mandarin Chinese",
-    "answers": ["CN", "TW", "SG"],
-    "question": "Which countries have Mandarin Chinese as an official language?"
+    "question": "Has Portuguese as an official language"
   },
   {
     "language": "Russian",
     "answers": ["BY", "KZ", "KG", "RU", "TJ", "TM", "UZ"],
-    "question": "Which countries have Russian as an official language?"
+    "question": "Has Russian as an official language"
   },
   {
     "language": "Persian",
     "answers": ["IR", "AF", "TJ"],
-    "question": "Which countries have Persian as an official language?"
+    "question": "Has Persian as an official language"
   },
   {
     "language": "Arabic",
@@ -176,6 +171,21 @@
       "TN",
       "YE"
     ],
-    "question": "Which countries have Arabic as an official language?"
+    "question": "Has Arabic as an official language"
+  },
+  {
+    "language": "Swahili",
+    "answers": ["CD", "KE", "RW", "TZ", "UG"],
+    "question": "Has Swahili as an official language"
+  },
+  {
+    "language": "Malay",
+    "answers": ["BN", "ID", "MY", "SG"],
+    "question": "Has Malay as an official language"
+  },
+  {
+    "language": "Italian",
+    "answers": ["IT", "SM", "VA", "CH"],
+    "question": "Has Italian as an official language"
   }
 ]
