@@ -40,6 +40,13 @@ const START_THREE_LETTER_NAME_DATA_PATH = path.join(
   START_THREE_LETTER_NAME_DATA_NAME
 );
 
+const LANGUAGE_QUESTION_NAME = "language-questions.json";
+const LANGUAGE_QUESTION_PATH = path.join(
+  __dirname,
+  "tmp",
+  LANGUAGE_QUESTION_NAME
+);
+
 const FLAG_DATA_NAME = "flag-data.json";
 const FLAG_DATA_PATH = path.join(__dirname, "tmp", FLAG_DATA_NAME);
 
@@ -71,6 +78,8 @@ module.exports = {
   START_THREE_LETTER_NAME_DATA_NAME,
   FOUR_LETTER_NAME_DATA_NAME,
   FOUR_LETTER_NAME_DATA_PATH,
+  LANGUAGE_QUESTION_NAME,
+  LANGUAGE_QUESTION_PATH,
   FLAG_DATA_NAME,
   FLAG_DATA_PATH,
   defaultBucketName,
