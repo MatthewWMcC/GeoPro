@@ -6,3 +6,15 @@
 - remove console logs and fix errors
 - fix all errors associated with Nuke Party player order
 - typescript errors
+
+
+nuke party questions:
+- landmarks
+- where is this (picture)
+- populations
+- gdp
+
+
+features:
+- re roll option
+- 
