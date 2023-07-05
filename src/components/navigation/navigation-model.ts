@@ -9,6 +9,7 @@ import { MapStyles, MapStyleTypes } from "state/UserData/types";
 import { getMapboxAPIToken } from "utils/environment-vars-helper";
 import { mapOptions } from "./constants";
 import { NavigationAttrs, NavigationState } from "./types";
+import { setDefaultMapboxStyle } from "services/local-storage";
 
 interface NavigationModel {
   handleComponentInit: (
@@ -21,6 +22,9 @@ interface NavigationModel {
     vnode: m.VnodeDOM<NavigationAttrs, NavigationState>
   ) => void;
   handleMapStyleChange: (mapStyleChange: MapStyleTypes) => void;
+  handleMapStyleClose: (
+    vnode: m.VnodeDOM<NavigationAttrs, NavigationState>
+  ) => void;
 }
 
 export const model: NavigationModel = {
@@ -79,9 +83,20 @@ export const model: NavigationModel = {
     vnode.state.subscriptions = [];
   },
   handleMapStyleChange: (preferedMapStyle: MapStyleTypes) => {
+    const { loggedIn, guestLoggedIn } = store.getState().AuthState;
     store.dispatch(UpdateMapStyle(preferedMapStyle));
-    firestore._updateDocument({
-      preferedMapStyle,
-    });
+
+    if (loggedIn) {
+      firestore._updateDocument({
+        preferedMapStyle,
+      });
+    } else if (guestLoggedIn) {
+      setDefaultMapboxStyle(preferedMapStyle);
+    }
+  },
+  handleMapStyleClose: (
+    vnode: m.VnodeDOM<NavigationAttrs, NavigationState>
+  ) => {
+    vnode.state.navShown = false;
   },
 };

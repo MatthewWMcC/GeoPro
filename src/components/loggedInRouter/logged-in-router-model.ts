@@ -1,7 +1,7 @@
 import { bindTo } from "base/operators";
 import m from "mithril";
 import { distinctUntilChanged, pluck } from "rxjs/operators";
-import { LoggedInChange, SetLogInPrevRoute } from "state/AuthState/actions";
+import { SetLogInPrevRoute } from "state/AuthState/actions";
 import { store } from "state/store";
 import { loggedInRouterAttrs, loggedInRouterState } from "./types";
 
@@ -18,6 +18,16 @@ export const model = {
           pluck("AuthState", "loggedIn"),
           distinctUntilChanged(),
           bindTo("loggedIn", vnode)
+        )
+        .subscribe()
+    );
+
+    vnode.state.subscriptions.push(
+      store$
+        .pipe(
+          pluck("AuthState", "guestLoggedIn"),
+          distinctUntilChanged(),
+          bindTo("guestLoggedIn", vnode)
         )
         .subscribe()
     );

@@ -1,14 +1,22 @@
 import m from "mithril";
 import { EnterInfoAttrs, EnterInfoState } from "./types";
 import { store } from "state/store";
-import { UpdateUsername } from "state/UserData/actions";
+import { FirstLogin, UpdateUsername } from "state/UserData/actions";
 import { extendBaseModel } from "base/baseModel";
 import { firestore } from "services/firestore";
-import { SetLogInPrevRoute } from "state/AuthState/actions";
+import {
+  GuestLoggedInChange,
+  SetLogInPrevRoute,
+} from "state/AuthState/actions";
 import { UpdateCurrentPage } from "state/CurrentPageState/actions";
 import { Pages } from "state/CurrentPageState/types";
 import { distinctUntilChanged, map, pluck } from "rxjs/operators";
 import { bindTo } from "base/operators";
+import {
+  getGuestStorageData,
+  setNewGuestStorageData,
+} from "services/local-storage";
+import { getGuestData, getUserData } from "services/helpers";
 
 interface EnterInfoModel {
   handleComponentInit: (
@@ -22,15 +30,23 @@ interface EnterInfoModel {
     event: any
   ) => void;
   handleLogIn: () => void;
-  handleClickNextButton: () => void;
-  handlePressSignInAsGuest: () => void;
-  handleSignOut: () => void;
+  handleClickNextButton: (
+    vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>
+  ) => void;
+  handlePressSignInAsGuest: (
+    vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>
+  ) => void;
+  handlePressSignInAsUser: (
+    vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>
+  ) => void;
+  handleLogOut: () => void;
 }
 
 export const model: EnterInfoModel = extendBaseModel({
   handleComponentInit: (vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>) => {
     const { store$ } = vnode.attrs;
     vnode.state.subscriptions = [];
+    vnode.state.GuestSignIn = false;
     store.dispatch(UpdateCurrentPage(Pages.LOGIN));
 
     vnode.state.subscriptions.push(
@@ -69,18 +85,46 @@ export const model: EnterInfoModel = extendBaseModel({
   handleLogIn: () => {
     firestore._runAuth();
   },
-  handlePressSignInAsGuest: () => {
-    console.log("Guest");
+  handlePressSignInAsGuest: (
+    vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>
+  ) => {
+    // model.handleLogOut();
+    vnode.state.GuestSignIn = true;
   },
-  handleClickNextButton: () => {
+  handlePressSignInAsUser: (
+    vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>
+  ) => {
+    vnode.state.GuestSignIn = false;
+  },
+  handleClickNextButton: (
+    vnode: m.VnodeDOM<EnterInfoAttrs, EnterInfoState>
+  ) => {
     const username = store.getState().UserData.username;
-    if (store.getState().AuthState.loggedIn && username) {
+    const { GuestSignIn } = vnode.state;
+    if (!username) return;
+    if (GuestSignIn) {
+      model.handleLogOut();
+
+      store.dispatch(GuestLoggedInChange(true));
+      setNewGuestStorageData(username);
+
+      const GuestData = getGuestStorageData();
+      store.dispatch(FirstLogin(GuestData.userId, getGuestData(GuestData)));
+
+      store.dispatch(GuestLoggedInChange(true));
+
       m.route.set(store.getState().AuthState.logInPrevRoute);
-      store.dispatch(SetLogInPrevRoute("/"));
-      firestore._updateDocument({
-        username,
-      });
+    } else {
+      if (store.getState().AuthState.loggedIn) {
+        m.route.set(store.getState().AuthState.logInPrevRoute);
+        store.dispatch(SetLogInPrevRoute("/"));
+        firestore._updateDocument({
+          username,
+        });
+      }
     }
   },
-  handleSignOut: () => {},
+  handleLogOut: () => {
+    firestore._signOut();
+  },
 });

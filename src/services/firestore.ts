@@ -72,7 +72,6 @@ onAuthStateChanged(auth, async (user) => {
     const userId = user.uid;
     const userDoc = await firestore._getDocument();
     if (userDoc?.exists()) {
-      console.log("Document data:", userDoc.data());
       store.dispatch(FirstLogin(userId, getUserData(userDoc.data())));
     } else {
       console.log("No such document!");
@@ -85,8 +84,9 @@ onAuthStateChanged(auth, async (user) => {
     }
     store.dispatch(LoggedInChange(true));
   } else {
-    console.log("not signed in");
     store.dispatch(LoggedInChange(false));
-    store.dispatch(ClearUserData());
+    if (!store.getState().AuthState.guestLoggedIn) {
+      store.dispatch(ClearUserData());
+    }
   }
 });

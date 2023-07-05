@@ -9,6 +9,7 @@ export interface NavigationState extends BaseState {
   navShown: boolean;
   CurrentPage: Pages;
   mapOptionMaps: mapboxgl.Map[];
+  preferedMapStyle: MapStyleTypes;
 }
 
 export interface IMapOptions {

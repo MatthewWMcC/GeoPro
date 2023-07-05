@@ -4,6 +4,8 @@ import { pluck, distinctUntilChanged, map } from "rxjs/operators";
 import { extendBaseModel } from "base/baseModel";
 import { bindTo } from "base/operators";
 import { firestore } from "services/firestore";
+import { store } from "state/store";
+import { guestLogOut } from "services/local-storage";
 
 interface HeaderModel {
   handleComponentRemove: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
@@ -12,7 +14,13 @@ interface HeaderModel {
   handleLogOutClick: () => void;
 }
 
-export const model: HeaderModel = extendBaseModel({
+export const model: HeaderModel = {
+  handleComponentRemove: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
+    vnode.state.subscriptions.forEach((subscription) =>
+      subscription.unsubscribe()
+    );
+    vnode.state.subscriptions = [];
+  },
   handleComponentInit: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
     const { store$ } = vnode.attrs;
     vnode.state.subscriptions = [];
@@ -58,6 +66,11 @@ export const model: HeaderModel = extendBaseModel({
     m.route.set("/");
   },
   handleLogOutClick: () => {
-    firestore._signOut();
+    const { loggedIn, guestLoggedIn } = store.getState().AuthState;
+    if (loggedIn) {
+      firestore._signOut();
+    } else if (guestLoggedIn) {
+      guestLogOut();
+    }
   },
-});
+};

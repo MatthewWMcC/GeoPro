@@ -443,12 +443,6 @@ const getPlayerDataFromRoom = (userId, roomId) => {
   return player;
 };
 
-const getValueFromRoom = (roomId, key) => {
-  let room = getRoom(io, roomId);
-  if (!room) return;
-  return room.data[key];
-};
-
 const setPlayerData = (roomId, userId, playerData) => {
   let room = getRoom(io, roomId);
   room.data.playerList = room.data.playerList.map((player) => {

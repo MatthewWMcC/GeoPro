@@ -2,12 +2,20 @@ export interface AuthState {
   loggedIn: boolean;
   logInPrevRoute: string;
   loadingUser: boolean;
+  guestLoggedIn: boolean;
 }
 
 export interface LoggedInType {
   type: AuthStateActions.LOGGED_IN_CHANGE;
   payload: {
     loggedIn: boolean;
+  };
+}
+
+export interface GuestLoggedInType {
+  type: AuthStateActions.GUEST_LOGGED_IN_CHANGE;
+  payload: {
+    guestLoggedIn: boolean;
   };
 }
 
@@ -27,11 +35,13 @@ export interface LoadingUserType {
 
 export enum AuthStateActions {
   LOGGED_IN_CHANGE = "AuthStateActions/LOGGED_IN_CHANGE",
+  GUEST_LOGGED_IN_CHANGE = "AuthStateActions/GUEST_LOGGED_IN_CHANGE",
   LOG_IN_PREV_ROUTE = "AuthStateActions/LOG_IN_PREV_ROUTE",
   LOADING_USER = "AuthStateActions/LOADING_USER",
 }
 
 export type AuthStateActionTypes =
   | LoggedInType
+  | GuestLoggedInType
   | SetLogInPrevType
   | LoadingUserType;

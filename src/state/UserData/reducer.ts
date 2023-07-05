@@ -13,7 +13,8 @@ const initUserData: UserDataState = {
   username: "",
   preferedMapStyle: MapStyleTypes.STREET,
   userId: "",
-  userIconSrc: "",
+  userIconSrc:
+    "https://storage.googleapis.com/geopro-324602.appspot.com/default-user.svg",
 };
 
 export const UserDataReducer = (

@@ -9,12 +9,12 @@ export const loggedInRouter: m.Component<
 > = {
   oninit: model.handleComponentInit,
   view: (vnode: m.VnodeDOM<loggedInRouterAttrs, loggedInRouterState>) => {
-    const { loggedIn, loadingUser } = vnode.state;
+    const { loggedIn, loadingUser, guestLoggedIn } = vnode.state;
     const { childComponent } = vnode.attrs;
     if (loadingUser) {
       return m(loadingModal);
     } else {
-      if (!loggedIn) {
+      if (!loggedIn && !guestLoggedIn) {
         model.handleNotLoggedIn();
         return m(loadingModal);
       }
