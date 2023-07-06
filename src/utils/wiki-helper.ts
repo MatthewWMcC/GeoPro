@@ -16,7 +16,7 @@ export const getPageDataWithWikiId = async (
       method: "GET",
       url: `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`,
     })
-    .then((response) => {
+    .then((response: any) => {
       return {
         link: response.content_urls.desktop.page,
         title,

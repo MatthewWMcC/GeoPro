@@ -8,4 +8,5 @@ export interface loggedInRouterAttrs extends BaseAttrs {
 export interface loggedInRouterState extends BaseState {
   loggedIn: boolean;
   loadingUser: boolean;
+  guestLoggedIn: boolean;
 }

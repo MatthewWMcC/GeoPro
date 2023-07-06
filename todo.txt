@@ -1,12 +1,8 @@
-- URL search bar
 - wasnt made admin when i left at end of game
 - Show when user is admin/when a user can start game visually (disable buttons)
 - back button should work more normally
-- Wikipedia blocked
 - remove console logs and fix errors
-- fix all errors associated with Nuke Party player order
 - typescript errors
-
 
 nuke party questions:
 - landmarks

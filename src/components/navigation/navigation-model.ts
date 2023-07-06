@@ -9,6 +9,8 @@ import { MapStyles, MapStyleTypes } from "state/UserData/types";
 import { getMapboxAPIToken } from "utils/environment-vars-helper";
 import { mapOptions } from "./constants";
 import { NavigationAttrs, NavigationState } from "./types";
+import { setDefaultMapboxStyle } from "services/local-storage";
+import { runFunctionWhenOtherElementsClicked } from "utils/element-helper";
 
 interface NavigationModel {
   handleComponentInit: (
@@ -21,6 +23,7 @@ interface NavigationModel {
     vnode: m.VnodeDOM<NavigationAttrs, NavigationState>
   ) => void;
   handleMapStyleChange: (mapStyleChange: MapStyleTypes) => void;
+  closeNav: (vnode: m.VnodeDOM<NavigationAttrs, NavigationState>) => void;
 }
 
 export const model: NavigationModel = {
@@ -29,6 +32,12 @@ export const model: NavigationModel = {
     vnode.state.navShown = false;
     vnode.state.subscriptions = [];
     vnode.state.mapOptionMaps = [];
+
+    // vnode.state.removeEventListeners = addClickEventListerToElements([
+    //   "header-content-container",
+    //   "body-content-container",
+    //   "github-link-container",
+    // ]);
 
     vnode.state.subscriptions.push(
       store$
@@ -53,6 +62,11 @@ export const model: NavigationModel = {
   handleComponentCreate: (
     vnode: m.VnodeDOM<NavigationAttrs, NavigationState>
   ) => {
+    vnode.state.removeEventListener = runFunctionWhenOtherElementsClicked(
+      "navigation-content-container",
+      () => model.closeNav(vnode)
+    );
+
     mapOptions.forEach(({ id, mapType }) => {
       vnode.state.mapOptionMaps.push(
         new mapboxgl.Map({
@@ -77,11 +91,25 @@ export const model: NavigationModel = {
       subscription.unsubscribe()
     );
     vnode.state.subscriptions = [];
+
+    vnode.state.removeEventListener();
   },
   handleMapStyleChange: (preferedMapStyle: MapStyleTypes) => {
+    const { loggedIn, guestLoggedIn } = store.getState().AuthState;
     store.dispatch(UpdateMapStyle(preferedMapStyle));
-    firestore._updateDocument({
-      preferedMapStyle,
-    });
+
+    if (loggedIn) {
+      firestore._updateDocument({
+        preferedMapStyle,
+      });
+    } else if (guestLoggedIn) {
+      setDefaultMapboxStyle(preferedMapStyle);
+    }
+  },
+  closeNav: (vnode: m.VnodeDOM<NavigationAttrs, NavigationState>) => {
+    if (vnode.state.navShown) {
+      vnode.state.navShown = false;
+      m.redraw();
+    }
   },
 };

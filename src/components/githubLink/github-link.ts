@@ -6,7 +6,11 @@ export const githubLink: m.Component = {
   view: () => {
     return m(
       "a.github-link-outer",
-      { href: "https://github.com/MatthewWMcC/GeoPro" },
+      {
+        href: "https://github.com/MatthewWMcC/GeoPro",
+        target: "_blank",
+        rel: "noopener noreferrer",
+      },
       m.trust(githubIcon)
     );
   },

@@ -2,6 +2,7 @@ import {
   AuthState,
   AuthStateActions,
   AuthStateActionTypes,
+  GuestLoggedInType,
   LoadingUserType,
   LoggedInType,
   SetLogInPrevType,
@@ -11,6 +12,7 @@ const initAuthState: AuthState = {
   loggedIn: false,
   logInPrevRoute: "/",
   loadingUser: true,
+  guestLoggedIn: false,
 };
 
 export const AuthStateReducer = (
@@ -20,6 +22,8 @@ export const AuthStateReducer = (
   switch (action.type) {
     case AuthStateActions.LOGGED_IN_CHANGE:
       return loggedInReducer(state, action);
+    case AuthStateActions.GUEST_LOGGED_IN_CHANGE:
+      return guestLoggedInReducer(state, action);
     case AuthStateActions.LOG_IN_PREV_ROUTE:
       return setLogInPrevRouteReducer(state, action);
     case AuthStateActions.LOADING_USER:
@@ -33,6 +37,17 @@ const loggedInReducer = (state: AuthState, action: LoggedInType): AuthState => {
   return {
     ...state,
     loggedIn: action.payload.loggedIn,
+    loadingUser: false,
+  };
+};
+
+const guestLoggedInReducer = (
+  state: AuthState,
+  action: GuestLoggedInType
+): AuthState => {
+  return {
+    ...state,
+    guestLoggedIn: action.payload.guestLoggedIn,
     loadingUser: false,
   };
 };

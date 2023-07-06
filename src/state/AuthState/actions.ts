@@ -1,5 +1,6 @@
 import {
   AuthStateActions,
+  GuestLoggedInType,
   LoadingUserType,
   LoggedInType,
   SetLogInPrevType,
@@ -10,6 +11,17 @@ export const LoggedInChange = (loggedIn: boolean): LoggedInType => {
     type: AuthStateActions.LOGGED_IN_CHANGE,
     payload: {
       loggedIn,
+    },
+  };
+};
+
+export const GuestLoggedInChange = (
+  guestLoggedIn: boolean
+): GuestLoggedInType => {
+  return {
+    type: AuthStateActions.GUEST_LOGGED_IN_CHANGE,
+    payload: {
+      guestLoggedIn,
     },
   };
 };

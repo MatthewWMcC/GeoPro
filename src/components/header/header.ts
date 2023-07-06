@@ -13,6 +13,7 @@ import { IconContainer } from "components/iconContainer/icon-container";
 
 export const header: m.Component<HeaderAttrs, HeaderState> = {
   oninit: model.handleComponentInit,
+  oncreate: model.handleComponentCreate,
   onremove: model.handleComponentRemove,
   view: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>): m.Children => {
     const DropdownSettings = [
