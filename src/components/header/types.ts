@@ -8,6 +8,7 @@ export interface HeaderState extends BaseState {
     username: string;
     userIconSrc: string;
   };
+  removeEventListener: () => void;
 }
 
 export interface HeaderAttrs extends BaseAttrs {}

@@ -6,12 +6,15 @@ import { bindTo } from "base/operators";
 import { firestore } from "services/firestore";
 import { store } from "state/store";
 import { guestLogOut } from "services/local-storage";
+import { runFunctionWhenOtherElementsClicked } from "utils/element-helper";
 
 interface HeaderModel {
   handleComponentRemove: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
+  handleComponentCreate: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
   handleComponentInit: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
   handleLogoClick: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
   handleLogOutClick: () => void;
+  closeDropdown: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => void;
 }
 
 export const model: HeaderModel = {
@@ -20,6 +23,12 @@ export const model: HeaderModel = {
       subscription.unsubscribe()
     );
     vnode.state.subscriptions = [];
+  },
+  handleComponentCreate: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
+    vnode.state.removeEventListener = runFunctionWhenOtherElementsClicked(
+      "header-content-container",
+      () => model.closeDropdown(vnode)
+    );
   },
   handleComponentInit: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
     const { store$ } = vnode.attrs;
@@ -51,16 +60,6 @@ export const model: HeaderModel = {
         )
         .subscribe()
     );
-
-    const body = document.getElementById("body-content-container");
-
-    body &&
-      body.addEventListener("click", () => {
-        if (vnode.state.displaySettings) {
-          vnode.state.displaySettings = false;
-          m.redraw();
-        }
-      });
   },
   handleLogoClick: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
     m.route.set("/");
@@ -71,6 +70,12 @@ export const model: HeaderModel = {
       firestore._signOut();
     } else if (guestLoggedIn) {
       guestLogOut();
+    }
+  },
+  closeDropdown: (vnode: m.VnodeDOM<HeaderAttrs, HeaderState>) => {
+    if (vnode.state.displaySettings) {
+      vnode.state.displaySettings = false;
+      m.redraw();
     }
   },
 };

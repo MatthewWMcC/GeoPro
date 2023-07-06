@@ -1,16 +1,17 @@
-export const runCodeOnClick = (elementIds: string[], func: () => void) => {
-  elementIds.forEach((elementId) => {
-    const element = document.getElementById(elementId);
+export const runFunctionWhenOtherElementsClicked = (
+  elementId: string,
+  func: () => void
+) => {
+  const element = document.getElementById(elementId);
 
-    element && element.addEventListener;
-  });
-  const body = document.getElementById("body-content-container");
+  const mouseClick = (event: MouseEvent) => {
+    if (!element?.contains(event.target)) {
+      func();
+    }
+  };
 
-  body &&
-    body.addEventListener("click", () => {
-      if (vnode.state.displaySettings) {
-        vnode.state.displaySettings = false;
-        m.redraw();
-      }
-    });
+  const body = document.getElementsByTagName("body")[0];
+
+  body.addEventListener("click", mouseClick);
+  return () => body.removeEventListener("click", mouseClick);
 };
