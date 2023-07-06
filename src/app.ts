@@ -11,6 +11,7 @@ import { mainPage } from "pages/mainPage/main-page";
 import { gameContainer } from "pages/gameContainer/game-container";
 import { loggedInRouter } from "components/loggedInRouter/logged-in-router";
 import { githubLink } from "components/githubLink/github-link";
+import { Pages } from "state/CurrentPageState/types";
 
 const initApp = async () => {
   await initDispatch();
@@ -71,6 +72,7 @@ const createApp = () => {
 
   m.mount(navigationContentContainer, {
     view: () =>
+      store.getState().CurrentPageData.CurrentPage !== Pages.LOGIN &&
       m(navigation, {
         store$,
       }),

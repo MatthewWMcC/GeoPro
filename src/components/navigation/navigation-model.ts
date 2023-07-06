@@ -33,12 +33,6 @@ export const model: NavigationModel = {
     vnode.state.subscriptions = [];
     vnode.state.mapOptionMaps = [];
 
-    // vnode.state.removeEventListeners = addClickEventListerToElements([
-    //   "header-content-container",
-    //   "body-content-container",
-    //   "github-link-container",
-    // ]);
-
     vnode.state.subscriptions.push(
       store$
         .pipe(
@@ -82,6 +76,7 @@ export const model: NavigationModel = {
     });
   },
   handleComponentRemove(vnode: m.VnodeDOM<NavigationAttrs, NavigationState>) {
+    console.log("remove");
     vnode.state.mapOptionMaps.forEach((map) => {
       map.remove();
     });

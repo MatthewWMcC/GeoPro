@@ -28,15 +28,6 @@ export const header: m.Component<HeaderAttrs, HeaderState> = {
       `div.header${CurrentPage === Pages.LOGIN ? ".display-none" : ""}`,
       [
         m(".left-side", [
-          m(".back-button-container", [
-            m(
-              "button#back-button.styled-button",
-              {
-                onclick: () => history.back(),
-              },
-              [m.trust(backButtonSVG)]
-            ),
-          ]),
           m(
             ".header-label-container",
             {
